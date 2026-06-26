@@ -113,13 +113,11 @@ export async function seedDatabase() {
       }
     ];
 
-
     let seededCount = 0;
     for (const listing of sampleListings) {
       const slug = listing.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
       const existing = await prisma.listing.findFirst({
         where: { slug }
-
       });
 
       if (!existing) {
