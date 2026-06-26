@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getBusinessById } from '@/lib/db';
 import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { ReviewForm } from '@/components/features/ReviewForm';
 import { MessageForm } from '@/components/features/MessageForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
