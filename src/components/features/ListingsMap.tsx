@@ -58,7 +58,7 @@ export default function ListingsMap({ businesses, center = [9.5120, 100.0136], z
                   <span style={{ color: 'var(--accent-color)' }}>★ {business.averageRating.toFixed(1)}</span>
                   <span style={{ color: 'var(--text-muted)' }}>({business.reviewCount})</span>
                 </div>
-                <Link href={`/listing/${business.id}`} style={{ display: 'block', textAlign: 'center', backgroundColor: 'var(--primary-color)', color: 'white', padding: '0.4rem', borderRadius: '4px', textDecoration: 'none', fontSize: '0.9rem' }}>
+                <Link href={`/listing/${business.slug}`} style={{ display: 'block', textAlign: 'center', backgroundColor: 'var(--primary-color)', color: 'white', padding: '0.4rem', borderRadius: '4px', textDecoration: 'none', fontSize: '0.9rem' }}>
                   View Details
                 </Link>
               </div>

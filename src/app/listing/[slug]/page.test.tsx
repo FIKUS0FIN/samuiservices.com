@@ -5,12 +5,12 @@ import BusinessDetail from './page'
 import * as db from '@/lib/db'
 
 vi.mock('@/lib/db', () => ({
-  getBusinessById: vi.fn(),
+  getBusinessBySlug: vi.fn(),
 }))
 
 describe('BusinessDetail JSON-LD XSS', () => {
   it('escapes malicious characters in JSON-LD', async () => {
-    vi.mocked(db.getBusinessById).mockResolvedValue({
+    vi.mocked(db.getBusinessBySlug).mockResolvedValue({
       id: '1',
       name: 'Test Business',
       category: { name: 'Cat' },

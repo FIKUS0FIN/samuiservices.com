@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { notFound } from 'next/navigation';
-import { getBusinessById } from '@/lib/db';
+import { getBusinessBySlug } from '@/lib/db';
 import { Card } from '@/components/ui/Card';
 import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
@@ -10,9 +10,9 @@ import { BusinessInfo } from './components/BusinessInfo';
 import { ContactInfo } from './components/ContactInfo';
 import { ReviewsList } from './components/ReviewsList';
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const business = await getBusinessById(id);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const business = await getBusinessBySlug(slug);
   if (!business) return { title: 'Not Found' };
   
   return {
@@ -21,15 +21,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
-export default async function BusinessDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const business = await getBusinessById(id);
+export default async function BusinessDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const business = await getBusinessBySlug(slug);
   
   if (!business) {
     notFound();
   }
 
-  // Schema.org JSON-LD for LocalBusiness
+    // Schema.org JSON-LD for LocalBusiness
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -48,7 +48,23 @@ export default async function BusinessDetail({ params }: { params: Promise<{ id:
       ratingValue: business.averageRating,
       reviewCount: business.reviewCount
     },
-    description: business.description
+    description: business.description,
+    hasOfferCatalog: business.products && business.products.length > 0 ? {
+      '@type': 'OfferCatalog',
+      name: 'Products & Services',
+      itemListElement: business.products.map((product, index) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Product',
+          name: product.name,
+          description: product.description,
+          image: product.image,
+        },
+        price: product.price,
+        priceCurrency: 'THB',
+        position: index + 1
+      }))
+    } : undefined
   };
 
   return (
@@ -59,16 +75,17 @@ export default async function BusinessDetail({ params }: { params: Promise<{ id:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
       />
       
+
       {/* Hero Image Banner */}
-      <div style={{ width: '100%', height: '350px', backgroundImage: `url(${business.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, transparent 100%)' }}></div>
-        <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'flex-end', paddingBottom: '2rem' }}>
-           <div>
-              <div style={{ color: '#60a5fa', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '1px', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+      <div style={{ width: '100%', height: business.layout === 'premium' ? '500px' : '350px', backgroundImage: `url(${business.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, transparent 100%)' }}></div>
+        <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', alignItems: business.layout === 'premium' ? 'center' : 'flex-end', justifyContent: business.layout === 'premium' ? 'center' : 'flex-start', paddingBottom: business.layout === 'premium' ? '0' : '2rem' }}>
+           <div style={{ textAlign: business.layout === 'premium' ? 'center' : 'left' }}>
+              <div style={{ color: '#60a5fa', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '2px', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                 {business.category.name} • {business.island.name}
               </div>
-              <h1 style={{ fontSize: '3.5rem', color: 'white', marginBottom: '0.5rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>{business.name}</h1>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.25rem', color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+              <h1 style={{ fontSize: business.layout === 'premium' ? '4.5rem' : '3.5rem', color: 'white', marginBottom: '0.5rem', textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>{business.name}</h1>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: business.layout === 'premium' ? 'center' : 'flex-start', gap: '1rem', fontSize: '1.25rem', color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                 <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>★ {business.averageRating}</span>
                 <span>({business.reviewCount} verified reviews)</span>
               </div>
@@ -89,6 +106,34 @@ export default async function BusinessDetail({ params }: { params: Promise<{ id:
                   {business.description}
                 </p>
               </Card>
+
+
+              {/* Products & Services Showcase */}
+              {business.products && business.products.length > 0 && (
+                <div style={{ marginTop: '2rem' }}>
+                  <h2 className="text-2xl font-bold mb-6" style={{ fontSize: '2rem', marginBottom: '1.5rem', marginTop: '1rem' }}>Products & Services</h2>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                    {business.products.map(product => (
+                      <Card key={product.id} style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                        {product.image && (
+                          <div style={{ height: '180px', width: '100%', backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+                        )}
+                        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                          <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', fontWeight: 'bold' }}>{product.name}</h3>
+                          {product.price !== null && (
+                            <div style={{ color: 'var(--primary-color)', fontWeight: 'bold', fontSize: '1.125rem', marginBottom: '0.75rem' }}>
+                              ${product.price}
+                            </div>
+                          )}
+                          {product.description && (
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', flex: 1, marginBottom: 0, lineHeight: 1.6 }}>{product.description}</p>
+                          )}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Reviews Section */}
               <Card>

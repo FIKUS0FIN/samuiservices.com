@@ -14,7 +14,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
   return (
     <div style={{ position: 'relative' }}>
       <FavoriteToggle listingId={business.id} initialIsFavorited={!!business.isFavorited} />
-      <Link href={`/listing/${business.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link href={`/listing/${business.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <Card 
         style={{ 
           border: business.isPremium ? '2px solid #fbbf24' : undefined,

@@ -34,7 +34,7 @@ export async function sendMessage(formData: FormData) {
     });
 
     if (listingId) {
-      revalidatePath(`/listing/${listingId}`);
+      revalidatePath(`/listing/${listingId}`);;
     }
     revalidatePath('/dashboard/inbox');
     

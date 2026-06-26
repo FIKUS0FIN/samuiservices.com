@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
@@ -13,6 +15,9 @@ interface Island {
 }
 
 interface ListingData {
+  slug?: string;
+  layout?: string;
+  products?: { id: string; name: string; description: string | null; price: number | null; image: string | null }[];
   name?: string;
   categoryId?: string;
   islandId?: string;
@@ -43,6 +48,24 @@ export function ListingForm({
   submitLabel = 'Save Changes',
   cancelHref = '/dashboard'
 }: ListingFormProps) {
+  const [products, setProducts] = useState(listing?.products || []);
+
+  const addProduct = () => {
+    setProducts([...products, { id: '', name: '', description: '', price: null, image: '' }]);
+  };
+
+  const removeProduct = (index: number) => {
+    const newProducts = [...products];
+    newProducts.splice(index, 1);
+    setProducts(newProducts);
+  };
+
+  const updateProduct = (index: number, field: string, value: string) => {
+    const newProducts = [...products];
+    newProducts[index] = { ...newProducts[index], [field]: value };
+    setProducts(newProducts);
+  };
+
   return (
     <form action={action} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
@@ -61,7 +84,19 @@ export function ListingForm({
               ))}
             </select>
           </div>
+            </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '1.5rem' }}>
+          <Input label="Slug (URL Path)" name="slug" type="text" defaultValue={listing?.slug} placeholder="e.g. samui-builders-pro" required />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.875rem' }}>Layout Style</label>
+            <select name="layout" className="input-field" defaultValue={listing?.layout || 'standard'} required>
+              <option value="standard">Standard Listing</option>
+              <option value="premium">Premium Landing Page</option>
+            </select>
+          </div>
         </div>
+
       </div>
 
       {/* Location & Contact */}
@@ -96,6 +131,32 @@ export function ListingForm({
           <textarea name="description" className="input-field" rows={5} defaultValue={listing?.description} placeholder="Describe what you do, your experience, and what makes your service great..." required></textarea>
         </div>
         <Input label="Cover Image URL (Temporary)" name="image" type="url" fullWidth defaultValue={listing?.image || ''} placeholder="https://..." />
+      </div>
+
+
+      {/* Products */}
+      <div>
+        <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>4. Products & Services</h3>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>Add specific products or services to feature on your page (Premium layout recommended).</p>
+
+        {products.map((product, index) => (
+          <div key={index} style={{ border: '1px solid var(--border-color)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <input type="hidden" name={`products[${index}][id]`} value={product.id || 'new'} />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <Input label="Product Name" name={`products[${index}][name]`} type="text" value={product.name} onChange={e => updateProduct(index, 'name', e.target.value)} required />
+              <Input label="Price (Optional)" name={`products[${index}][price]`} type="number" step="any" value={product.price || ''} onChange={e => updateProduct(index, 'price', e.target.value)} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+               <label style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.875rem' }}>Description</label>
+               <textarea name={`products[${index}][description]`} className="input-field" rows={2} value={product.description || ''} onChange={e => updateProduct(index, 'description', e.target.value)}></textarea>
+            </div>
+             <Input label="Image URL (Optional)" name={`products[${index}][image]`} type="url" value={product.image || ''} onChange={e => updateProduct(index, 'image', e.target.value)} />
+
+             <Button type="button" variant="secondary" onClick={() => removeProduct(index)} style={{ alignSelf: 'flex-start', color: '#ef4444', borderColor: '#ef4444' }}>Remove Product</Button>
+          </div>
+        ))}
+
+        <Button type="button" variant="secondary" onClick={addProduct}>+ Add Product</Button>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>

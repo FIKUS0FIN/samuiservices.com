@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const businesses = await getBusinessesByIsland(island.slug)
     for (const business of businesses) {
       businessRoutes.push({
-        url: `${baseUrl}/listing/${business.id}`,
+        url: `${baseUrl}/listing/${business.slug}`,
         lastModified: new Date().toISOString(),
         changeFrequency: 'weekly' as const,
         priority: 0.7,

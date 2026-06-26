@@ -19,8 +19,7 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
   }
 
   const listing = await prisma.listing.findUnique({
-    where: { id }
-  });
+    where: { id }, include: { products: true } });
 
   if (!listing) {
     notFound();
@@ -59,17 +58,46 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
     const hours = formData.get('hours') as string;
     const description = formData.get('description') as string;
     const image = formData.get('image') as string;
+    const slug = formData.get('slug') as string;
+    const layout = formData.get('layout') as string;
+
+    // Extract products
+    const products: { id: string; name: string; price: number | null; description: string | null; image: string | null }[] = [];
+    let i = 0;
+    while (formData.has(`products[${i}][name]`)) {
+      products.push({
+        id: formData.get(`products[${i}][id]`) as string,
+        name: formData.get(`products[${i}][name]`) as string,
+        price: formData.get(`products[${i}][price]`) ? parseFloat(formData.get(`products[${i}][price]`) as string) : null,
+        description: formData.get(`products[${i}][description]`) as string || null,
+        image: formData.get(`products[${i}][image]`) as string || null,
+      });
+      i++;
+    }
 
     const lat = formData.get('lat') ? parseFloat(formData.get('lat') as string) : null;
     const lng = formData.get('lng') ? parseFloat(formData.get('lng') as string) : null;
 
-    if (!name || !categoryId || !islandId || !description) {
+    if (!name || !categoryId || !islandId || !description || !slug || !layout) {
       throw new Error("Missing required fields");
     }
+
+    // Handle products update by deleting old and creating new (simplified for this example)
+    await prisma.product.deleteMany({ where: { listingId: id } });
 
     await prisma.listing.update({
       where: { id },
       data: {
+        slug,
+        layout,
+        products: {
+          create: products.map(p => ({
+            name: p.name,
+            price: p.price,
+            description: p.description,
+            image: p.image
+          }))
+        },
         name,
         categoryId,
         islandId,
@@ -85,7 +113,7 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
     });
 
     revalidatePath('/');
-    revalidatePath(`/listing/${id}`);
+    revalidatePath(`/listing/${currentListing.slug}`);
     redirect('/dashboard');
   }
 

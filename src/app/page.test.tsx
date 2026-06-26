@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest'
 import { BusinessCard } from '../components/features/BusinessCard'
 
 const mockBusiness: any = { // eslint-disable-line @typescript-eslint/no-explicit-any
-  id: 'test-1',
+  id: 'test-1', slug: 'test-slug',
   name: 'Test Business',
   category: { id: 'cat-1', name: 'construction' },
   island: { id: 'isl-1', name: 'koh-samui' },
@@ -28,6 +28,6 @@ describe('BusinessCard Integration', () => {
     
     // Check link
     const link = screen.getByRole('link')
-    expect(link).toHaveAttribute('href', '/listing/test-1')
+    expect(link).toHaveAttribute('href', '/listing/test-slug')
   })
 })

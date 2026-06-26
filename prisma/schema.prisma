@@ -78,6 +78,9 @@ model Island {
 }
 
 model Listing {
+  slug          String  @unique @default(cuid())
+  layout        String  @default("standard")
+  products      Product[]
   id            String  @id @default(cuid())
   name          String
   description   String
@@ -158,4 +161,14 @@ model ClaimRequest {
   updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  price       Float?
+  image       String?
+  listingId   String
+  listing     Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }

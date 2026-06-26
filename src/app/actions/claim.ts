@@ -37,7 +37,7 @@ export async function submitClaimRequest(formData: FormData) {
       }
     });
 
-    revalidatePath(`/listing/${listingId}`);
+    revalidatePath(`/listing/${listingId}`);;
     return { success: true };
   } catch (error) {
     console.error('Error submitting claim:', error);

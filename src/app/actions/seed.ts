@@ -86,12 +86,12 @@ async function seedSampleListings(userId: string) {
   let seededCount = 0;
   for (const listing of sampleListings) {
     const existing = await prisma.listing.findFirst({
-      where: { name: listing.name }
+      where: { slug: listing.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') }
     });
 
     if (!existing) {
       await prisma.listing.create({
-        data: listing
+        data: { ...listing, slug: listing.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') }
       });
       seededCount++;
     }

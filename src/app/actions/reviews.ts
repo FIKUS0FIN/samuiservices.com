@@ -57,7 +57,7 @@ export async function submitReview(formData: FormData) {
       }
     });
 
-    revalidatePath(`/listing/${listingId}`);
+    revalidatePath(`/listing/${listingId}`);;
     return { success: true };
     
   } catch (error) {

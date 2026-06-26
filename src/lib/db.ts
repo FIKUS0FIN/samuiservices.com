@@ -71,3 +71,32 @@ export async function getBusinessById(id: string) {
     }
   });
 }
+
+export async function getBusinessBySlug(slug: string) {
+  return prisma.listing.findUnique({
+    where: { slug },
+    include: {
+      category: true,
+      island: true,
+      products: true,
+      user: {
+        select: {
+          name: true,
+          image: true,
+          createdAt: true
+        }
+      },
+      reviews: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true,
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      }
+    }
+  });
+}
