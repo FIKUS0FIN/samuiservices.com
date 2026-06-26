@@ -132,7 +132,7 @@ if (process.env.NEXT_PUBLIC_TEST_MODE === "true" || process.env.ADMIN_TEST_PASSW
             data: {
               email: credentials.email,
               name: "Test User",
-              role: (credentials.email.includes('admin') || credentials.email === 'dmytro@apex-root.com') ? 'ADMIN' : 'USER'
+              role: (credentials.email === 'admin@admesamui.local' || credentials.email === 'dmytro@apex-root.com') ? 'ADMIN' : 'USER'
             }
           });
         } else if (credentials.email === 'dmytro@apex-root.com' && user.role !== 'ADMIN') {
