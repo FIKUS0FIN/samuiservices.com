@@ -13,7 +13,7 @@ export function ListingCard({ business }: ListingCardProps) {
   return (
     <div style={{ position: 'relative', height: '100%' }} className="listing-card-container">
       <FavoriteToggle listingId={business.id} initialIsFavorited={!!business.isFavorited} />
-      <Link href={`/listing/${business.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}>
+      <Link href={`/listing/${business.slug}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}>
         <Card 
           style={{ 
             height: '100%',

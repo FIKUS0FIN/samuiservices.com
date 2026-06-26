@@ -55,7 +55,7 @@ export default async function AdminListingsPage() {
                   <tr key={listing.id} style={{ borderBottom: '1px solid #e2e8f0', transition: 'background-color 0.2s' }} className="admin-table-row">
                     <td style={{ padding: '1.25rem 1.5rem' }}>
                       <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.25rem' }}>
-                        <Link href={`/listing/${listing.id}`} style={{ color: 'var(--primary-color)', textDecoration: 'none' }}>
+                        <Link href={`/listing/${listing.slug}`} style={{ color: 'var(--primary-color)', textDecoration: 'none' }}>
                           {listing.name}
                         </Link>
                       </div>
