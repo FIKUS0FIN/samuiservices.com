@@ -26,19 +26,19 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
         backgroundAttachment: 'fixed',
         color: 'white',
         overflow: 'hidden',
-        minHeight: '400px',
+        minHeight: '500px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '6rem 1.5rem 3rem 1.5rem'
       }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.2) 100%)', zIndex: 1 }}></div>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.3) 100%)', zIndex: 1 }}></div>
         
         <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', width: '100%', maxWidth: '800px' }}>
-          <h1 className="fade-in-up" style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', lineHeight: 1.1, marginBottom: '1rem', textShadow: '0 2px 10px rgba(0,0,0,0.3)', fontWeight: 800 }}>
+          <h1 className="fade-in-up" style={{ fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.1, marginBottom: '1rem', textShadow: '0 4px 15px rgba(0,0,0,0.4)', fontWeight: 800 }}>
             Discover Local Services in Samui
           </h1>
-          <p className="fade-in-up" style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', marginBottom: '2rem', opacity: 0.9, textShadow: '0 2px 10px rgba(0,0,0,0.3)', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
+          <p className="fade-in-up" style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', marginBottom: '2rem', opacity: 0.9, textShadow: '0 2px 10px rgba(0,0,0,0.3)', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
             Find trusted professionals for everything you need on the island.
           </p>
           
@@ -67,12 +67,7 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
 
             {/* Listings Content */}
             {allListings.length > 0 ? (
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-                gap: '1.5rem',
-                animation: 'fadeInUp 0.4s ease forwards'
-              }}>
+              <div className="grid-cards" style={{ animation: 'fadeInUp 0.4s ease forwards' }}>
                 {listings.map((listing) => (
                   <ListingCard key={listing.id} business={listing} />
                 ))}

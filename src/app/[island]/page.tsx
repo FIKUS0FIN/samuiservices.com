@@ -48,52 +48,49 @@ export default async function IslandDirectory({
   const categories = await getAllCategories();
 
   return (
-    <div>
-      <div className="section" style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border-color)' }}>
-        <div className="container">
-          <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>{islandName} Services</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.25rem' }}>Browse local businesses and top-rated services on the island.</p>
+    <div className="split-layout">
+      {/* Sidebar Filters */}
+      <div className="split-layout-sidebar">
+        <h2 className="text-xl font-bold mb-4">{islandName} Services</h2>
+        <p className="text-muted text-sm mb-6">Browse local businesses and top-rated services.</p>
+        <FilterSidebar categories={categories} />
+      </div>
+
+      {/* Results List */}
+      <div className="split-layout-main">
+        <div className="flex justify-between items-center mb-6">
+          <p className="font-semibold">{islandBusinesses.length} businesses found</p>
+          <select className="input-field" style={{ width: 'auto', padding: '0.5rem 1rem' }}>
+            <option>Recommended</option>
+            <option>Highest Rated</option>
+            <option>Newest</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          {islandBusinesses.length === 0 ? (
+            <Card className="text-center p-8">
+              <p className="text-muted text-lg">No businesses found yet. Be the first to add yours!</p>
+            </Card>
+          ) : (
+            islandBusinesses.map(business => (
+              <BusinessCard key={business.id} business={business} />
+            ))
+          )}
         </div>
       </div>
 
-      <div className="section">
-        <div className="container">
-          <div className="island-page-grid">
-            {/* Sidebar Filters */}
-            <div style={{ alignSelf: 'start', position: 'sticky', top: '100px' }}>
-              <FilterSidebar categories={categories} />
-            </div>
-
-            {/* Results */}
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <p style={{ fontWeight: 600 }}>{islandBusinesses.length} businesses found</p>
-                <select className="input-field" style={{ width: 'auto', padding: '0.5rem 1rem' }}>
-                  <option>Recommended</option>
-                  <option>Highest Rated</option>
-                  <option>Newest</option>
-                </select>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                {islandBusinesses.length > 0 && islandBusinesses.some(b => b.lat && b.lng) && (
-                  <div style={{ marginBottom: '1rem' }}>
-                    <DynamicMap businesses={islandBusinesses as any} /> {/* eslint-disable-line @typescript-eslint/no-explicit-any */}
-                  </div>
-                )}
-                {islandBusinesses.length === 0 ? (
-                  <Card style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem' }}>No businesses found yet. Be the first to add yours!</p>
-                  </Card>
-                ) : (
-                  islandBusinesses.map(business => (
-                    <BusinessCard key={business.id} business={business} />
-                  ))
-                )}
-              </div>
-            </div>
+      {/* Sticky Interactive Map (Desktop only) */}
+      <div className="split-layout-map">
+        {islandBusinesses.length > 0 && islandBusinesses.some(b => b.lat && b.lng) ? (
+           <div style={{ height: '100%', width: '100%' }}>
+             <DynamicMap businesses={islandBusinesses as any} />
+           </div>
+        ) : (
+          <div className="flex items-center justify-center h-full w-full bg-gray-50 text-muted">
+             Map unavailable
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
