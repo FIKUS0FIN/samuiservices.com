@@ -52,7 +52,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ id:
       {/* Inject JSON-LD into the head for Google and AI agents */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
       />
       
       {/* Hero Image */}
