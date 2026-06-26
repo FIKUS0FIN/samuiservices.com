@@ -45,7 +45,8 @@
 		{
 			"binding": "DB",
 			"database_name": "samui-services-db",
-			"database_id": "94aac009-4da3-4193-952a-f817eb9936e2"
+			"database_id": "94aac009-4da3-4193-952a-f817eb9936e2",
+			"migrations_dir": "prisma/migrations"
 		}
 	],
 	"observability": {
