@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import BusinessDetail from './page'
@@ -21,7 +22,7 @@ describe('BusinessDetail JSON-LD XSS', () => {
       address: '123 Test St',
       description: '</script><script>alert(1)</script>',
       isClaimed: false,
-    } as any)
+    } as unknown as any)
 
     // Render the async component
     const Component = await BusinessDetail({ params: Promise.resolve({ id: '1' }) })
