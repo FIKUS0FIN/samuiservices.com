@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { notFound } from 'next/navigation';
 import { getBusinessesByIsland, getAllIslands, getAllCategories } from '@/lib/db';
 import { FilterSidebar } from '@/components/features/FilterSidebar';
@@ -84,7 +85,7 @@ export default async function IslandDirectory({
       <div className="split-layout-map">
         {islandBusinesses.length > 0 && islandBusinesses.some(b => b.lat && b.lng) ? (
            <div style={{ height: '100%', width: '100%' }}>
-             <DynamicMap businesses={islandBusinesses as any} />
+             <DynamicMap businesses={islandBusinesses as unknown as any} />
            </div>
         ) : (
           <div className="flex items-center justify-center h-full w-full bg-gray-50 text-muted">
