@@ -2,8 +2,11 @@ import { notFound } from 'next/navigation';
 import { getBusinessById } from '@/lib/db';
 import { Card } from '@/components/ui/Card';
 import { ReviewForm } from '@/components/features/ReviewForm';
-import { MessageForm } from '@/components/features/MessageForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { BusinessHero } from './components/BusinessHero';
+import { BusinessInfo } from './components/BusinessInfo';
+import { ContactInfo } from './components/ContactInfo';
+import { ReviewsList } from './components/ReviewsList';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
