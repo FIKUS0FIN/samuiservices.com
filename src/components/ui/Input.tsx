@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, useId } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -12,18 +12,22 @@ export function Input({
   fullWidth = false, 
   style = {},
   className = '',
+  id,
   ...props 
 }: InputProps) {
+  const generatedId = useId();
+  const inputId = id || generatedId;
   const baseStyle = fullWidth ? { width: '100%', ...style } : style;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: fullWidth ? '100%' : 'auto' }}>
       {label && (
-        <label style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.875rem' }}>
+        <label htmlFor={inputId} style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.875rem' }}>
           {label}
         </label>
       )}
       <input 
+        id={inputId}
         className={`input-field ${className}`}
         style={{
           ...baseStyle,
