@@ -30,17 +30,13 @@ export async function seedDatabase() {
       { name: 'Gardening & Pool Care', slug: 'gardening-pool-care', icon: 'leaf' }
     ];
 
-    for (const cat of categories) {
-      const existing = await prisma.category.findUnique({ where: { slug: cat.slug } });
-      if (!existing) {
-        await prisma.category.create({ data: cat });
-      } else {
-        await prisma.category.update({
-          where: { slug: cat.slug },
-          data: { name: cat.name, icon: cat.icon }
-        });
-      }
-    }
+    await Promise.all(categories.map(cat =>
+      prisma.category.upsert({
+        where: { slug: cat.slug },
+        update: { name: cat.name, icon: cat.icon },
+        create: cat,
+      })
+    ));
 
     // Ensure Islands Exist
     const islandsData = [
@@ -127,8 +123,8 @@ export async function seedDatabase() {
     }
 
     return { success: true, message: `Successfully seeded categories and ${seededCount} new listings!` };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Seed error:', error);
-    return { success: false, message: error.message || 'Unknown error' };
+    return { success: false, message: (error as Error).message || 'Unknown error' };
   }
 }
