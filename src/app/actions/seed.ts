@@ -2,20 +2,27 @@
 
 import { getServerSession } from 'next-auth';
 import { authOptions, prisma } from '@/lib/auth';
+import { faker } from '@faker-js/faker';
 
 async function seedCategories() {
   const categories = [
-    { name: 'Construction & Builders', slug: 'construction-builders', icon: 'hammer' },
-    { name: 'Plumbers', slug: 'plumbers', icon: 'wrench' },
-    { name: 'Electricians', slug: 'electricians', icon: 'zap' },
-    { name: 'Cleaning & Housekeeping', slug: 'cleaning-housekeeping', icon: 'sparkles' },
-    { name: 'Deliveries & Moving', slug: 'deliveries-moving', icon: 'truck' },
-    { name: 'Handyman & Repairs', slug: 'handyman-repairs', icon: 'tool' },
-    { name: 'Transport & Rentals', slug: 'transport-rentals', icon: 'car' },
-    { name: 'Legal & Visa Services', slug: 'legal-visa-services', icon: 'briefcase' },
-    { name: 'Tech & IT Support', slug: 'tech-it-support', icon: 'monitor' },
-    { name: 'Gardening & Pool Care', slug: 'gardening-pool-care', icon: 'leaf' }
-  ];
+      { name: 'Construction & Repair', slug: 'construction', icon: 'hammer' },
+      { name: 'Cleaning Services', slug: 'cleaning', icon: 'sparkles' },
+      { name: 'Finance & Legal', slug: 'finance-legal', icon: 'briefcase' },
+      { name: 'Food Delivery', slug: 'food-delivery', icon: 'shopping-bag' },
+      { name: 'Health & Beauty', slug: 'health-beauty', icon: 'heart' },
+      { name: 'Tours & Activities', slug: 'tours', icon: 'map' },
+      { name: 'Construction & Builders', slug: 'construction-builders', icon: 'hammer' },
+      { name: 'Plumbers', slug: 'plumbers', icon: 'wrench' },
+      { name: 'Electricians', slug: 'electricians', icon: 'zap' },
+      { name: 'Cleaning & Housekeeping', slug: 'cleaning-housekeeping', icon: 'sparkles' },
+      { name: 'Deliveries & Moving', slug: 'deliveries-moving', icon: 'truck' },
+      { name: 'Handyman & Repairs', slug: 'handyman-repairs', icon: 'tool' },
+      { name: 'Transport & Rentals', slug: 'transport-rentals', icon: 'car' },
+      { name: 'Legal & Visa Services', slug: 'legal-visa-services', icon: 'briefcase' },
+      { name: 'Tech & IT Support', slug: 'tech-it-support', icon: 'monitor' },
+      { name: 'Gardening & Pool Care', slug: 'gardening-pool-care', icon: 'leaf' }
+    ];
 
   await Promise.all(categories.map(cat =>
     prisma.category.upsert({
@@ -43,58 +50,38 @@ async function seedIslands() {
 async function seedSampleListings(userId: string) {
   const samui = await prisma.island.findUnique({ where: { slug: 'samui' } });
   const phangan = await prisma.island.findUnique({ where: { slug: 'phangan' } });
-  const constructionCat = await prisma.category.findUnique({ where: { slug: 'construction-builders' } });
-  const cleaningCat = await prisma.category.findUnique({ where: { slug: 'cleaning-housekeeping' } });
-  const deliveriesCat = await prisma.category.findUnique({ where: { slug: 'deliveries-moving' } });
+  const tao = await prisma.island.findUnique({ where: { slug: 'tao' } });
 
-  if (!samui || !phangan || !constructionCat || !cleaningCat || !deliveriesCat) {
+  if (!samui || !phangan || !tao) {
     throw new Error('Required references missing during seed.');
   }
 
-  const sampleListings = [
-    {
-      name: 'Samui Eco Builders',
-      description: 'Sustainable construction and repair services across Koh Samui. We specialize in bamboo architecture and eco-friendly materials.',
-      image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      address: 'Bophut, Koh Samui',
-      lat: 9.5530,
-      lng: 100.0245,
-      averageRating: 4.8,
-      reviewCount: 24,
-      isPremium: true,
-      categoryId: constructionCat.id,
-      islandId: samui.id,
+  const createdCategories = await prisma.category.findMany();
+  const islands = [samui, phangan, tao];
+
+  const sampleListings = Array.from({ length: 100 }).map(() => {
+    const randomCategory = createdCategories[Math.floor(Math.random() * createdCategories.length)];
+    const randomIsland = islands[Math.floor(Math.random() * islands.length)];
+
+    return {
+      name: faker.company.name(),
+      description: faker.lorem.paragraph(),
+      image: faker.image.url(),
+      phone: faker.phone.number(),
+      address: faker.location.streetAddress(),
+      lat: faker.location.latitude(),
+      lng: faker.location.longitude(),
+      averageRating: faker.number.float({ min: 1, max: 5, fractionDigits: 1 }),
+      reviewCount: faker.number.int({ min: 0, max: 500 }),
+      isPremium: faker.datatype.boolean(),
+      isClaimed: faker.datatype.boolean(),
+      website: faker.internet.url(),
+      hours: 'Mon-Fri 9AM-5PM',
+      categoryId: randomCategory.id,
+      islandId: randomIsland.id,
       userId,
-    },
-    {
-      name: 'Sparkle Island Cleaning',
-      description: 'Professional villa and resort cleaning. Fast, reliable, and thorough.',
-      image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      address: 'Chaweng, Koh Samui',
-      lat: 9.5310,
-      lng: 100.0610,
-      averageRating: 4.5,
-      reviewCount: 15,
-      isPremium: false,
-      categoryId: cleaningCat.id,
-      islandId: samui.id,
-      userId,
-    },
-    {
-      name: 'Phangan Fresh Delivery',
-      description: 'The quickest delivery on the island. Groceries, parcels, and more delivered to your door.',
-      image: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      address: 'Thong Sala, Koh Phangan',
-      lat: 9.7125,
-      lng: 99.9880,
-      averageRating: 4.9,
-      reviewCount: 112,
-      isPremium: true,
-      categoryId: deliveriesCat.id,
-      islandId: phangan.id,
-      userId,
-    }
-  ];
+    };
+  });
 
   let seededCount = 0;
   for (const listing of sampleListings) {
