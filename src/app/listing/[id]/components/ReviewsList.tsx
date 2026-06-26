@@ -11,35 +11,36 @@ type ReviewWithUser = {
 
 export function ReviewsList({ reviews }: { reviews: ReviewWithUser[] }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <div className="flex flex-col gap-6">
       {reviews && reviews.length > 0 ? (
         reviews.map(review => (
-          <div key={review.id} style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-              <div style={{ width: '40px', height: '40px', backgroundColor: '#e2e8f0', borderRadius: '50%', overflow: 'hidden' }}>
+          <div key={review.id} className="p-6 border border-gray-200 rounded-lg bg-gray-50">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
                 {review.user?.image ? (
-                  <img src={review.user.image} alt={review.user.name || 'User'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={review.user.image} alt={review.user.name || 'User'} className="w-full h-full object-cover" />
                 ) : (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+                  <div className="w-full h-full flex items-center justify-center text-gray-500 font-bold">
                     {(review.user?.name || 'U').charAt(0).toUpperCase()}
                   </div>
                 )}
               </div>
               <div>
-                <div style={{ fontWeight: 600 }}>{review.user?.name || 'Anonymous User'}</div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                <div className="font-bold">{review.user?.name || 'Anonymous User'}</div>
+                <div className="text-sm text-muted">
                   {new Date(review.createdAt).toLocaleDateString()}
                 </div>
               </div>
-              <div style={{ marginLeft: 'auto', color: 'var(--accent-color)' }}>
+              <div className="ml-auto text-yellow-500 font-bold text-lg">
                 {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
               </div>
             </div>
-            <p style={{ margin: 0, lineHeight: 1.6 }}>{review.comment}</p>
+            <p className="m-0 leading-relaxed">{review.comment}</p>
           </div>
         ))
       ) : (
-        <div style={{ color: 'var(--text-muted)' }}>
+        <div className="text-muted italic">
           No reviews yet. Be the first to review this business!
         </div>
       )}

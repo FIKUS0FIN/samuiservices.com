@@ -57,34 +57,33 @@ export default async function BusinessDetail({ params }: { params: Promise<{ id:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
       />
       
-      {/* Hero Image */}
-      <BusinessHero image={business.image} />
+      {/* Hero Image Banner */}
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      <BusinessHero business={business as any} />
 
-      <div className="container" style={{ marginTop: '-100px', position: 'relative', zIndex: 10, paddingBottom: '4rem' }}>
+      <div className="container section">
         {!business.isClaimed && <ClaimButton listingId={business.id} />}
-        <Card style={{ padding: '3rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem' }}>
+
+        <div style={{ display: 'flex', gap: '2.5rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
             
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            <BusinessInfo business={business as any} />
-            
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {/* Main Content Area */}
+            <div style={{ flex: '1 1 600px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+
+              <BusinessInfo business={business as any} />
+
+              {/* Reviews Section */}
+              <Card>
+                <h2 className="text-2xl font-bold mb-6">Reviews</h2>
+                <ReviewForm listingId={business.id} />
+
+                <ReviewsList reviews={business.reviews as any} />
+              </Card>
+            </div>
+
+            {/* Sticky Sidebar Widget */}
             <ContactInfo business={business as any} />
-            
-          </div>
-        </Card>
 
-        {/* Reviews Section */}
-        <div style={{ marginTop: '2rem' }}>
-          <Card style={{ padding: '3rem' }}>
-            <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Reviews</h2>
-            
-            <ReviewForm listingId={business.id} />
-            
-            <ReviewsList reviews={business.reviews} />
-          </Card>
         </div>
-
       </div>
     </div>
   );
