@@ -1,5 +1,6 @@
 'use client';
 
+import { ClaimCard } from "@/components/features/ClaimCard";
 import { Card } from '@/components/ui/Card';
 import { approveClaim, rejectClaim } from '@/app/actions/claims';
 import { useState, useEffect } from 'react';

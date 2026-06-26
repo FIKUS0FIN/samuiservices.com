@@ -62,7 +62,7 @@ export default async function InboxPage() {
           <div style={{ flex: 1 }}>
             <InboxView 
               receivedMessages={receivedMessages} 
-              sentMessages={sentMessages} 
+              sentMessages={sentMessages}
               currentUserId={session.user.id}
                           />
           </div>
