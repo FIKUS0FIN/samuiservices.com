@@ -115,19 +115,19 @@ async function seedSampleListings(userId: string) {
 export async function seedDatabase() {
   const session = await getServerSession(authOptions);
 
-  if (!session || !session.user?.id) {
-    throw new Error('Unauthorized');
-  }
+    const existingNames = await prisma.listing.findMany({
+      where: { name: { in: sampleListings.map(l => l.name) } },
+      select: { name: true }
+    });
+    const existingNameSet = new Set(existingNames.map(l => l.name));
+    const toInsert = sampleListings.filter(l => !existingNameSet.has(l.name));
 
-  const currentUser = await prisma.user.findUnique({ where: { id: session.user.id } });
-  if (currentUser?.role !== 'ADMIN') {
-    throw new Error('Unauthorized - Admin access required');
-  }
-
-  try {
-    await seedCategories();
-    await seedIslands();
-    const seededCount = await seedSampleListings(currentUser.id);
+    let seededCount = toInsert.length;
+    if (seededCount > 0) {
+      await prisma.listing.createMany({
+        data: toInsert
+      });
+    }
 
     return { success: true, message: `Successfully seeded categories and ${seededCount} new listings!` };
   } catch (error: unknown) {
