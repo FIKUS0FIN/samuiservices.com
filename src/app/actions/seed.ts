@@ -108,18 +108,18 @@ export async function seedDatabase() {
       }
     ];
 
-    let seededCount = 0;
-    for (const listing of sampleListings) {
-      const existing = await prisma.listing.findFirst({
-        where: { name: listing.name }
-      });
+    const existingNames = await prisma.listing.findMany({
+      where: { name: { in: sampleListings.map(l => l.name) } },
+      select: { name: true }
+    });
+    const existingNameSet = new Set(existingNames.map(l => l.name));
+    const toInsert = sampleListings.filter(l => !existingNameSet.has(l.name));
 
-      if (!existing) {
-        await prisma.listing.create({
-          data: listing
-        });
-        seededCount++;
-      }
+    let seededCount = toInsert.length;
+    if (seededCount > 0) {
+      await prisma.listing.createMany({
+        data: toInsert
+      });
     }
 
     return { success: true, message: `Successfully seeded categories and ${seededCount} new listings!` };
