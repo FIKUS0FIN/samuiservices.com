@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { toggleFavorite } from './favorites';
 import { getServerSession } from 'next-auth';
@@ -41,10 +42,10 @@ describe('toggleFavorite action', () => {
   it('creates a new favorite if it does not exist', async () => {
     vi.mocked(getServerSession).mockResolvedValue({
       user: { id: 'user-123', name: 'Test User' },
-    } as any);
+    } as unknown as any);
 
     vi.mocked(prisma.favorite.findUnique).mockResolvedValue(null);
-    vi.mocked(prisma.favorite.create).mockResolvedValue({ id: 'fav-123', userId: 'user-123', listingId: 'listing-123' } as any);
+    vi.mocked(prisma.favorite.create).mockResolvedValue({ id: 'fav-123', userId: 'user-123', listingId: 'listing-123' } as unknown as any);
 
     const result = await toggleFavorite('listing-123');
 
@@ -69,19 +70,19 @@ describe('toggleFavorite action', () => {
   it('deletes an existing favorite if it exists', async () => {
     vi.mocked(getServerSession).mockResolvedValue({
       user: { id: 'user-123', name: 'Test User' },
-    } as any);
+    } as unknown as any);
 
     vi.mocked(prisma.favorite.findUnique).mockResolvedValue({
       id: 'fav-123',
       userId: 'user-123',
       listingId: 'listing-123',
-    } as any);
+    } as unknown as any);
 
     vi.mocked(prisma.favorite.delete).mockResolvedValue({
       id: 'fav-123',
       userId: 'user-123',
       listingId: 'listing-123',
-    } as any);
+    } as unknown as any);
 
     const result = await toggleFavorite('listing-123');
 
@@ -107,7 +108,7 @@ describe('toggleFavorite action', () => {
 
     vi.mocked(getServerSession).mockResolvedValue({
       user: { id: 'user-123', name: 'Test User' },
-    } as any);
+    } as unknown as any);
 
     vi.mocked(prisma.favorite.findUnique).mockRejectedValue(new Error('DB Error'));
 

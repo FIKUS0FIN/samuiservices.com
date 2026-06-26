@@ -2,6 +2,7 @@
 
 import { getServerSession } from 'next-auth';
 import { authOptions, prisma } from '@/lib/auth';
+import { faker } from '@faker-js/faker';
 
 export async function seedDatabase() {
   const session = await getServerSession(authOptions);
