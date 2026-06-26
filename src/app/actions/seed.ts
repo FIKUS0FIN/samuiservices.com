@@ -129,8 +129,8 @@ export async function seedDatabase() {
     }
 
     return { success: true, message: `Successfully seeded categories and ${seededCount} new listings!` };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Seed error:', error);
-    return { success: false, message: error.message || 'Unknown error' };
+    return { success: false, message: (error as Error).message || 'Unknown error' };
   }
 }
