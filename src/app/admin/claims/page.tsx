@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { approveClaim, rejectClaim } from '@/app/actions/claims';
 import { useState, useEffect } from 'react';
-import { Check, X, Building, User, Calendar, Clock } from 'lucide-react';
+import { Check, X, Building, User, Clock } from 'lucide-react';
 
 export default function AdminClaimsPage() {
   const [claims, setClaims] = useState<any[]>([]);
