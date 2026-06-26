@@ -1,11 +1,7 @@
-import Link from 'next/link';
-import { getAllCategories, getBusinessesByIsland, getAllIslands } from '@/lib/db';
+import { getAllCategories, getBusinessesByIsland } from '@/lib/db';
 import { HeroSearch } from '@/components/features/HeroSearch';
-import { Button } from '@/components/ui/Button';
 import { ServiceFilter } from '@/components/features/ServiceFilter';
 import { ListingCard } from '@/components/features/ListingCard';
-import { IslandCard } from '@/components/features/IslandCard';
-import DynamicMap from '@/components/features/DynamicMap';
 
 export default async function Home(props: { searchParams?: Promise<{ category?: string, view?: string }> }) {
   const searchParams = await props.searchParams;
@@ -85,7 +81,7 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
               <div style={{ textAlign: 'center', padding: '6rem 2rem', color: 'var(--text-muted)', background: 'white', borderRadius: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
                 <div style={{ fontSize: '4rem', marginBottom: '1.5rem', opacity: 0.5 }}>🏝️</div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', color: '#0f172a', fontWeight: 700 }}>No services found</h3>
-                <p style={{ fontSize: '1.125rem', maxWidth: '400px', margin: '0 auto 2rem auto' }}>We couldn't find any services matching this category yet.</p>
+                <p style={{ fontSize: '1.125rem', maxWidth: '400px', margin: '0 auto 2rem auto' }}>We couldn&apos;t find any services matching this category yet.</p>
               </div>
             )}
           </main>

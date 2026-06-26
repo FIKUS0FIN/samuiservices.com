@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';

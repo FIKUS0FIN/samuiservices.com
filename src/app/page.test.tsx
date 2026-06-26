@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { BusinessCard } from '../components/features/BusinessCard'
-import { Business } from '@/lib/db'
 
-const mockBusiness: any = {
+const mockBusiness: any = { // eslint-disable-line @typescript-eslint/no-explicit-any
   id: 'test-1',
   name: 'Test Business',
   category: { id: 'cat-1', name: 'construction' },

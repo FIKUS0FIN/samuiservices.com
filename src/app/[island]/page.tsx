@@ -78,7 +78,7 @@ export default async function IslandDirectory({
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 {islandBusinesses.length > 0 && islandBusinesses.some(b => b.lat && b.lng) && (
                   <div style={{ marginBottom: '1rem' }}>
-                    <DynamicMap businesses={islandBusinesses as any} />
+                    <DynamicMap businesses={islandBusinesses as any} /> {/* eslint-disable-line @typescript-eslint/no-explicit-any */}
                   </div>
                 )}
                 {islandBusinesses.length === 0 ? (

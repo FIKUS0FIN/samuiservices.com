@@ -72,7 +72,7 @@ export default async function InboxPage() {
                 <a href="#" style={{ display: 'block', padding: '0.5rem', color: 'var(--text-muted)' }}>Account Settings</a>
               </li>
               <li>
-                <a href="/api/auth/signout" style={{ display: 'block', padding: '0.5rem', color: 'red', marginTop: '1rem' }}>Log Out</a>
+                <Link href="/api/auth/signout" style={{ display: 'block', padding: '0.5rem', color: 'red', marginTop: '1rem' }}>Log Out</Link>
               </li>
             </ul>
           </Card>
@@ -82,8 +82,7 @@ export default async function InboxPage() {
             <InboxView 
               receivedMessages={receivedMessages} 
               sentMessages={sentMessages} 
-              currentUserId={session.user.id} 
-            />
+                          />
           </div>
         </div>
 

@@ -4,16 +4,12 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { approveClaim, rejectClaim } from '@/app/actions/claims';
 import { useState, useEffect } from 'react';
-import { Check, X, Building, User, Calendar, Clock } from 'lucide-react';
+import { Check, X, Building, User, Clock } from 'lucide-react';
 
 export default function AdminClaimsPage() {
-  const [claims, setClaims] = useState<any[]>([]);
+  const [claims, setClaims] = useState<any[]>([]); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchClaims();
-  }, []);
 
   const fetchClaims = async () => {
     try {
@@ -28,6 +24,13 @@ export default function AdminClaimsPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchClaims();
+  }, []);
+
+
 
   const handleApprove = async (id: string) => {
     setActionLoading(id);

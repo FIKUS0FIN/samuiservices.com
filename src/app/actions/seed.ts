@@ -127,7 +127,7 @@ export async function seedDatabase() {
     }
 
     return { success: true, message: `Successfully seeded categories and ${seededCount} new listings!` };
-  } catch (error: any) {
+  } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     console.error('Seed error:', error);
     return { success: false, message: error.message || 'Unknown error' };
   }

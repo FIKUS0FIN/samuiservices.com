@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -65,7 +66,7 @@ export default async function Dashboard() {
                 <a href="#" style={{ display: 'block', padding: '0.5rem', color: 'var(--text-muted)' }}>Account Settings</a>
               </li>
               <li>
-                <a href="/api/auth/signout" style={{ display: 'block', padding: '0.5rem', color: 'red', marginTop: '1rem' }}>Log Out</a>
+                <Link href="/api/auth/signout" style={{ display: 'block', padding: '0.5rem', color: 'red', marginTop: '1rem' }}>Log Out</Link>
               </li>
             </ul>
           </Card>
@@ -79,7 +80,7 @@ export default async function Dashboard() {
               
               {listings.length === 0 ? (
                 <Card style={{ padding: '3rem', textAlign: 'center' }}>
-                  <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>You don't have any listings yet.</p>
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>You don&apos;t have any listings yet.</p>
                   <Link href="/add-listing">
                     <Button variant="primary">Create Your First Listing</Button>
                   </Link>
@@ -129,7 +130,7 @@ export default async function Dashboard() {
               
               {favorites.length === 0 ? (
                 <Card style={{ padding: '3rem', textAlign: 'center' }}>
-                  <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>You haven't saved any listings to your favorites yet.</p>
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>You haven&apos;t saved any listings to your favorites yet.</p>
                   <Link href="/all">
                     <Button variant="secondary">Browse Listings</Button>
                   </Link>
