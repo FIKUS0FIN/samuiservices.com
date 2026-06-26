@@ -63,6 +63,7 @@ export default async function InboxPage() {
             <InboxView 
               receivedMessages={receivedMessages} 
               sentMessages={sentMessages} 
+              currentUserId={session.user.id}
                           />
           </div>
         </div>

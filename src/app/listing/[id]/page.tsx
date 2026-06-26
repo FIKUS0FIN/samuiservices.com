@@ -4,6 +4,7 @@ import { getBusinessById } from '@/lib/db';
 import { Card } from '@/components/ui/Card';
 import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { MessageForm } from '@/components/features/MessageForm';
 import { BusinessHero } from './components/BusinessHero';
 import { BusinessInfo } from './components/BusinessInfo';
 import { ContactInfo } from './components/ContactInfo';
