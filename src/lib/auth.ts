@@ -8,7 +8,7 @@ let _prismaClient: PrismaClient | null = null;
 function initPrismaClient(): PrismaClient {
   if (_prismaClient) return _prismaClient;
 
-  if (process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_TEST_MODE === "true") {
+  if (process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_TEST_MODE === "true" || process.env.RENDER === "true") {
     // Hide native modules from bundlers by using eval to prevent Cloudflare WebAssembly/Native errors
     const req = eval('require');
     const { PrismaLibSql } = req("@prisma/adapter-libsql");
