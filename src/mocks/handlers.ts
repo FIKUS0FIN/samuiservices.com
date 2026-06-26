@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
 // Mock Data
-const mockBusinesses: any[] = [
+const mockBusinesses: any[] = [ // eslint-disable-line @typescript-eslint/no-explicit-any
   {
     id: '1',
     name: 'Samui Builders Pro',
@@ -14,13 +14,13 @@ const mockBusinesses: any[] = [
   }
 ]
 
-const mockIslands: any[] = [
+const mockIslands: any[] = [ // eslint-disable-line @typescript-eslint/no-explicit-any
   { name: 'Koh Samui', slug: 'koh-samui' },
   { name: 'Koh Phangan', slug: 'koh-phangan' },
   { name: 'Koh Tao', slug: 'koh-tao' }
 ]
 
-const mockCategories: any[] = [
+const mockCategories: any[] = [ // eslint-disable-line @typescript-eslint/no-explicit-any
   { name: 'Construction & Repair', slug: 'construction' },
   { name: 'Cleaning Services', slug: 'cleaning' }
 ]

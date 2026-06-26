@@ -1,9 +1,8 @@
 import { getServerSession } from 'next-auth';
 import { authOptions, prisma } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import { Card } from '@/components/ui/Card';
-import Link from 'next/link';
 import { InboxView } from '@/components/features/InboxView';
+import { DashboardSidebar } from '@/components/features/DashboardSidebar';
 
 export const metadata = {
   title: 'Inbox | Dashboard | Samui Services',
@@ -57,33 +56,14 @@ export default async function InboxPage() {
 
         <div className="dashboard-grid">
           {/* Sidebar Menu */}
-          <Card style={{ padding: '2rem 1.5rem', alignSelf: 'start' }}>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem', padding: 0, margin: 0 }}>
-              <li>
-                <Link href="/dashboard" style={{ display: 'block', padding: '0.5rem', color: 'var(--text-muted)' }}>My Listings</Link>
-              </li>
-              <li>
-                <Link href="/dashboard/inbox" style={{ display: 'block', padding: '0.5rem', fontWeight: 600, color: 'var(--primary-color)' }}>Inbox</Link>
-              </li>
-              <li>
-                <a href="#" style={{ display: 'block', padding: '0.5rem', color: 'var(--text-muted)' }}>Analytics</a>
-              </li>
-              <li>
-                <a href="#" style={{ display: 'block', padding: '0.5rem', color: 'var(--text-muted)' }}>Account Settings</a>
-              </li>
-              <li>
-                <a href="/api/auth/signout" style={{ display: 'block', padding: '0.5rem', color: 'red', marginTop: '1rem' }}>Log Out</a>
-              </li>
-            </ul>
-          </Card>
+          <DashboardSidebar activeTab="inbox" />
 
           {/* Main Content */}
           <div style={{ flex: 1 }}>
             <InboxView 
               receivedMessages={receivedMessages} 
               sentMessages={sentMessages} 
-              currentUserId={session.user.id} 
-            />
+                          />
           </div>
         </div>
 

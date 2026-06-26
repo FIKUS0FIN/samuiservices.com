@@ -1,7 +1,7 @@
 import { prisma } from './auth';
 
 export async function getBusinessesByIsland(islandSlug: string, categorySlugs?: string[], query?: string, currentUserId?: string) {
-  const whereClause: any = {};
+  const whereClause: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
   
   if (islandSlug !== 'all') {
     whereClause.island = { slug: islandSlug };

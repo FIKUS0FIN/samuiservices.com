@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export function HeroSearch() {
   const [query, setQuery] = useState('');
-  const [location, setLocation] = useState('Samui');
-  const router = useRouter();
+    const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
