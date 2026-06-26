@@ -9,9 +9,10 @@ import { MessageCard, MessageWithDetails } from './inbox/MessageCard';
 interface InboxViewProps {
   receivedMessages: MessageWithDetails[];
   sentMessages: MessageWithDetails[];
+  currentUserId: string;
   }
 
-export function InboxView({ receivedMessages, sentMessages }: InboxViewProps) {
+export function InboxView({ receivedMessages, sentMessages, currentUserId }: InboxViewProps) {
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
