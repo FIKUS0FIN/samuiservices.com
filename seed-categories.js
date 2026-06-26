@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
@@ -30,7 +31,7 @@ async function main() {
     try {
       await prisma.category.delete({ where: { slug } });
       console.log(`Deleted old category: ${slug}`);
-    } catch (e) {
+    } catch (e) { // eslint-disable-line @typescript-eslint/no-unused-vars
       // ignore
     }
   }

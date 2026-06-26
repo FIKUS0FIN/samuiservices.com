@@ -24,8 +24,8 @@ export default function AdminImportPage() {
       } else {
         setMessage({ text: result.message, type: 'error' });
       }
-    } catch (err: any) {
-      setMessage({ text: err.message || 'An unexpected error occurred', type: 'error' });
+    } catch (err: unknown) {
+      setMessage({ text: (err as Error).message || 'An unexpected error occurred', type: 'error' });
     } finally {
       setLoading(false);
     }

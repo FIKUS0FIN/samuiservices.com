@@ -1,12 +1,10 @@
 import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect, notFound } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/auth';
-import Link from 'next/link';
+import { ListingForm } from '@/components/features/ListingForm';
 
 export const metadata = {
   title: 'Edit Listing | Samui Services',
@@ -101,66 +99,13 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
         </div>
 
         <Card style={{ padding: '3rem' }}>
-          <form action={updateListing} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            
-            {/* Basic Info */}
-            <div>
-              <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>1. Basic Information</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <Input label="Business Name" name="name" type="text" defaultValue={listing.name} required />
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.875rem' }}>Category</label>
-                  <select name="categoryId" className="input-field" defaultValue={listing.categoryId} required>
-                    {categories.map(cat => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Location & Contact */}
-            <div>
-              <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>2. Location & Contact</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.875rem' }}>Island</label>
-                  <select name="islandId" className="input-field" defaultValue={listing.islandId} required>
-                    {islands.map(island => (
-                      <option key={island.id} value={island.id}>{island.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <Input label="Phone Number" name="phone" type="tel" defaultValue={listing.phone || ''} />
-                <div style={{ gridColumn: '1 / -1' }}>
-                  <Input label="Full Address" name="address" type="text" fullWidth defaultValue={listing.address || ''} />
-                </div>
-                <Input label="Website" name="website" type="url" defaultValue={listing.website || ''} placeholder="https://" />
-                <Input label="Business Hours" name="hours" type="text" defaultValue={listing.hours || ''} placeholder="e.g. Mon-Fri 9AM-5PM" />
-                <Input label="Latitude (Map Pin)" name="lat" type="number" step="any" defaultValue={listing.lat || ''} />
-                <Input label="Longitude (Map Pin)" name="lng" type="number" step="any" defaultValue={listing.lng || ''} />
-              </div>
-            </div>
-
-            {/* Description & Media */}
-            <div>
-              <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>3. Details</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                <label style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.875rem' }}>Business Description</label>
-                <textarea name="description" className="input-field" rows={5} defaultValue={listing.description} required></textarea>
-              </div>
-              <Input label="Cover Image URL (Temporary)" name="image" type="url" fullWidth defaultValue={listing.image || ''} placeholder="https://..." />
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-              <Link href="/dashboard">
-                <Button type="button" variant="secondary">Cancel</Button>
-              </Link>
-              <Button type="submit" variant="primary">Save Changes</Button>
-            </div>
-
-          </form>
+          <ListingForm
+            action={updateListing}
+            listing={listing}
+            categories={categories}
+            islands={islands}
+            submitLabel="Save Changes"
+          />
         </Card>
 
       </div>

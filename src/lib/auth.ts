@@ -1,4 +1,5 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+/* eslint-disable @typescript-eslint/no-require-imports */
+import { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
@@ -10,7 +11,7 @@ function initPrismaClient(): PrismaClient {
 
   if (process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_TEST_MODE === "true" || process.env.RENDER === "true") {
     // Hide native modules from bundlers by using eval to prevent Cloudflare WebAssembly/Native errors
-    const req = eval('require');
+        const req = eval('require');
     const { PrismaLibSql } = req("@prisma/adapter-libsql");
     const { PrismaClient: LocalClient } = req("@prisma/client");
     
@@ -21,12 +22,12 @@ function initPrismaClient(): PrismaClient {
     });
     _prismaClient = new LocalClient({ adapter, log: ["query"] });
   } else {
-    const { getCloudflareContext } = require("@opennextjs/cloudflare");
+                    const { getCloudflareContext } = require("@opennextjs/cloudflare");
     const { env } = getCloudflareContext();
     if (!env || !env.DB) throw new Error("Cloudflare DB binding not found");
-    const { PrismaD1 } = require("@prisma/adapter-d1");
+        const { PrismaD1 } = require("@prisma/adapter-d1");
     // Use the Edge client to prevent WASM compilation errors on Cloudflare
-    const { PrismaClient: EdgeClient } = require("@prisma/client/edge");
+        const { PrismaClient: EdgeClient } = require("@prisma/client/edge");
     const adapter = new PrismaD1(env.DB);
     _prismaClient = new EdgeClient({ adapter, log: ["query"] });
   }
@@ -45,7 +46,7 @@ export const prisma = new Proxy({} as PrismaClient, {
 });
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as any,
+  adapter: PrismaAdapter(prisma) as any, // eslint-disable-line @typescript-eslint/no-explicit-any
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "MOCK_CLIENT_ID",
@@ -63,7 +64,7 @@ export const authOptions: NextAuthOptions = {
             where: { email: 'dmytro@apex-root.com' },
             data: { role: 'ADMIN' }
           });
-        } catch (e) {}
+        } catch (e) { console.error(e); }
       }
       return true;
     },
@@ -96,7 +97,7 @@ if (process.env.NEXT_PUBLIC_TEST_MODE === "true" || process.env.ADMIN_TEST_PASSW
 
         if (process.env.NODE_ENV === "production") {
           try {
-            const { getCloudflareContext } = require("@opennextjs/cloudflare");
+                            const { getCloudflareContext } = require("@opennextjs/cloudflare");
             const { env } = getCloudflareContext();
             console.log("Cloudflare env object exists:", !!env);
             console.log("env.ADMIN_TEST_PASSWORD exists:", !!env?.ADMIN_TEST_PASSWORD);
