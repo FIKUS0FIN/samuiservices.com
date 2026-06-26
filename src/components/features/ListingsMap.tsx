@@ -32,7 +32,7 @@ export default function ListingsMap({ businesses, center = [9.5120, 100.0136], z
   const markers = businesses.filter(b => b.lat && b.lng);
 
   return (
-    <div style={{ height: '500px', width: '100%', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
+    <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
       <MapContainer center={center} zoom={zoom} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
