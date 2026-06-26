@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/Card';
 import { approveClaim, rejectClaim } from '@/app/actions/claims';
 import { useState, useEffect } from 'react';
 import { Check, X, Building, User, Clock } from 'lucide-react';
+import { ClaimCard } from '@/components/features/ClaimCard';
 
 export default function AdminClaimsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
