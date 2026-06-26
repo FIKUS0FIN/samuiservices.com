@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getBusinessById } from '@/lib/db';
 import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { ReviewForm } from '@/components/features/ReviewForm';
 import { MessageForm } from '@/components/features/MessageForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
@@ -55,96 +54,110 @@ export default async function BusinessDetail({ params }: { params: Promise<{ id:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
       />
       
-      {/* Hero Image */}
-      <div style={{ width: '100%', height: '400px', backgroundImage: `url(${business.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, var(--bg-color) 0%, transparent 100%)' }}></div>
-      </div>
-
-      <div className="container" style={{ marginTop: '-100px', position: 'relative', zIndex: 10, paddingBottom: '4rem' }}>
-        {!business.isClaimed && <ClaimButton listingId={business.id} />}
-        <Card style={{ padding: '3rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem' }}>
-            
-            <div style={{ flex: 1, minWidth: '300px' }}>
-              <div style={{ color: 'var(--primary-color)', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '1px' }}>
+      {/* Hero Image Banner */}
+      <div style={{ width: '100%', height: '350px', backgroundImage: `url(${business.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, transparent 100%)' }}></div>
+        <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'flex-end', paddingBottom: '2rem' }}>
+           <div>
+              <div style={{ color: '#60a5fa', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '1px', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                 {business.category.name} • {business.island.name}
               </div>
-              <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>{business.name}</h1>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.25rem', marginBottom: '2rem' }}>
-                <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>★ {business.averageRating}</span>
-                <span style={{ color: 'var(--text-muted)' }}>({business.reviewCount} verified reviews)</span>
+              <h1 style={{ fontSize: '3.5rem', color: 'white', marginBottom: '0.5rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>{business.name}</h1>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.25rem', color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>★ {business.averageRating}</span>
+                <span>({business.reviewCount} verified reviews)</span>
               </div>
-              
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>About this business</h3>
-              <p style={{ fontSize: '1.125rem', color: 'var(--text-muted)', lineHeight: 1.8 }}>
-                {business.description}
-              </p>
-            </div>
-            
-            <div style={{ width: '350px', background: 'var(--bg-color)', padding: '2rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ marginBottom: '1.5rem' }}>Contact Info</h3>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '0.25rem' }}>Phone Number</div>
-                  <div style={{ fontSize: '1.125rem', fontWeight: 500 }}>{business.phone}</div>
-                </div>
-                <div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '0.25rem' }}>Location</div>
-                  <div style={{ fontSize: '1.125rem', fontWeight: 500 }}>{business.address}</div>
-                </div>
-                <MessageForm receiverId={business.userId} listingId={business.id} />
-              </div>
-            </div>
-            
-            
-          </div>
-        </Card>
-
-        {/* Reviews Section */}
-        <div style={{ marginTop: '2rem' }}>
-          <Card style={{ padding: '3rem' }}>
-            <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Reviews</h2>
-            
-            <ReviewForm listingId={business.id} />
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {business.reviews && business.reviews.length > 0 ? (
-                business.reviews.map(review => (
-                  <div key={review.id} style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                      <div style={{ width: '40px', height: '40px', backgroundColor: '#e2e8f0', borderRadius: '50%', overflow: 'hidden' }}>
-                        {review.user?.image ? (
-                          <img src={review.user.image} alt={review.user.name || 'User'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        ) : (
-                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
-                            {(review.user?.name || 'U').charAt(0).toUpperCase()}
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <div style={{ fontWeight: 600 }}>{review.user?.name || 'Anonymous User'}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-                          {new Date(review.createdAt).toLocaleDateString()}
-                        </div>
-                      </div>
-                      <div style={{ marginLeft: 'auto', color: 'var(--accent-color)' }}>
-                        {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                      </div>
-                    </div>
-                    <p style={{ margin: 0, lineHeight: 1.6 }}>{review.comment}</p>
-                  </div>
-                ))
-              ) : (
-                <div style={{ color: 'var(--text-muted)' }}>
-                  No reviews yet. Be the first to review this business!
-                </div>
-              )}
-            </div>
-          </Card>
+           </div>
         </div>
+      </div>
 
+      <div className="container section">
+        {!business.isClaimed && <ClaimButton listingId={business.id} />}
+
+        <div style={{ display: 'flex', gap: '2.5rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+            
+            {/* Main Content Area */}
+            <div style={{ flex: '1 1 600px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <Card>
+                <h3 className="text-2xl font-bold mb-4">About this business</h3>
+                <p className="text-lg text-muted" style={{ lineHeight: 1.8 }}>
+                  {business.description}
+                </p>
+              </Card>
+
+              {/* Reviews Section */}
+              <Card>
+                <h2 className="text-2xl font-bold mb-6">Reviews</h2>
+                <ReviewForm listingId={business.id} />
+
+                <div className="flex flex-col gap-6">
+                  {business.reviews && business.reviews.length > 0 ? (
+                    business.reviews.map(review => (
+                      <div key={review.id} className="p-6 border border-gray-200 rounded-lg bg-gray-50">
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
+                            {review.user?.image ? (
+                              <img src={review.user.image} alt={review.user.name || 'User'} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-500 font-bold">
+                                {(review.user?.name || 'U').charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <div className="font-bold">{review.user?.name || 'Anonymous User'}</div>
+                            <div className="text-sm text-muted">
+                              {new Date(review.createdAt).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <div className="ml-auto text-yellow-500 font-bold text-lg">
+                            {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                          </div>
+                        </div>
+                        <p className="m-0 leading-relaxed">{review.comment}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-muted italic">
+                      No reviews yet. Be the first to review this business!
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </div>
+
+            {/* Sticky Sidebar Widget */}
+            <div style={{ width: '100%', maxWidth: '350px', position: 'sticky', top: '100px', flexShrink: 0 }}>
+              <Card className="shadow-lg border-2 border-blue-50">
+                <h3 className="text-xl font-bold mb-6 text-center border-b pb-4">Contact Business</h3>
+
+                <div className="flex flex-col gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                      📞
+                    </div>
+                    <div>
+                      <div className="text-sm text-muted mb-1">Phone Number</div>
+                      <div className="font-bold text-lg">{business.phone}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                      📍
+                    </div>
+                    <div>
+                      <div className="text-sm text-muted mb-1">Location</div>
+                      <div className="font-bold">{business.address}</div>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                     <MessageForm receiverId={business.userId} listingId={business.id} />
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+        </div>
       </div>
     </div>
   );
