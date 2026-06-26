@@ -11,9 +11,14 @@ function initPrismaClient(): PrismaClient {
   if (process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_TEST_MODE === "true") {
     // Hide native modules from bundlers by using eval to prevent Cloudflare WebAssembly/Native errors
     const req = eval('require');
-    const { PrismaBetterSqlite3 } = req("@prisma/adapter-better-sqlite3");
+    const { PrismaLibSql } = req("@prisma/adapter-libsql");
     const { PrismaClient: LocalClient } = req("@prisma/client");
-    const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL || "file:./dev.db" });
+    
+    const dbUrl = process.env.DATABASE_URL || "file:./dev.db";
+    const adapter = new PrismaLibSql({
+      url: dbUrl,
+      authToken: process.env.TURSO_AUTH_TOKEN
+    });
     _prismaClient = new LocalClient({ adapter, log: ["query"] });
   } else {
     const { getCloudflareContext } = require("@opennextjs/cloudflare");

@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@prisma/adapter-better-sqlite3", "better-sqlite3"],
+  serverExternalPackages: ["@prisma/adapter-libsql", "@libsql/client"],
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
   images: {
     remotePatterns: [

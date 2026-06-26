@@ -1,8 +1,12 @@
 import "dotenv/config"
 import { PrismaClient } from '@prisma/client'
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3"
+import { PrismaLibSql } from "@prisma/adapter-libsql"
 
-const adapter = new PrismaBetterSqlite3({ url: "file:./dev.db" })
+const dbUrl = process.env.DATABASE_URL || "file:./dev.db";
+const adapter = new PrismaLibSql({
+  url: dbUrl,
+  authToken: process.env.TURSO_AUTH_TOKEN
+});
 
 const prisma = new PrismaClient({ 
   adapter
