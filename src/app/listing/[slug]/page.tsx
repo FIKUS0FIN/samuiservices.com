@@ -9,6 +9,7 @@ import { BusinessHero } from './components/BusinessHero';
 import { BusinessInfo } from './components/BusinessInfo';
 import { ContactInfo } from './components/ContactInfo';
 import { ReviewsList } from './components/ReviewsList';
+import ProductGrid from './components/ProductGrid';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -110,29 +111,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
 
               {/* Products & Services Showcase */}
               {business.products && business.products.length > 0 && (
-                <div style={{ marginTop: '2rem' }}>
-                  <h2 className="text-2xl font-bold mb-6" style={{ fontSize: '2rem', marginBottom: '1.5rem', marginTop: '1rem' }}>Products & Services</h2>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1.5rem' }}>
-                    {business.products.map(product => (
-                      <Card key={product.id} style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
-                        {product.image && (
-                          <div style={{ height: '180px', width: '100%', backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
-                        )}
-                        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                          <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', fontWeight: 'bold' }}>{product.name}</h3>
-                          {product.price !== null && (
-                            <div style={{ color: 'var(--primary-color)', fontWeight: 'bold', fontSize: '1.125rem', marginBottom: '0.75rem' }}>
-                              ${product.price}
-                            </div>
-                          )}
-                          {product.description && (
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', flex: 1, marginBottom: 0, lineHeight: 1.6 }}>{product.description}</p>
-                          )}
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
+                <ProductGrid products={business.products} />
               )}
 
               {/* Reviews Section */}

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "pretest:e2e": "DATABASE_URL=file:./test.db npx prisma db push --accept-data-loss",
+    "pretest:e2e": "DATABASE_URL=file:./test.db npx prisma db push --force-reset",
     "test:e2e": "NEXT_PUBLIC_TEST_MODE=true DATABASE_URL=file:./test.db npm run build && NEXT_PUBLIC_TEST_MODE=true DATABASE_URL=file:./test.db playwright test",
     "test:e2e:remote": "ADMIN_TEST_PASSWORD=${ADMIN_TEST_PASSWORD:-secret} BASE_URL=${BASE_URL:-https://samuiservices.com} playwright test",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",

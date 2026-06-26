@@ -31,6 +31,7 @@ test.describe.serial('Platform Flows', () => {
 
     // Fill out the form
     await page.fill('input[name="name"]', 'My Awesome Cafe');
+    await page.fill('input[name="slug"]', 'my-awesome-cafe-' + Date.now());
     await page.selectOption('select[name="categoryId"]', { index: 1 }); // Just pick the first category
     await page.selectOption('select[name="islandId"]', { index: 1 }); // Pick an island
     await page.fill('input[name="phone"]', '+66 123 456 789');

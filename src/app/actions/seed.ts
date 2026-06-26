@@ -2,7 +2,8 @@
 
 import { getServerSession } from 'next-auth';
 import { authOptions, prisma } from '@/lib/auth';
-import { faker } from '@faker-js/faker';
+import { seedBusinesses } from './seed-data';
+
 
 export async function seedDatabase() {
   const session = await getServerSession(authOptions);
@@ -40,6 +41,21 @@ export async function seedDatabase() {
           where: { slug: cat.slug },
           data: { name: cat.name, icon: cat.icon }
         });
+      }
+    }
+
+    
+    const additionalCategories = [
+      { name: 'Hotels & Resorts', slug: 'hotels-resorts', icon: 'building' },
+      { name: 'Restaurants & Dining', slug: 'restaurants', icon: 'utensils' },
+      { name: 'Cafes & Bakeries', slug: 'cafes', icon: 'coffee' },
+      { name: 'Spas & Wellness', slug: 'spas-wellness', icon: 'heart' },
+      { name: 'Bars & Nightlife', slug: 'bars-nightlife', icon: 'glass-water' }
+    ];
+    for (const cat of additionalCategories) {
+      const existing = await prisma.category.findUnique({ where: { slug: cat.slug } });
+      if (!existing) {
+        await prisma.category.create({ data: cat });
       }
     }
 
@@ -128,9 +144,74 @@ export async function seedDatabase() {
       }
     }
 
+    
+    const allCategories = await prisma.category.findMany();
+    let importedCount = 0;
+    
+    for (const b of seedBusinesses) {
+      let categorySlug = 'hotels-resorts'; // default
+      if (b.category.includes('restaurant')) categorySlug = 'restaurants';
+      else if (b.category.includes('cafe')) categorySlug = 'cafes';
+      else if (b.category.includes('spa')) categorySlug = 'spas-wellness';
+      else if (b.category.includes('bar')) categorySlug = 'bars-nightlife';
+      else if (b.category.includes('hotel') || b.category.includes('resort')) categorySlug = 'hotels-resorts';
+      
+      const dbCategory = allCategories.find(c => c.slug === categorySlug) || allCategories[0];
+      
+      const slug = b.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const existing = await prisma.listing.findFirst({
+        where: { slug }
+      });
+
+      if (!existing) {
+        const productsData = (b as any).extracted?.products?.map((p: any) => ({
+          name: p.name,
+          description: p.description,
+          price: p.price || 0,
+        })) || [];
+        
+        let extraDescription = b.description;
+        if ((b as any).extracted?.emails?.length > 0) {
+          extraDescription += '\n\nEmails: ' + (b as any).extracted.emails.join(', ');
+        }
+        if ((b as any).extracted?.socials?.facebook) {
+          extraDescription += '\nFacebook: ' + (b as any).extracted.socials.facebook;
+        }
+        if ((b as any).extracted?.socials?.instagram) {
+          extraDescription += '\nInstagram: ' + (b as any).extracted.socials.instagram;
+        }
+
+        await prisma.listing.create({
+          data: {
+            name: b.name,
+            slug: slug,
+            description: extraDescription,
+            image: b.image,
+            phone: b.phone,
+            website: b.website,
+            address: b.address,
+            lat: b.lat,
+            lng: b.lng,
+            averageRating: Math.floor(Math.random() * (5 - 3 + 1) + 3) + Math.random(),
+            reviewCount: Math.floor(Math.random() * 100) + 1,
+            isPremium: Math.random() > 0.8,
+            categoryId: dbCategory.id,
+            islandId: samui.id,
+            userId: currentUser.id,
+            products: {
+              create: productsData
+            }
+          }
+        });
+        importedCount++;
+      }
+    }
+    
+    seededCount += importedCount;
+
     return { success: true, message: `Successfully seeded categories and ${seededCount} new listings!` };
   } catch (error: unknown) {
     console.error('Seed error:', error);
-    return { success: false, message: (error as Error).message || 'Unknown error' };
+    return { success: false, message: error instanceof Error ? error.message : 'Unknown error' };
   }
 }
