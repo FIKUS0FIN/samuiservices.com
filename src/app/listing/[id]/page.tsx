@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { notFound } from 'next/navigation';
 import { getBusinessById } from '@/lib/db';
 import { Card } from '@/components/ui/Card';
