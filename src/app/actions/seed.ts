@@ -115,21 +115,16 @@ async function seedSampleListings(userId: string) {
 export async function seedDatabase() {
   const session = await getServerSession(authOptions);
 
-    const existingNames = await prisma.listing.findMany({
-      where: { name: { in: sampleListings.map(l => l.name) } },
-      select: { name: true }
-    });
-    const existingNameSet = new Set(existingNames.map(l => l.name));
-    const toInsert = sampleListings.filter(l => !existingNameSet.has(l.name));
-
-    let seededCount = toInsert.length;
-    if (seededCount > 0) {
-      await prisma.listing.createMany({
-        data: toInsert
-      });
+  try {
+    if (!session || !session.user || !session.user.id) {
+      throw new Error('You must be logged in to seed the database.');
     }
 
-    return { success: true, message: `Successfully seeded categories and ${seededCount} new listings!` };
+    await seedCategories();
+    await seedIslands();
+    const seededCount = await seedSampleListings(session.user.id);
+
+    return { success: true, message: `Successfully seeded categories, islands and ${seededCount} new listings!` };
   } catch (error: unknown) {
     console.error('Seed error:', error);
     return { success: false, message: (error as Error).message || 'Unknown error' };
