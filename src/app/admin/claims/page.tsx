@@ -1,7 +1,6 @@
 'use client';
 
 import { Card } from '@/components/ui/Card';
-import { ClaimCard } from "@/components/features/ClaimCard";
 import { approveClaim, rejectClaim } from '@/app/actions/claims';
 import { useState, useEffect } from 'react';
 import { Check, X, Building, User, Clock } from 'lucide-react';
