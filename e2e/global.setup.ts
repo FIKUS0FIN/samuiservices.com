@@ -40,7 +40,9 @@ export default async function globalSetup() {
       categoryId: 'cat-1',
       islandId: 'isl-1',
       userId: sysUser.id,
-      isClaimed: false
+      isClaimed: false,
+      layout: "premium",
+      products: { create: [{ name: "Test Product", description: "Test Desc", price: 100 }] }
     }
   });
 

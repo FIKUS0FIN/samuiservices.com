@@ -1,66 +1,82 @@
 import React from 'react';
 import { Package, Tag, ArrowRight } from 'lucide-react';
+import { Card } from '@/components/ui/Card';
 
 export default function ProductGrid({ products }: { products: any[] }) {
   if (!products || products.length === 0) return null;
 
   return (
-    <section className="mb-12">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-primary/10 rounded-xl text-primary">
-          <Package className="w-5 h-5" />
+    <section style={{ marginBottom: '3rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+        <div style={{ padding: '0.5rem', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderRadius: 'var(--radius-md)', color: 'var(--primary-color)' }}>
+          <Package size={20} />
         </div>
-        <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Products & Services</h2>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-main)', margin: 0 }}>Products & Services</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
         {products.map((product) => (
-          <div
+          <Card
             key={product.id || product.name}
-            className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
+            style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
           >
             {product.image && (
-              <div className="aspect-[4/3] overflow-hidden">
+              <div style={{ position: 'relative', width: '100%', paddingTop: '75%', overflow: 'hidden' }}>
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
                 />
               </div>
             )}
             
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 'bold', color: 'var(--text-main)', marginBottom: '0.5rem', marginTop: 0 }}>
                 {product.name}
               </h3>
               
               {product.description && (
-                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '1rem', flex: 1 }}>
                   {product.description}
                 </p>
               )}
 
-              <div className="flex items-center justify-between mt-auto">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
                 {product.price > 0 ? (
-                  <div className="flex items-center text-primary font-bold">
-                    <Tag className="w-4 h-4 mr-1" />
+                  <div style={{ display: 'flex', alignItems: 'center', color: 'var(--primary-color)', fontWeight: 'bold' }}>
+                    <Tag size={16} style={{ marginRight: '0.25rem' }} />
                     <span>${product.price.toFixed(2)}</span>
                   </div>
                 ) : (
-                  <span className="text-sm font-medium text-slate-500 dark:text-slate-500">
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-muted)' }}>
                     Contact for pricing
                   </span>
                 )}
                 
-                <button className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 group-hover:bg-primary group-hover:text-white transition-colors">
-                  <ArrowRight className="w-4 h-4" />
+                <button style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--bg-color)',
+                  color: 'var(--text-muted)',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}>
+                  <ArrowRight size={16} />
                 </button>
               </div>
             </div>
-            
-            {/* Glassmorphism shine effect on hover */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-          </div>
+          </Card>
         ))}
       </div>
     </section>
