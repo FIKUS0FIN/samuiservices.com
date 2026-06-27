@@ -1,14 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import { notFound } from 'next/navigation';
 import { getBusinessBySlug } from '@/lib/db';
 import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
 import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
-import { BusinessHero } from './components/BusinessHero';
-import { BusinessInfo } from './components/BusinessInfo';
-import { ContactInfo } from './components/ContactInfo';
-import { ReviewsList } from './components/ReviewsList';
 import ProductGrid from './components/ProductGrid';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -19,6 +14,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${business.name} | ${business.category.name} in ${business.island.name}`,
     description: business.description,
+    openGraph: {
+      title: business.name,
+      description: business.description,
+      images: business.image ? [{ url: business.image }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+    }
   };
 }
 
@@ -30,7 +33,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
     notFound();
   }
 
-    // Schema.org JSON-LD for LocalBusiness
+  // Schema.org JSON-LD for LocalBusiness
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -75,7 +78,6 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
       />
-      
 
       {/* Hero Image Banner */}
       <div style={{ width: '100%', height: business.layout === 'premium' ? '500px' : '350px', backgroundImage: `url(${business.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
@@ -102,12 +104,11 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
             {/* Main Content Area */}
             <div style={{ flex: '1 1 600px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               <Card>
-                <h3 className="text-2xl font-bold mb-4">About this business</h3>
-                <p className="text-lg text-muted" style={{ lineHeight: 1.8 }}>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>About this business</h3>
+                <p style={{ fontSize: '1.125rem', color: 'var(--text-muted)', lineHeight: 1.8 }}>
                   {business.description}
                 </p>
               </Card>
-
 
               {/* Products & Services Showcase */}
               {business.products && business.products.length > 0 && (
@@ -116,38 +117,38 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
 
               {/* Reviews Section */}
               <Card>
-                <h2 className="text-2xl font-bold mb-6">Reviews</h2>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Reviews</h2>
                 <ReviewForm listingId={business.id} />
 
-                <div className="flex flex-col gap-6">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   {business.reviews && business.reviews.length > 0 ? (
                     business.reviews.map(review => (
-                      <div key={review.id} className="p-6 border border-gray-200 rounded-lg bg-gray-50">
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
+                      <div key={review.id} style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', backgroundColor: '#f9fafb' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                          <div style={{ width: '2.5rem', height: '2.5rem', backgroundColor: '#e5e7eb', borderRadius: '50%', overflow: 'hidden' }}>
                             {review.user?.image ? (
-                              <img src={review.user.image} alt={review.user.name || 'User'} className="w-full h-full object-cover" />
+                              <img src={review.user.image} alt={review.user.name || 'User'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-500 font-bold">
+                              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6b7280', fontWeight: 'bold' }}>
                                 {(review.user?.name || 'U').charAt(0).toUpperCase()}
                               </div>
                             )}
                           </div>
                           <div>
-                            <div className="font-bold">{review.user?.name || 'Anonymous User'}</div>
-                            <div className="text-sm text-muted">
+                            <div style={{ fontWeight: 'bold' }}>{review.user?.name || 'Anonymous User'}</div>
+                            <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
                               {new Date(review.createdAt).toLocaleDateString()}
                             </div>
                           </div>
-                          <div className="ml-auto text-yellow-500 font-bold text-lg">
+                          <div style={{ marginLeft: 'auto', color: '#eab308', fontWeight: 'bold', fontSize: '1.125rem' }}>
                             {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
                           </div>
                         </div>
-                        <p className="m-0 leading-relaxed">{review.comment}</p>
+                        <p style={{ margin: 0, lineHeight: 1.6 }}>{review.comment}</p>
                       </div>
                     ))
                   ) : (
-                    <div className="text-muted italic">
+                    <div style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
                       No reviews yet. Be the first to review this business!
                     </div>
                   )}
@@ -157,29 +158,29 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
 
             {/* Sticky Sidebar Widget */}
             <div style={{ width: '100%', maxWidth: '350px', position: 'sticky', top: '100px', flexShrink: 0 }}>
-              <Card className="shadow-lg border-2 border-blue-50">
-                <h3 className="text-xl font-bold mb-6 text-center border-b pb-4">Contact Business</h3>
+              <Card style={{ border: '2px solid #eff6ff', boxShadow: 'var(--shadow-lg)' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1.5rem', textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>Contact Business</h3>
 
-                <div className="flex flex-col gap-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#dbeafe', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
                       📞
                     </div>
                     <div>
-                      <div className="text-sm text-muted mb-1">Phone Number</div>
-                      <div className="font-bold text-lg">{business.phone}</div>
+                      <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>Phone Number</div>
+                      <div style={{ fontWeight: 'bold', fontSize: '1.125rem' }}>{business.phone}</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#16a34a' }}>
                       📍
                     </div>
                     <div>
-                      <div className="text-sm text-muted mb-1">Location</div>
-                      <div className="font-bold">{business.address}</div>
+                      <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>Location</div>
+                      <div style={{ fontWeight: 'bold' }}>{business.address}</div>
                     </div>
                   </div>
-                  <div className="mt-4">
+                  <div style={{ marginTop: '1rem' }}>
                      <MessageForm receiverId={business.userId} listingId={business.id} />
                   </div>
                 </div>
