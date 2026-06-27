@@ -6,36 +6,36 @@
 
 :root {
   /* Color Palette */
-  --primary-color: #3b82f6; /* Blue for trust/action */
-  --primary-hover: #2563eb;
-  --secondary-color: #10b981; /* Green for growth/eco */
-  --accent-color: #f59e0b; /* Orange for attention/island vibe */
+  --primary-color: #0058be; /* Blue for trust/action */
+  --primary-hover: #004395;
+  --secondary-color: #006c49; /* Green for growth/eco */
+  --accent-color: #924700; /* Orange for attention/island vibe */
   
   /* Backgrounds */
-  --bg-color: #f8fafc;
+  --bg-color: #f8f9ff;
   --bg-card: #ffffff;
-  --bg-nav: rgba(255, 255, 255, 0.8);
+  --bg-nav: rgba(248, 249, 255, 0.8);
   
   /* Text */
-  --text-main: #0f172a;
-  --text-muted: #64748b;
+  --text-main: #0b1c30;
+  --text-muted: #424754;
   --text-light: #ffffff;
   
   /* Borders */
-  --border-color: #e2e8f0;
+  --border-color: #c2c6d6;
   
   /* Typography */
   --font-body: 'Inter', sans-serif;
-  --font-heading: 'Outfit', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
   
   /* Spacing & Sizes */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
   --radius-pill: 9999px;
   
   /* Shadows & Effects */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -49,12 +49,12 @@
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-color: #0f172a;
+    --bg-color: #213145;
     --bg-card: #1e293b;
-    --bg-nav: rgba(15, 23, 42, 0.8);
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --border-color: #334155;
+    --bg-nav: rgba(33, 49, 69, 0.8);
+    --text-main: #eaf1ff;
+    --text-muted: #c2c6d6;
+    --border-color: #727785;
     
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
