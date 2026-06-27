@@ -2,31 +2,41 @@
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { Button } from '@/components/ui/Button';
 
 export async function Navbar() {
   const session = await getServerSession(authOptions);
 
   return (
-    <nav className="glass-nav">
-      <div className="container nav-container" style={{ padding: '1rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link href="/" style={{ fontWeight: 800, fontSize: '1.25rem', fontFamily: 'var(--font-heading)', color: 'var(--primary-color)' }}>
-          Samui Services
-        </Link>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+    <nav className="bg-surface/80 backdrop-blur-[12px] border-b border-outline-muted sticky top-0 z-[100]">
+      <div className="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="font-heading font-bold text-headline-sm text-primary">
+            Samui Services
+          </Link>
+
+          <div className="hidden md:flex items-center gap-6 font-body text-body-md font-medium">
+            <Link href="/samui" className="text-text-main hover:text-primary transition-colors">Koh Samui</Link>
+            <Link href="/phangan" className="text-text-main hover:text-primary transition-colors">Koh Phangan</Link>
+            <Link href="/tao" className="text-text-main hover:text-primary transition-colors">Koh Tao</Link>
+          </div>
+        </div>
+
+        <div className="flex gap-4 items-center">
           {session ? (
             <Link href="/dashboard">
-              <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                {session.user?.image && <img src={session.user.image} alt="Avatar" style={{ width: '20px', height: '20px', borderRadius: '50%' }} />}
+              <Button variant="secondary" className="!px-4 !py-2 !text-sm flex items-center gap-2">
+                {session.user?.image && <img src={session.user.image} alt="Avatar" className="w-5 h-5 rounded-full" />}
                 Dashboard
-              </button>
+              </Button>
             </Link>
           ) : (
             <Link href="/dashboard">
-              <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Login</button>
+              <Button variant="secondary" className="!px-4 !py-2 !text-sm">Login</Button>
             </Link>
           )}
           <Link href="/add-listing">
-            <button className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Add Business</button>
+            <Button variant="primary" className="!px-4 !py-2 !text-sm">Add Business</Button>
           </Link>
         </div>
       </div>

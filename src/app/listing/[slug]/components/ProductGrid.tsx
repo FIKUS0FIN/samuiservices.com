@@ -2,6 +2,8 @@ import React from 'react';
 import { Package, Tag, ArrowRight } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 
+/* eslint-disable @typescript-eslint/no-explicit-any, @next/next/no-img-element */
+
 export default function ProductGrid({ products }: { products: any[] }) {
   if (!products || products.length === 0) return null;
 

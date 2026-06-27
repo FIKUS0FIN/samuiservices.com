@@ -18,27 +18,16 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
   return (
     <div>
       {/* Hero Section */}
-      <section style={{ 
-        position: 'relative', 
-        backgroundImage: 'url("https://images.unsplash.com/photo-1516815231560-8f41ec531527?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        color: 'white',
-        overflow: 'hidden',
-        minHeight: '500px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '6rem 1.5rem 3rem 1.5rem'
-      }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.3) 100%)', zIndex: 1 }}></div>
+      <section className="relative flex items-center justify-center min-h-[500px] overflow-hidden bg-cover bg-center bg-fixed text-white py-24 px-6"
+        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1516815231560-8f41ec531527?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80")' }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-text/60 to-primary-text/30 z-[1]"></div>
         
-        <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', width: '100%', maxWidth: '800px' }}>
-          <h1 className="fade-in-up" style={{ fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.1, marginBottom: '1rem', textShadow: '0 4px 15px rgba(0,0,0,0.4)', fontWeight: 800 }}>
+        <div className="relative z-[2] text-center w-full max-w-4xl mx-auto">
+          <h1 className="fade-in-up text-display text-white mb-4 drop-shadow-md">
             Discover Local Services in Samui
           </h1>
-          <p className="fade-in-up" style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', marginBottom: '2rem', opacity: 0.9, textShadow: '0 2px 10px rgba(0,0,0,0.3)', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
+          <p className="fade-in-up text-body-lg opacity-90 drop-shadow-sm max-w-2xl mx-auto mb-8">
             Find trusted professionals for everything you need on the island.
           </p>
           
@@ -49,34 +38,34 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
       </section>
 
       {/* Main Content Area */}
-      <section style={{ padding: '4rem 0', backgroundColor: '#f8fafc' }}>
-        <div className="container" style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+      <section className="section bg-surface">
+        <div className="container flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Left Sidebar */}
-          <aside style={{ width: '250px', flexShrink: 0, position: 'sticky', top: '2rem' }}>
+          <aside className="w-full lg:w-72 flex-shrink-0 lg:sticky lg:top-24">
             <ServiceFilter categories={categories} />
           </aside>
           
           {/* Right Content */}
-          <main style={{ flex: 1 }}>
-            <div style={{ marginBottom: '1.5rem' }}>
-               <h2 style={{ fontSize: '1.25rem', margin: 0, color: '#0f172a', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <main className="flex-1 w-full">
+            <div className="mb-6">
+               <h2 className="text-headline-sm m-0 text-text-main font-extrabold uppercase tracking-wide">
                  FEATURED SERVICES IN SAMUI
                </h2>
             </div>
 
             {/* Listings Content */}
             {allListings.length > 0 ? (
-              <div className="grid-cards" style={{ animation: 'fadeInUp 0.4s ease forwards' }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 fade-in-up" style={{ animation: 'fadeInUp 0.4s ease forwards' }}>
                 {listings.map((listing) => (
                   <ListingCard key={listing.id} business={listing} />
                 ))}
               </div>
             ) : (
-              <div style={{ textAlign: 'center', padding: '6rem 2rem', color: 'var(--text-muted)', background: 'white', borderRadius: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1.5rem', opacity: 0.5 }}>🏝️</div>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', color: '#0f172a', fontWeight: 700 }}>No services found</h3>
-                <p style={{ fontSize: '1.125rem', maxWidth: '400px', margin: '0 auto 2rem auto' }}>We couldn&apos;t find any services matching this category yet.</p>
+              <div className="text-center py-24 px-8 text-text-muted bg-surface-card rounded-card border border-outline-muted shadow-level-1">
+                <div className="text-6xl mb-6 opacity-50">🏝️</div>
+                <h3 className="text-headline-md mb-3 text-text-main font-bold">No services found</h3>
+                <p className="text-body-lg max-w-md mx-auto mb-8">We couldn&apos;t find any services matching this category yet.</p>
               </div>
             )}
           </main>

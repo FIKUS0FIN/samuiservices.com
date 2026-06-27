@@ -11,92 +11,49 @@ interface ListingCardProps {
 
 export function ListingCard({ business }: ListingCardProps) {
   return (
-    <div style={{ position: 'relative', height: '100%' }} className="listing-card-container">
+    <div className="relative h-full w-full max-w-sm mx-auto group">
       <FavoriteToggle listingId={business.id} initialIsFavorited={!!business.isFavorited} />
-      <Link href={`/listing/${business.slug}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}>
-        <Card 
-          style={{ 
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            border: 'none',
-            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.05)',
-            overflow: 'hidden',
-            padding: 0,
-            borderRadius: '16px',
-            backgroundColor: '#ffffff'
-          }} 
-        >
-          <div style={{ position: 'relative', height: '160px', width: '100%', overflow: 'hidden' }}>
+      <Link href={`/listing/${business.id}`} className="block h-full no-underline text-inherit">
+        <Card className="!p-0 h-full flex flex-col border-none shadow-level-1 overflow-hidden rounded-card bg-surface-card transition-shadow duration-300 hover:shadow-level-2">
+
+          <div className="relative h-48 w-full overflow-hidden p-2">
             <div 
-              style={{ 
-                height: '100%',
-                width: '100%',
-                backgroundImage: `url(${business.image || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'})`, 
-                backgroundSize: 'cover', 
-                backgroundPosition: 'center',
-              }}
+              className="h-full w-full bg-cover bg-center rounded-global transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: `url(${business.image || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'})` }}
             ></div>
             
-            {/* Category Badge */}
-            <span style={{ 
-              position: 'absolute',
-              top: '0.75rem',
-              left: '0.75rem',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-              color: 'white', 
-              fontSize: '0.75rem', 
-              padding: '0.2rem 0.6rem', 
-              borderRadius: '9999px', 
-              zIndex: 2,
-            }}>
-              {business.category?.name || 'Uncategorized'}
-            </span>
+            {/* Badges */}
+            <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+              <span className="bg-surface/90 text-text-main text-xs font-bold px-3 py-1 rounded-pill backdrop-blur-sm shadow-sm">
+                {business.category?.name || 'Uncategorized'}
+              </span>
+              {business.isPremium && (
+                <span className="bg-secondary-container text-secondary-text text-xs font-bold px-3 py-1 rounded-pill shadow-sm">
+                  Verified
+                </span>
+              )}
+            </div>
           </div>
 
-          <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-            {/* Title and Rating Row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <h3 style={{ fontSize: '1.1rem', margin: 0, color: '#0f172a', fontWeight: 800 }}>
+          <div className="p-5 flex flex-col flex-1">
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="text-headline-sm text-text-main font-bold m-0 line-clamp-2">
                 {business.name}
               </h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', fontSize: '0.85rem', fontWeight: 700 }}>
-                {business.averageRating.toFixed(1)} <span style={{ color: '#facc15' }}>★</span>
-              </div>
-            </div>
-            
-            {/* Provider Name */}
-            <div style={{ color: '#475569', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
-              Provider Name
             </div>
 
-            {/* Location and Reviews */}
-            <div style={{ color: '#64748b', fontSize: '0.8rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <span style={{ color: '#94a3b8' }}>📍</span> Samui - {business.reviewCount} reviews
-            </div>
-            
-            {/* Price */}
-            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>
-              from 800 THB/hr
+            <div className="flex items-center gap-1.5 mb-3">
+              <span className="text-accent">★</span>
+              <span className="font-bold text-text-main">{business.averageRating.toFixed(1)}</span>
+              <span className="text-text-muted text-sm">({business.reviewCount} reviews)</span>
             </div>
 
-            {/* Button */}
-            <div style={{ marginTop: 'auto' }}>
-              <button 
-                style={{ 
-                  width: '100%', 
-                  fontSize: '0.8rem', 
-                  padding: '0.6rem 1rem',
-                  backgroundColor: '#06b6d4',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '9999px',
-                  fontWeight: 700,
-                  cursor: 'pointer'
-                }}
-              >
-                VIEW PROFILE
-              </button>
+            <div className="text-text-muted text-sm mb-4 flex items-center gap-1.5">
+              <span className="text-outline">📍</span> {business.island?.name || 'Samui'}
+            </div>
+            
+            <div className="mt-auto pt-4 border-t border-outline-muted/30">
+               <span className="text-primary font-bold text-sm">View Profile →</span>
             </div>
           </div>
         </Card>

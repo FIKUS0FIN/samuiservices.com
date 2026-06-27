@@ -49,46 +49,48 @@ export default async function IslandDirectory({
   const categories = await getAllCategories();
 
   return (
-    <div className="split-layout">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-81px)] overflow-hidden">
       {/* Sidebar Filters */}
-      <div className="split-layout-sidebar">
-        <h2 className="text-xl font-bold mb-4">{islandName} Services</h2>
-        <p className="text-muted text-sm mb-6">Browse local businesses and top-rated services.</p>
+      <div className="w-full lg:w-80 flex-shrink-0 overflow-y-auto border-b lg:border-b-0 lg:border-r border-outline-muted p-6 bg-surface-card z-10">
+        <h2 className="text-headline-md font-bold mb-2 text-text-main">{islandName} Services</h2>
+        <p className="text-text-muted text-body-sm mb-8">Browse local businesses and top-rated services.</p>
         <FilterSidebar categories={categories} />
       </div>
 
       {/* Results List */}
-      <div className="split-layout-main">
-        <div className="flex justify-between items-center mb-6">
-          <p className="font-semibold">{islandBusinesses.length} businesses found</p>
-          <select className="input-field" style={{ width: 'auto', padding: '0.5rem 1rem' }}>
-            <option>Recommended</option>
-            <option>Highest Rated</option>
-            <option>Newest</option>
-          </select>
-        </div>
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-surface">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <p className="font-semibold text-text-main">{islandBusinesses.length} businesses found</p>
+            <select className="input-field w-auto py-2">
+              <option>Recommended</option>
+              <option>Highest Rated</option>
+              <option>Newest</option>
+            </select>
+          </div>
 
-        <div className="flex flex-col gap-6">
-          {islandBusinesses.length === 0 ? (
-            <Card className="text-center p-8">
-              <p className="text-muted text-lg">No businesses found yet. Be the first to add yours!</p>
-            </Card>
-          ) : (
-            islandBusinesses.map(business => (
-              <BusinessCard key={business.id} business={business} />
-            ))
-          )}
+          <div className="flex flex-col gap-6">
+            {islandBusinesses.length === 0 ? (
+              <Card className="text-center p-12 shadow-level-1">
+                <p className="text-text-muted text-body-lg">No businesses found yet. Be the first to add yours!</p>
+              </Card>
+            ) : (
+              islandBusinesses.map(business => (
+                <BusinessCard key={business.id} business={business} />
+              ))
+            )}
+          </div>
         </div>
       </div>
 
       {/* Sticky Interactive Map (Desktop only) */}
-      <div className="split-layout-map">
+      <div className="hidden lg:block flex-1 relative border-l border-outline-muted z-0">
         {islandBusinesses.length > 0 && islandBusinesses.some(b => b.lat && b.lng) ? (
-           <div style={{ height: '100%', width: '100%' }}>
+           <div className="h-full w-full">
              <DynamicMap businesses={islandBusinesses as unknown as any} />
            </div>
         ) : (
-          <div className="flex items-center justify-center h-full w-full bg-gray-50 text-muted">
+          <div className="flex items-center justify-center h-full w-full bg-surface-card text-text-muted">
              Map unavailable
           </div>
         )}
