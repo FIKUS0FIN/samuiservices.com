@@ -55,12 +55,15 @@ export function ReviewForm({ listingId }: ReviewFormProps) {
 
       <div>
         <div style={{ marginBottom: '0.5rem' }}>Rating</div>
-        <div style={{ display: 'flex', gap: '0.25rem' }}>
+        <div role="group" aria-label="Select rating" style={{ display: 'flex', gap: '0.25rem' }}>
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
               type="button"
               onClick={() => setRating(star)}
+              aria-label={`Rate ${star} star${star > 1 ? 's' : ''}`}
+              title={`Rate ${star} star${star > 1 ? 's' : ''}`}
+              aria-pressed={star <= rating}
               style={{
                 background: 'none',
                 border: 'none',
