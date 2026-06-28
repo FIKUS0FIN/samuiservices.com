@@ -16,6 +16,18 @@ export async function submitClaimRequest(formData: FormData) {
   }
 
   try {
+    // SECURITY: Prevent IDOR / unauthorized claims on already claimed listings
+    const listing = await prisma.listing.findUnique({
+      where: { id: listingId }
+    });
+
+    if (!listing) {
+      return { error: 'Listing not found.' };
+    }
+    if (listing.isClaimed) {
+      return { error: 'This business has already been claimed.' };
+    }
+
     // Check if a pending claim already exists for this user and listing
     const existing = await prisma.claimRequest.findFirst({
       where: {

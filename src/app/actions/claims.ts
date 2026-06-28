@@ -26,6 +26,15 @@ export async function approveClaim(claimId: string) {
     throw new Error('Claim not found');
   }
 
+  // Defense-in-depth: Ensure the listing isn't already claimed (e.g. by another concurrent request)
+  const listing = await prisma.listing.findUnique({
+    where: { id: claim.listingId }
+  });
+
+  if (!listing || listing.isClaimed) {
+    throw new Error('Listing is already claimed or does not exist');
+  }
+
   // Update claim status to APPROVED
   await prisma.claimRequest.update({
     where: { id: claimId },
