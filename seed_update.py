@@ -1,50 +1,11 @@
-import "dotenv/config"
-import { PrismaClient } from '@prisma/client'
+import re
 
-import { PrismaLibSql } from "@prisma/adapter-libsql"
+# Update prisma/seed.ts
+with open('prisma/seed.ts', 'r') as f:
+    content = f.read()
 
-const dbUrl = process.env.DATABASE_URL || "file:./dev.db";
-const adapter = new PrismaLibSql({
-  url: dbUrl,
-  authToken: process.env.TURSO_AUTH_TOKEN
-});
-
-const prisma = new PrismaClient({ 
-  adapter
-})
-
-async function main() {
-  // Dummy User
-  const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@admesamui.local' },
-    update: {},
-    create: {
-      name: 'Admin User',
-      email: 'admin@admesamui.local',
-      role: 'ADMIN',
-    },
-  })
-
-  // Islands
-  const samui = await prisma.island.upsert({
-    where: { slug: 'samui' },
-    update: {},
-    create: { name: 'Koh Samui', slug: 'samui' },
-  })
-  
-  const phangan = await prisma.island.upsert({
-    where: { slug: 'phangan' },
-    update: {},
-    create: { name: 'Koh Phangan', slug: 'phangan' },
-  })
-  
-  const tao = await prisma.island.upsert({
-    where: { slug: 'tao' },
-    update: {},
-    create: { name: 'Koh Tao', slug: 'tao' },
-  })
-
-
+# Replace category seeding
+seed_category = """
   // Categories (Parent & Child)
   const categoriesData = [
     { name: 'Gastronomy', slug: 'gastronomy', icon: 'utensils' },
@@ -53,7 +14,7 @@ async function main() {
     { name: 'Transportation', slug: 'transportation', icon: 'car' },
   ]
 
-  const createdParents: Record<string, { id: string }> = {}
+  const createdParents = {}
   for (const cat of categoriesData) {
     createdParents[cat.slug] = await prisma.category.upsert({
       where: { slug: cat.slug },
@@ -88,7 +49,12 @@ async function main() {
   const hotelsCat = createdCategories.find(c => c.slug === 'hotels')!
   const toursCat = createdCategories.find(c => c.slug === 'tours')!
   const carsCat = createdCategories.find(c => c.slug === 'car-rental')!
+"""
 
+content = re.sub(r"  // Categories\n.*?(?=  // Sample Companies)", seed_category, content, flags=re.DOTALL)
+
+# Update sample listings in seed.ts
+listings_replacement = """
   // Sample Companies
   const sampleListings = [
     {
@@ -147,35 +113,8 @@ async function main() {
       userId: adminUser.id,
     }
   ]
-  for (const listing of sampleListings) {
-    const existing = await prisma.listing.findFirst({
-      where: { name: listing.name }
-    })
+"""
+content = re.sub(r"  // Sample Companies\n.*?(?=  for \(const listing of sampleListings\))", listings_replacement, content, flags=re.DOTALL)
 
-    if (!existing) {
-      await prisma.listing.create({
-        data: listing
-      })
-    } else {
-      await prisma.listing.update({
-        where: { id: existing.id },
-        data: {
-          lat: listing.lat,
-          lng: listing.lng
-        }
-      })
-    }
-  }
-
-  console.log('Seeded database with dummy data!')
-}
-
-main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+with open('prisma/seed.ts', 'w') as f:
+    f.write(content)

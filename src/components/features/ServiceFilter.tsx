@@ -5,8 +5,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
+interface CategoryWithChildren extends Category {
+  children: Category[];
+}
+
 interface ServiceFilterProps {
-  categories: Category[];
+  categories: CategoryWithChildren[];
 }
 
 export function ServiceFilter({ categories }: ServiceFilterProps) {
@@ -45,53 +49,55 @@ export function ServiceFilter({ categories }: ServiceFilterProps) {
   };
 
   return (
-    <div className="w-full pr-4 bg-surface-card rounded-card p-6 shadow-level-1">
+    <div style={{ width: "100%", paddingRight: "1rem" }}>
       
-      {/* Categories Accordion */}
-      <div className="mb-6 border-b border-outline-muted/50 pb-6">
-        <button
-          onClick={() => toggleSection('categories')}
-          className="flex justify-between items-center w-full bg-transparent border-none p-0 cursor-pointer text-left"
-        >
-          <h3 className="text-label-sm font-bold uppercase tracking-wider text-text-main m-0">Categories</h3>
-          {openSections.categories ? <ChevronUp className="w-4 h-4 text-outline" /> : <ChevronDown className="w-4 h-4 text-outline" />}
-        </button>
+      {/* Dynamic Categories Accordion */}
+      {categories.filter(cat => cat.parentId === null).map(parent => (
+        <div key={parent.id} style={{ marginBottom: "2rem" }}>
+          <button
+            onClick={() => toggleSection(parent.slug as keyof typeof openSections)}
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", background: "transparent", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
+          >
+            <h3 style={{ fontSize: "0.85rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#0f172a", margin: 0 }}>{parent.name}</h3>
+            {openSections[parent.slug as keyof typeof openSections] !== false ? <ChevronUp size={16} color="#94a3b8" /> : <ChevronDown size={16} color="#94a3b8" />}
+          </button>
 
-        {openSections.categories && (
-          <div className="flex flex-col gap-3 mt-4">
-            {categories.map(cat => {
-              const isActive = activeCategory === cat.slug;
-              return (
-                <label key={cat.id} className="flex items-center gap-3 cursor-pointer text-body-sm text-text-muted hover:text-text-main transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={isActive}
-                    onChange={() => handleSelect(cat.slug)}
-                    className="w-4 h-4 rounded-sm border-outline text-primary focus:ring-primary/30 cursor-pointer"
-                  />
-                  {cat.name}
-                </label>
-              );
-            })}
-          </div>
-        )}
-      </div>
+          {openSections[parent.slug as keyof typeof openSections] !== false && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "1rem" }}>
+              {parent.children.map(child => {
+                const isActive = activeCategory === child.slug;
+                return (
+                  <label key={child.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer", fontSize: "0.9rem", color: "#334155" }}>
+                    <input
+                      type="checkbox"
+                      checked={isActive}
+                      onChange={() => handleSelect(child.slug)}
+                      style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#06b6d4", borderRadius: "4px" }}
+                    />
+                    {child.name}
+                  </label>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
 
       {/* Location Accordion */}
-      <div className="mb-6 border-b border-outline-muted/50 pb-6">
+      <div style={{ marginBottom: "2rem" }}>
          <button
           onClick={() => toggleSection('location')}
-          className="flex justify-between items-center w-full bg-transparent border-none p-0 cursor-pointer text-left"
+          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", background: "transparent", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
         >
-          <h3 className="text-label-sm font-bold uppercase tracking-wider text-text-main m-0">Island Area</h3>
-          {openSections.location ? <ChevronUp className="w-4 h-4 text-outline" /> : <ChevronDown className="w-4 h-4 text-outline" />}
+          <h3 style={{ fontSize: "0.85rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#0f172a", margin: 0 }}>Island Area</h3>
+          {openSections.location ? <ChevronUp size={16} color="#94a3b8" /> : <ChevronDown size={16} color="#94a3b8" />}
         </button>
 
          {openSections.location && (
-           <div className="flex flex-col gap-3 mt-4 text-body-sm text-text-muted">
+           <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "1rem", fontSize: "0.9rem", color: "#334155" }}>
               {['Chaweng', 'Lamai', 'Bophut', 'Maenam', 'Nathon'].map(loc => (
-                <label key={loc} className="flex items-center gap-3 cursor-pointer hover:text-text-main transition-colors">
-                   <input type="checkbox" className="w-4 h-4 rounded-sm border-outline text-primary focus:ring-primary/30 cursor-pointer" /> {loc}
+                <label key={loc} style={{ display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer" }}>
+                   <input type="checkbox" style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#06b6d4", borderRadius: "4px" }} /> {loc}
                 </label>
               ))}
            </div>
@@ -99,48 +105,48 @@ export function ServiceFilter({ categories }: ServiceFilterProps) {
       </div>
       
       {/* Rating Accordion */}
-      <div className="mb-6 border-b border-outline-muted/50 pb-6">
+      <div style={{ marginBottom: "2rem" }}>
          <button
           onClick={() => toggleSection('rating')}
-          className="flex justify-between items-center w-full bg-transparent border-none p-0 cursor-pointer text-left"
+          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", background: "transparent", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
         >
-          <h3 className="text-label-sm font-bold uppercase tracking-wider text-text-main m-0">Rating</h3>
-          {openSections.rating ? <ChevronUp className="w-4 h-4 text-outline" /> : <ChevronDown className="w-4 h-4 text-outline" />}
+          <h3 style={{ fontSize: "0.85rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#0f172a", margin: 0 }}>Rating</h3>
+          {openSections.rating ? <ChevronUp size={16} color="#94a3b8" /> : <ChevronDown size={16} color="#94a3b8" />}
         </button>
 
          {openSections.rating && (
-           <div className="flex flex-col gap-3 mt-4 text-body-sm text-text-muted">
-              <label className="flex items-center gap-3 cursor-pointer hover:text-text-main transition-colors">
-                 <input type="checkbox" defaultChecked className="w-4 h-4 rounded-sm border-outline text-primary focus:ring-primary/30 cursor-pointer" />
-                 <span className="text-accent">★★★★★</span> & Up <span className="ml-auto text-outline text-xs">(120)</span>
+           <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "1rem", fontSize: "0.9rem", color: "#334155" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer" }}>
+                 <input type="checkbox" defaultChecked style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#06b6d4", borderRadius: "4px" }} />
+                 <span style={{ color: "#facc15" }}>★★★★★</span> & Up <span style={{ marginLeft: "auto", color: "#94a3b8", fontSize: "0.8rem" }}>(120)</span>
               </label>
-              <label className="flex items-center gap-3 cursor-pointer hover:text-text-main transition-colors">
-                 <input type="checkbox" className="w-4 h-4 rounded-sm border-outline text-primary focus:ring-primary/30 cursor-pointer" />
-                 <span className="text-accent">★★★★</span><span className="text-outline-muted">★</span> <span className="ml-auto text-outline text-xs">(98)</span>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer" }}>
+                 <input type="checkbox" style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#06b6d4", borderRadius: "4px" }} />
+                 <span style={{ color: "#facc15" }}>★★★★</span><span style={{ color: "#cbd5e1" }}>★</span> <span style={{ marginLeft: "auto", color: "#94a3b8", fontSize: "0.8rem" }}>(98)</span>
               </label>
-              <label className="flex items-center gap-3 cursor-pointer hover:text-text-main transition-colors">
-                 <input type="checkbox" className="w-4 h-4 rounded-sm border-outline text-primary focus:ring-primary/30 cursor-pointer" />
-                 <span className="text-accent">★★★</span><span className="text-outline-muted">★★</span> <span className="ml-auto text-outline text-xs">(45)</span>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer" }}>
+                 <input type="checkbox" style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#06b6d4", borderRadius: "4px" }} />
+                 <span style={{ color: "#facc15" }}>★★★</span><span style={{ color: "#cbd5e1" }}>★★</span> <span style={{ marginLeft: "auto", color: "#94a3b8", fontSize: "0.8rem" }}>(45)</span>
               </label>
            </div>
          )}
       </div>
 
       {/* Price Accordion */}
-      <div className="mb-2">
+      <div style={{ marginBottom: "2rem" }}>
          <button
           onClick={() => toggleSection('price')}
-          className="flex justify-between items-center w-full bg-transparent border-none p-0 cursor-pointer text-left"
+          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", background: "transparent", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
         >
-          <h3 className="text-label-sm font-bold uppercase tracking-wider text-text-main m-0">Price Range</h3>
-          {openSections.price ? <ChevronUp className="w-4 h-4 text-outline" /> : <ChevronDown className="w-4 h-4 text-outline" />}
+          <h3 style={{ fontSize: "0.85rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: "#0f172a", margin: 0 }}>Price Range</h3>
+          {openSections.price ? <ChevronUp size={16} color="#94a3b8" /> : <ChevronDown size={16} color="#94a3b8" />}
         </button>
 
          {openSections.price && (
-           <div className="flex items-center h-6 mt-4">
-              <div className="w-3 h-3 rounded-full border-2 border-outline bg-surface-card z-10 cursor-pointer hover:border-primary transition-colors"></div>
-              <div className="flex-1 h-1.5 bg-primary -mx-1 z-0"></div>
-              <div className="w-3 h-3 rounded-full border-2 border-outline bg-surface-card z-10 cursor-pointer hover:border-primary transition-colors"></div>
+           <div style={{ display: "flex", alignItems: "center", height: "24px", marginTop: "1rem" }}>
+              <div style={{ width: "10px", height: "10px", borderRadius: "50%", border: "2px solid #cbd5e1", background: "white", zIndex: 2 }}></div>
+              <div style={{ flex: 1, height: "4px", background: "#06b6d4", margin: "0 -2px", zIndex: 1 }}></div>
+              <div style={{ width: "10px", height: "10px", borderRadius: "50%", border: "2px solid #cbd5e1", background: "white", zIndex: 2 }}></div>
            </div>
          )}
       </div>

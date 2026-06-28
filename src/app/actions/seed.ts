@@ -18,47 +18,44 @@ export async function seedDatabase() {
   }
 
   try {
+
     // 1. Seed Categories
-    const categories = [
-      { name: 'Construction & Builders', slug: 'construction-builders', icon: 'hammer' },
-      { name: 'Plumbers', slug: 'plumbers', icon: 'wrench' },
-      { name: 'Electricians', slug: 'electricians', icon: 'zap' },
-      { name: 'Cleaning & Housekeeping', slug: 'cleaning-housekeeping', icon: 'sparkles' },
-      { name: 'Deliveries & Moving', slug: 'deliveries-moving', icon: 'truck' },
-      { name: 'Handyman & Repairs', slug: 'handyman-repairs', icon: 'tool' },
-      { name: 'Transport & Rentals', slug: 'transport-rentals', icon: 'car' },
-      { name: 'Legal & Visa Services', slug: 'legal-visa-services', icon: 'briefcase' },
-      { name: 'Tech & IT Support', slug: 'tech-it-support', icon: 'monitor' },
-      { name: 'Gardening & Pool Care', slug: 'gardening-pool-care', icon: 'leaf' }
+    const categoriesData = [
+      { name: 'Gastronomy', slug: 'gastronomy', icon: 'utensils' },
+      { name: 'Lodging', slug: 'lodging', icon: 'home' },
+      { name: 'Experiences', slug: 'experiences', icon: 'star' },
+      { name: 'Transportation', slug: 'transportation', icon: 'car' },
     ];
 
-    for (const cat of categories) {
-      const existing = await prisma.category.findUnique({ where: { slug: cat.slug } });
-      if (!existing) {
-        await prisma.category.create({ data: cat });
-      } else {
-        await prisma.category.update({
-          where: { slug: cat.slug },
-          data: { name: cat.name, icon: cat.icon }
-        });
-      }
+    for (const cat of categoriesData) {
+      await prisma.category.upsert({
+        where: { slug: cat.slug },
+        update: {},
+        create: cat,
+      });
     }
 
-    
-    const additionalCategories = [
-      { name: 'Hotels & Resorts', slug: 'hotels-resorts', icon: 'building' },
-      { name: 'Restaurants & Dining', slug: 'restaurants', icon: 'utensils' },
-      { name: 'Cafes & Bakeries', slug: 'cafes', icon: 'coffee' },
-      { name: 'Spas & Wellness', slug: 'spas-wellness', icon: 'heart' },
-      { name: 'Bars & Nightlife', slug: 'bars-nightlife', icon: 'glass-water' }
+    const parents = await prisma.category.findMany({ where: { slug: { in: ['gastronomy', 'lodging', 'experiences', 'transportation'] } }});
+    const parentMap = parents.reduce((acc, p) => ({ ...acc, [p.slug]: p.id }), {} as Record<string, string>);
+
+    const childCategories = [
+      { name: 'Restaurants', slug: 'restaurants', icon: 'utensils', parentId: parentMap['gastronomy'] },
+      { name: 'Cafes', slug: 'cafes', icon: 'coffee', parentId: parentMap['gastronomy'] },
+      { name: 'Hotels', slug: 'hotels', icon: 'building', parentId: parentMap['lodging'] },
+      { name: 'Villas', slug: 'villas', icon: 'home', parentId: parentMap['lodging'] },
+      { name: 'Tours', slug: 'tours', icon: 'map', parentId: parentMap['experiences'] },
+      { name: 'Water Sports', slug: 'water-sports', icon: 'waves', parentId: parentMap['experiences'] },
+      { name: 'Car Rental', slug: 'car-rental', icon: 'car', parentId: parentMap['transportation'] },
+      { name: 'Scooter Rental', slug: 'scooter-rental', icon: 'bike', parentId: parentMap['transportation'] },
     ];
-    for (const cat of additionalCategories) {
-      const existing = await prisma.category.findUnique({ where: { slug: cat.slug } });
-      if (!existing) {
-        await prisma.category.create({ data: cat });
-      }
-    }
 
+    for (const cat of childCategories) {
+      await prisma.category.upsert({
+        where: { slug: cat.slug },
+        update: { parentId: cat.parentId },
+        create: cat,
+      });
+    }
     // Ensure Islands Exist
     const islandsData = [
       { name: 'Koh Samui', slug: 'samui' },
@@ -72,63 +69,63 @@ export async function seedDatabase() {
       }
     }
 
+
     // 2. Fetch required refs
     const samui = await prisma.island.findUnique({ where: { slug: 'samui' } });
     const phangan = await prisma.island.findUnique({ where: { slug: 'phangan' } });
-    const constructionCat = await prisma.category.findUnique({ where: { slug: 'construction-builders' } });
-    const cleaningCat = await prisma.category.findUnique({ where: { slug: 'cleaning-housekeeping' } });
-    const deliveriesCat = await prisma.category.findUnique({ where: { slug: 'deliveries-moving' } });
+    const restaurantsCat = await prisma.category.findUnique({ where: { slug: 'restaurants' } });
+    const hotelsCat = await prisma.category.findUnique({ where: { slug: 'hotels' } });
+    const toursCat = await prisma.category.findUnique({ where: { slug: 'tours' } });
 
-    if (!samui || !phangan || !constructionCat || !cleaningCat || !deliveriesCat) {
+    if (!samui || !phangan || !restaurantsCat || !hotelsCat || !toursCat) {
       throw new Error('Required references missing during seed.');
     }
 
     // 3. Seed Sample Listings
     const sampleListings = [
       {
-        name: 'Samui Eco Builders',
-        description: 'Sustainable construction and repair services across Koh Samui. We specialize in bamboo architecture and eco-friendly materials.',
-        image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        name: 'Fisherman Village Seafood',
+        description: 'The best local seafood by the beach.',
+        image: 'https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         address: 'Bophut, Koh Samui',
         lat: 9.5530,
         lng: 100.0245,
         averageRating: 4.8,
         reviewCount: 24,
         isPremium: true,
-        categoryId: constructionCat.id,
+        categoryId: restaurantsCat.id,
         islandId: samui.id,
         userId: currentUser.id,
       },
       {
-        name: 'Sparkle Island Cleaning',
-        description: 'Professional villa and resort cleaning. Fast, reliable, and thorough.',
-        image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        name: 'Samui Seaside Villa',
+        description: 'Luxury beachfront villa with infinity pool.',
+        image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         address: 'Chaweng, Koh Samui',
         lat: 9.5310,
         lng: 100.0610,
-        averageRating: 4.5,
-        reviewCount: 15,
+        averageRating: 4.9,
+        reviewCount: 112,
         isPremium: false,
-        categoryId: cleaningCat.id,
+        categoryId: hotelsCat.id,
         islandId: samui.id,
         userId: currentUser.id,
       },
       {
-        name: 'Phangan Fresh Delivery',
-        description: 'The quickest delivery on the island. Groceries, parcels, and more delivered to your door.',
-        image: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        name: 'Jungle Safari Tour',
+        description: 'Experience the wild side of the island with our guided tours.',
+        image: 'https://images.unsplash.com/photo-1534777367038-f4023e5eaa63?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         address: 'Thong Sala, Koh Phangan',
         lat: 9.7125,
         lng: 99.9880,
-        averageRating: 4.9,
-        reviewCount: 112,
+        averageRating: 4.7,
+        reviewCount: 56,
         isPremium: true,
-        categoryId: deliveriesCat.id,
+        categoryId: toursCat.id,
         islandId: phangan.id,
         userId: currentUser.id,
       }
     ];
-
     let seededCount = 0;
     for (const listing of sampleListings) {
       const slug = listing.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
@@ -164,21 +161,21 @@ export async function seedDatabase() {
       });
 
       if (!existing) {
-        const productsData = (b as any).extracted?.products?.map((p: any) => ({
+        const productsData = (b as unknown).extracted?.products?.map((p: unknown) => ({
           name: p.name,
           description: p.description,
           price: p.price || 0,
         })) || [];
         
         let extraDescription = b.description;
-        if ((b as any).extracted?.emails?.length > 0) {
-          extraDescription += '\n\nEmails: ' + (b as any).extracted.emails.join(', ');
+        if ((b as unknown).extracted?.emails?.length > 0) {
+          extraDescription += '\n\nEmails: ' + (b as unknown).extracted.emails.join(', ');
         }
-        if ((b as any).extracted?.socials?.facebook) {
-          extraDescription += '\nFacebook: ' + (b as any).extracted.socials.facebook;
+        if ((b as unknown).extracted?.socials?.facebook) {
+          extraDescription += '\nFacebook: ' + (b as unknown).extracted.socials.facebook;
         }
-        if ((b as any).extracted?.socials?.instagram) {
-          extraDescription += '\nInstagram: ' + (b as any).extracted.socials.instagram;
+        if ((b as unknown).extracted?.socials?.instagram) {
+          extraDescription += '\nInstagram: ' + (b as unknown).extracted.socials.instagram;
         }
 
         await prisma.listing.create({
@@ -212,6 +209,6 @@ export async function seedDatabase() {
     return { success: true, message: `Successfully seeded categories and ${seededCount} new listings!` };
   } catch (error: unknown) {
     console.error('Seed error:', error);
-    return { success: false, message: error instanceof Error ? error.message : 'Unknown error' };
+    return { success: false, message: error instanceof Error ? (error as Error).message : 'Unknown error' };
   }
 }

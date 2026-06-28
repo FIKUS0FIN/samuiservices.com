@@ -41,7 +41,11 @@ export async function getAllIslands() {
 }
 
 export async function getAllCategories() {
-  return prisma.category.findMany();
+  return prisma.category.findMany({
+    include: {
+      children: true
+    }
+  });
 }
 
 export async function getBusinessById(id: string) {
