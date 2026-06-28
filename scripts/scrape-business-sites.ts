@@ -24,7 +24,7 @@ async function run() {
   for (let i = 0; i < businesses.length; i += batchSize) {
     const batch = businesses.slice(i, i + batchSize);
     
-    await Promise.all(batch.map(async (business: unknown) => {
+    await Promise.all(batch.map(async (business: any) => {
       if (!business.website || business.website === 'Error' || business.website.includes('404 Error') || business.website.includes('Access Denied')) {
         console.log(`Skipping ${business.name} (No valid website)`);
         return;
@@ -79,8 +79,8 @@ async function run() {
         };
         
         console.log(`✅ Success for ${business.name}: Found ${services.length} services`);
-      } catch (error: unknown) {
-        console.log(`❌ Failed for ${business.name}: ${error.message.split('\\n')[0]}`);
+      } catch (error: any) {
+        console.log(`❌ Failed for ${business.name}: ${error.message?.split('\\n')[0]}`);
       } finally {
         await context.close();
       }
