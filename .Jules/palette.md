@@ -1,0 +1,3 @@
+## 2024-06-27 - [Improve Star Rating Component Accessibility]
+**Learning:** Icon-only rating components (like stars) without descriptive ARIA labels fail to convey their purpose and value to screen readers, leaving users unable to confidently interact with or select a rating. Adding a semantic group role to the parent container is also crucial for context.
+**Action:** When implementing interactive rating or icon-only components, always wrap them in a semantic container (`role="group"` with an `aria-label`) and ensure individual buttons have clear, descriptive text (`aria-label`) and state indication (`aria-pressed`).
