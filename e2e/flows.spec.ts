@@ -91,7 +91,7 @@ test.describe.serial('Platform Flows', () => {
     await page.goto('/');
     
     // Go to first listing
-    const firstListing = page.locator('a:has(.card)').first();
+    const firstListing = page.locator('.listing-card-container a').first();
     if (await firstListing.count() > 0) {
       const href = await firstListing.getAttribute('href');
       if (href) await page.goto(href);

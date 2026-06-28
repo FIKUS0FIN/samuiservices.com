@@ -63,10 +63,13 @@ model VerificationToken {
 // Custom Domain Models
 
 model Category {
-  id       String    @id @default(cuid())
+  id       String     @id @default(cuid())
   name     String
-  slug     String    @unique
+  slug     String     @unique
   icon     String
+  parentId String?
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
   listings Listing[]
 }
 
