@@ -2,12 +2,20 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@prisma/adapter-libsql", "@libsql/client"],
-  allowedDevOrigins: ['127.0.0.1', 'localhost'],
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["samuiservices.com", "samuiservices.onrender.com", "localhost:3000"],
+    },
+  },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'samuiservices.onrender.com',
       },
     ],
   },
