@@ -161,21 +161,21 @@ export async function seedDatabase() {
       });
 
       if (!existing) {
-        const productsData = (b as unknown).extracted?.products?.map((p: unknown) => ({
+        const productsData = (b as any).extracted?.products?.map((p: any) => ({
           name: p.name,
           description: p.description,
           price: p.price || 0,
         })) || [];
         
         let extraDescription = b.description;
-        if ((b as unknown).extracted?.emails?.length > 0) {
-          extraDescription += '\n\nEmails: ' + (b as unknown).extracted.emails.join(', ');
+        if ((b as any).extracted?.emails?.length > 0) {
+          extraDescription += '\n\nEmails: ' + (b as any).extracted.emails.join(', ');
         }
-        if ((b as unknown).extracted?.socials?.facebook) {
-          extraDescription += '\nFacebook: ' + (b as unknown).extracted.socials.facebook;
+        if ((b as any).extracted?.socials?.facebook) {
+          extraDescription += '\nFacebook: ' + (b as any).extracted.socials.facebook;
         }
-        if ((b as unknown).extracted?.socials?.instagram) {
-          extraDescription += '\nInstagram: ' + (b as unknown).extracted.socials.instagram;
+        if ((b as any).extracted?.socials?.instagram) {
+          extraDescription += '\nInstagram: ' + (b as any).extracted.socials.instagram;
         }
 
         await prisma.listing.create({
