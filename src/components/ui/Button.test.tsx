@@ -8,21 +8,21 @@ describe('Button Component', () => {
     const button = screen.getByRole('button', { name: /click me/i })
     
     expect(button).toBeInTheDocument()
-    expect(button).toHaveClass('btn', 'btn-primary') // default variant
+    expect(button).toHaveClass('bg-primary', 'text-white') // default variant classes
   })
 
   it('applies the secondary variant class', () => {
     render(<Button variant="secondary">Cancel</Button>)
     const button = screen.getByRole('button', { name: /cancel/i })
     
-    expect(button).toHaveClass('btn-secondary')
+    expect(button).toHaveClass('bg-transparent', 'border-2', 'border-primary')
   })
 
   it('applies fullWidth style when fullWidth is true', () => {
     render(<Button fullWidth>Block Button</Button>)
     const button = screen.getByRole('button', { name: /block button/i })
     
-    expect(button).toHaveStyle({ width: '100%' })
+    expect(button).toHaveClass('w-full')
   })
 
   it('handles onClick events', () => {

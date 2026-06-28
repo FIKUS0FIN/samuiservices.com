@@ -1,216 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Color Palette */
-  --primary-color: #0058be; /* Blue for trust/action */
-  --primary-hover: #004395;
-  --secondary-color: #006c49; /* Green for growth/eco */
-  --accent-color: #924700; /* Orange for attention/island vibe */
-  
-  /* Backgrounds */
-  --bg-color: #f8f9ff;
-  --bg-card: #ffffff;
-  --bg-nav: rgba(248, 249, 255, 0.8);
-  
-  /* Text */
-  --text-main: #0b1c30;
-  --text-muted: #424754;
-  --text-light: #ffffff;
-  
-  /* Borders */
-  --border-color: #c2c6d6;
-  
-  /* Typography */
-  --font-body: 'Inter', sans-serif;
-  --font-heading: 'Montserrat', sans-serif;
-  
-  /* Spacing & Sizes */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-pill: 9999px;
-  
-  /* Shadows & Effects */
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --glass-effect: blur(12px);
-  
-  /* Animations */
-  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+@layer base {
+  body {
+    @apply bg-surface text-text-main font-body leading-loose min-h-screen flex flex-col antialiased;
+  }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color: #213145;
-    --bg-card: #1e293b;
-    --bg-nav: rgba(33, 49, 69, 0.8);
-    --text-main: #eaf1ff;
-    --text-muted: #c2c6d6;
-    --border-color: #727785;
-    
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
-    --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold tracking-tight mb-4;
+  }
+  
+  h1 { @apply text-display; }
+  h2 { @apply text-headline-lg; }
+  h3 { @apply text-headline-md; }
+  h4 { @apply text-headline-sm; }
+  
+  a {
+    @apply text-primary transition-colors duration-200 ease-in-out hover:text-primary-hover;
   }
 }
 
-/* Base Styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@layer components {
+  /* Layout Classes */
+  .container {
+    @apply w-full max-w-container mx-auto px-6;
+  }
 
-html {
-  font-family: var(--font-body);
-  scroll-behavior: smooth;
-  height: 100%;
-}
+  .section {
+    @apply py-section;
+  }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  line-height: 1.6;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  /* Components */
+  .card {
+    @apply bg-surface-card rounded-card p-6 shadow-level-1 border border-outline-muted transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:shadow-level-2;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-}
+  .glass-nav {
+    @apply bg-surface/80 backdrop-blur-md border-b border-outline-muted sticky top-0 z-[100];
+  }
 
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
+  /* Forms */
+  .input-group {
+    @apply mb-6;
+  }
 
-a:hover {
-  color: var(--primary-hover);
-}
+  .input-label {
+    @apply block text-sm font-medium mb-2 text-text-muted;
+  }
 
-/* Layout Classes */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
+  .input-field {
+    @apply w-full px-4 py-3 rounded-global border border-outline-muted bg-surface-card text-text-main font-body text-body-md transition-colors duration-200 ease-in-out focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/10 min-h-[48px];
+  }
 
-.section {
-  padding: 4rem 0;
-}
+  /* Tabs */
+  .tab-list {
+    @apply flex gap-4 border-b border-outline-muted mb-6;
+  }
 
-/* Components */
-.card {
-  background-color: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-color);
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-}
+  .tab-btn {
+    @apply bg-transparent border-none px-4 py-3 font-heading font-semibold text-base text-text-muted cursor-pointer relative transition-colors duration-200 hover:text-text-main;
+  }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
-}
+  .tab-active {
+    @apply text-primary;
+  }
 
-.glass-nav {
-  background: var(--bg-nav);
-  backdrop-filter: var(--glass-effect);
-  -webkit-backdrop-filter: var(--glass-effect);
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
+  .tab-active::after {
+    content: '';
+    @apply absolute -bottom-[1px] left-0 right-0 h-[2px] bg-primary rounded-t-sm;
+  }
 
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  border: none;
-  outline: none;
-}
-
-.btn-primary {
-  background-color: var(--primary-color);
-  color: white;
-  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.23);
-  color: white;
-}
-
-.btn-secondary {
-  background-color: transparent;
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
-}
-
-.btn-secondary:hover {
-  background-color: var(--bg-card);
-  border-color: var(--text-main);
-  transform: translateY(-2px);
-}
-
-/* Forms */
-.input-group {
-  margin-bottom: 1.5rem;
-}
-
-.input-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: var(--text-muted);
-}
-
-.input-field {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  /* Badges */
+  .badge-unread {
+    @apply inline-flex items-center justify-center bg-primary text-white text-xs font-bold min-w-[20px] h-[20px] rounded-full px-1.5 ml-2;
+  }
 }
 
 /* Micro-animations */
@@ -229,62 +95,6 @@ a:hover {
 
 .card:hover .island-bg {
   transform: scale(1.05);
-}
-
-/* Tabs */
-.tab-list {
-  display: flex;
-  gap: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
-}
-
-.tab-btn {
-  background: none;
-  border: none;
-  padding: 0.75rem 1rem;
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  position: relative;
-  transition: color var(--transition-fast);
-}
-
-.tab-btn:hover {
-  color: var(--text-main);
-}
-
-.tab-active {
-  color: var(--primary-color);
-}
-
-.tab-active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: var(--primary-color);
-  border-radius: 2px 2px 0 0;
-}
-
-/* Badges */
-.badge-unread {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--primary-color);
-  color: white;
-  font-size: 0.75rem;
-  font-weight: 700;
-  min-width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  padding: 0 6px;
-  margin-left: 0.5rem;
 }
 
 /* Responsive Layouts */

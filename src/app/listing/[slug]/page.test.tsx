@@ -8,6 +8,10 @@ vi.mock('@/lib/db', () => ({
   getBusinessBySlug: vi.fn(),
 }))
 
+vi.mock('@/components/features/MessageForm', () => ({
+  MessageForm: () => <div data-testid="message-form"></div>,
+}))
+
 describe('BusinessDetail JSON-LD XSS', () => {
   it('escapes malicious characters in JSON-LD', async () => {
     vi.mocked(db.getBusinessBySlug).mockResolvedValue({
@@ -25,7 +29,7 @@ describe('BusinessDetail JSON-LD XSS', () => {
     } as unknown as any)
 
     // Render the async component
-    const Component = await BusinessDetail({ params: Promise.resolve({ id: '1' }) })
+    const Component = await BusinessDetail({ params: Promise.resolve({ slug: '1' }) })
     const { container } = render(Component)
 
     const script = container.querySelector('script[type="application/ld+json"]')

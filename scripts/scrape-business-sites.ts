@@ -4,7 +4,7 @@ import path from 'path';
 
 // Read the original seed-data.ts
 const seedDataPath = path.resolve(__dirname, '../src/app/actions/seed-data.ts');
-let seedDataContent = fs.readFileSync(seedDataPath, 'utf-8');
+const seedDataContent = fs.readFileSync(seedDataPath, 'utf-8');
 
 // A quick hack to extract the array, since we don't want to deal with TS compilation inside this script context
 const match = seedDataContent.match(/export const seedBusinesses = (\[[\s\S]*\]);/);
@@ -13,7 +13,7 @@ if (!match) {
   process.exit(1);
 }
 
-let businesses = eval(match[1]);
+const businesses = eval(match[1]);
 
 async function run() {
   console.log(`Starting scrape for ${businesses.length} businesses...`);

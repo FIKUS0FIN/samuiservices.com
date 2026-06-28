@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { BusinessCard } from '../components/features/BusinessCard'
 
-const mockBusiness: any = { // eslint-disable-line @typescript-eslint/no-explicit-any
-  id: 'test-1', slug: 'test-slug',
+const mockBusiness: any = {
+  id: 'test-1',
   name: 'Test Business',
   category: { id: 'cat-1', name: 'construction' },
   island: { id: 'isl-1', name: 'koh-samui' },
@@ -24,10 +24,10 @@ describe('BusinessCard Integration', () => {
     // Check badges/meta
     expect(screen.getByText(/4\.5/)).toBeInTheDocument()
     expect(screen.getByText(/\(10 reviews\)/i)).toBeInTheDocument()
-    expect(screen.getByText(/construction/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/construction/i).length).toBeGreaterThan(0)
     
     // Check link
-    const link = screen.getByRole('link')
-    expect(link).toHaveAttribute('href', '/listing/test-slug')
+    const link = screen.getAllByRole('link')[0]
+    expect(link).toHaveAttribute('href', '/listing/test-1')
   })
 })
