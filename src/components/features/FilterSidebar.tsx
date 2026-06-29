@@ -1,9 +1,19 @@
 'use client';
 
 import { Category } from '@prisma/client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback } from 'react';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/Input';
+import Link from 'next/link';
+
+interface SearchResult {
+  id: string;
+  name: string;
+  slug: string;
+  image: string;
+  category: { name: string, icon: string };
+  island: { name: string };
+}
 
 interface FilterSidebarProps {
   categories: Category[];
@@ -12,6 +22,10 @@ interface FilterSidebarProps {
 export function FilterSidebar({ categories }: FilterSidebarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  
+  // Extract island from pathname (e.g., '/samui' -> 'samui')
+  const island = pathname.split('/')[1] || 'all';
 
   // Read current state from URL
   const currentCategories = searchParams.getAll('category');
@@ -40,26 +54,120 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
     router.push('?' + createQueryString('category', slug, action), { scroll: false });
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    router.push('?' + createQueryString('q', e.target.value, 'set'), { scroll: false });
+  const [searchQuery, setSearchQuery] = useState(currentQuery);
+  const [suggestions, setSuggestions] = useState<SearchResult[]>([]);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownVisible(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Debounced fetch
+  useEffect(() => {
+    if (searchQuery.length < 3) {
+      setSuggestions([]);
+      setIsDropdownVisible(false);
+      return;
+    }
+
+    const fetchSuggestions = async () => {
+      setIsLoading(true);
+      try {
+        const url = `/api/search?q=${encodeURIComponent(searchQuery)}${island !== 'all' ? `&island=${island}` : ''}`;
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          setSuggestions(data.results);
+          setIsDropdownVisible(true);
+        }
+      } catch (err) {
+        console.error('Failed to fetch search suggestions', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const debounceTimer = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
+
+  const handleSearchSubmit = (query: string) => {
+    setIsDropdownVisible(false);
+    router.push('?' + createQueryString('q', query, 'set'), { scroll: false });
   };
 
   return (
     <aside>
-      <div className="mb-8">
+      <div className="mb-8 relative" ref={dropdownRef}>
         <Input 
           type="search" 
           placeholder="Search businesses..." 
-          defaultValue={currentQuery}
+          value={searchQuery}
           onChange={(e) => {
-            // Debounce in a real app, but this is simple enough for now
-            const val = e.target.value;
-            setTimeout(() => {
-              if (e.target.value === val) handleSearch(e);
-            }, 300);
+            setSearchQuery(e.target.value);
+            if (e.target.value === '') handleSearchSubmit(''); // Clear instantly
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearchSubmit(searchQuery);
+            }
           }}
           fullWidth
         />
+        
+        {isDropdownVisible && (searchQuery.length >= 3) && (
+          <div className="absolute top-full left-0 right-0 mt-2 bg-surface-container-lowest border border-outline-variant rounded-card shadow-level-2 z-50 overflow-hidden max-h-80 overflow-y-auto">
+            {isLoading ? (
+              <div className="p-4 text-center text-on-surface-variant text-body-sm">Loading...</div>
+            ) : suggestions.length > 0 ? (
+              <ul className="flex flex-col m-0 p-0">
+                {suggestions.map((suggestion) => (
+                  <li key={suggestion.id} className="border-b border-outline-variant last:border-0">
+                    <Link 
+                      href={`/listing/${suggestion.slug}`}
+                      className="flex items-center gap-3 p-3 hover:bg-surface transition-colors no-underline text-inherit"
+                    >
+                      {suggestion.image ? (
+                        <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-surface-container">
+                          <img src={suggestion.image} alt={suggestion.name} className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-on-primary font-bold">
+                          {suggestion.name.charAt(0)}
+                        </div>
+                      )}
+                      <div className="flex flex-col overflow-hidden">
+                        <span className="font-medium text-body-md text-on-surface truncate">{suggestion.name}</span>
+                        <span className="text-body-sm text-on-surface-variant truncate">
+                          {suggestion.category?.name} • {suggestion.island?.name}
+                        </span>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+                <li className="bg-surface-container-low">
+                  <button 
+                    onClick={() => handleSearchSubmit(searchQuery)}
+                    className="w-full p-3 text-center text-primary font-medium text-body-sm hover:underline"
+                  >
+                    View all results for "{searchQuery}"
+                  </button>
+                </li>
+              </ul>
+            ) : (
+              <div className="p-4 text-center text-on-surface-variant text-body-sm">No results found</div>
+            )}
+          </div>
+        )}
       </div>
 
       <h3 className="mb-6 text-title-lg font-bold text-on-surface">Categories</h3>
