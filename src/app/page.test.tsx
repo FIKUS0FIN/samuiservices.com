@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest'
 import { BusinessCard } from '../components/features/BusinessCard'
 
 const mockBusiness: any = {
-  id: 'test-1',
+  id: 'test-1', slug: 'test-1',
   name: 'Test Business',
   category: { id: 'cat-1', name: 'construction' },
   island: { id: 'isl-1', name: 'koh-samui' },

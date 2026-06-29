@@ -74,6 +74,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
   // Debounced fetch
   useEffect(() => {
     if (searchQuery.length < 3) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSuggestions([]);
       setIsDropdownVisible(false);
       return;
@@ -98,6 +99,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
 
     const debounceTimer = setTimeout(fetchSuggestions, 300);
     return () => clearTimeout(debounceTimer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   const handleSearchSubmit = (query: string) => {
@@ -159,7 +161,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
                     onClick={() => handleSearchSubmit(searchQuery)}
                     className="w-full p-3 text-center text-primary font-medium text-body-sm hover:underline"
                   >
-                    View all results for "{searchQuery}"
+                    View all results for &quot;{searchQuery}&quot;
                   </button>
                 </li>
               </ul>
