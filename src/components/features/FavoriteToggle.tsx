@@ -38,6 +38,7 @@ export function FavoriteToggle({ listingId, initialIsFavorited }: FavoriteToggle
     <button 
       onClick={handleToggle}
       disabled={loading}
+      className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
       style={{
         background: 'rgba(255, 255, 255, 0.8)',
         border: 'none',

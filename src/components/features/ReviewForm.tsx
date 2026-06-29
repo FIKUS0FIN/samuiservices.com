@@ -96,7 +96,7 @@ export function ReviewForm({ listingId }: ReviewFormProps) {
         />
       </div>
 
-      <Button type="submit" variant="primary" disabled={loading} style={{ alignSelf: 'flex-start' }}>
+      <Button type="submit" variant="primary" isLoading={loading} style={{ alignSelf: 'flex-start' }}>
         {loading ? 'Submitting...' : 'Submit Review'}
       </Button>
     </form>

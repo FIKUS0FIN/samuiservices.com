@@ -41,7 +41,7 @@ export function ClaimButton({ listingId }: { listingId: string }) {
       </div>
       <form onSubmit={handleClaim} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         <input type="hidden" name="listingId" value={listingId} />
-        <Button variant="primary" type="submit" disabled={loading} style={{ whiteSpace: 'nowrap' }}>
+        <Button variant="primary" type="submit" isLoading={loading} style={{ whiteSpace: 'nowrap' }}>
           {loading ? 'Submitting...' : 'Claim Business'}
         </Button>
         {error && <span style={{ color: '#ef4444', fontSize: '0.8rem' }}>{error}</span>}

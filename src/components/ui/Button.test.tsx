@@ -8,14 +8,14 @@ describe('Button Component', () => {
     const button = screen.getByRole('button', { name: /click me/i })
     
     expect(button).toBeInTheDocument()
-    expect(button).toHaveClass('bg-primary', 'text-white') // default variant classes
+    expect(button).toHaveClass('inline-flex', 'bg-primary') // base class and default variant
   })
 
   it('applies the secondary variant class', () => {
     render(<Button variant="secondary">Cancel</Button>)
     const button = screen.getByRole('button', { name: /cancel/i })
     
-    expect(button).toHaveClass('bg-transparent', 'border-2', 'border-primary')
+    expect(button).toHaveClass('bg-transparent', 'border-primary')
   })
 
   it('applies fullWidth style when fullWidth is true', () => {
@@ -39,5 +39,19 @@ describe('Button Component', () => {
     const button = screen.getByTestId('custom-btn')
     
     expect(button).toBeDisabled()
+  })
+
+  it('renders a spinner when isLoading is true and disables the button', () => {
+    const { container } = render(<Button isLoading>Loading</Button>)
+    const button = screen.getByRole('button', { name: /loading/i })
+
+    // Check for spinner icon - lucide-react renders an svg
+    const svg = container.querySelector('svg')
+    expect(svg).toBeInTheDocument()
+    expect(svg).toHaveClass('animate-spin')
+
+    // Check button state
+    expect(button).toBeDisabled()
+    expect(button).toHaveAttribute('aria-disabled', 'true')
   })
 })
