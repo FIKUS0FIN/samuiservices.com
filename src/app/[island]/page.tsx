@@ -44,9 +44,22 @@ export default async function IslandDirectory({
   
   const session = await getServerSession(authOptions);
   
-  // Now pass the filters to getBusinessesByIsland
   const islandBusinesses = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id);
   const categories = await getAllCategories();
+
+  let mapCenter: [number, number] = [9.5120, 100.0136];
+  let mapZoom = 11;
+
+  if (island === 'phangan') {
+    mapCenter = [9.7340, 100.0244];
+    mapZoom = 12;
+  } else if (island === 'tao') {
+    mapCenter = [10.0950, 99.8400];
+    mapZoom = 13;
+  } else if (island === 'all') {
+    mapCenter = [9.75, 99.95];
+    mapZoom = 10;
+  }
 
   return (
     <div className="flex flex-col lg:flex-row h-[calc(100vh-81px)] overflow-hidden">
@@ -87,7 +100,7 @@ export default async function IslandDirectory({
       <div className="hidden lg:block flex-1 relative border-l border-outline-variant z-0 bg-surface-container-lowest">
         {islandBusinesses.length > 0 && islandBusinesses.some(b => b.lat && b.lng) ? (
            <div className="h-full w-full">
-             <DynamicMap businesses={islandBusinesses as unknown as any} />
+             <DynamicMap businesses={islandBusinesses as unknown as any} center={mapCenter} zoom={mapZoom} />
            </div>
         ) : (
           <div className="flex items-center justify-center h-full w-full bg-surface-container-lowest text-on-surface-variant font-medium">
