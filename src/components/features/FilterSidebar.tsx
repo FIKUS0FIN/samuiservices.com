@@ -46,7 +46,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
 
   return (
     <aside>
-      <div style={{ marginBottom: '2rem' }}>
+      <div className="mb-8">
         <Input 
           type="search" 
           placeholder="Search businesses..." 
@@ -62,13 +62,14 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
         />
       </div>
 
-      <h3 style={{ marginBottom: '1.5rem', fontSize: '1.25rem', marginTop: 0 }}>Categories</h3>
-      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: 0, margin: 0 }}>
+      <h3 className="mb-6 text-title-lg font-bold text-on-surface">Categories</h3>
+      <ul className="list-none flex flex-col gap-3 p-0 m-0">
         <li>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: currentCategories.length === 0 ? 'var(--primary-color)' : 'var(--text-main)', fontWeight: 500 }}>
+          <label className={`flex items-center gap-2 cursor-pointer transition-colors text-body-md ${currentCategories.length === 0 ? 'text-primary font-bold' : 'text-on-surface'}`}>
             <input 
               type="checkbox" 
               checked={currentCategories.length === 0} 
+              className="accent-primary w-4 h-4"
               onChange={() => {
                 const params = new URLSearchParams(searchParams.toString());
                 params.delete('category');
@@ -81,10 +82,11 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
           const isChecked = currentCategories.includes(cat.slug);
           return (
             <li key={cat.slug}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: isChecked ? 'var(--primary-color)' : 'var(--text-muted)' }}>
+              <label className={`flex items-center gap-2 cursor-pointer transition-colors text-body-md ${isChecked ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-on-surface'}`}>
                 <input 
                   type="checkbox" 
                   checked={isChecked}
+                  className="accent-primary w-4 h-4"
                   onChange={(e) => handleCategoryChange(cat.slug, e.target.checked)}
                 /> {cat.name}
               </label>

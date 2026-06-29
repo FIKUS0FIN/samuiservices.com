@@ -12,47 +12,43 @@ interface ClaimCardProps {
 
 export function ClaimCard({ claim, actionLoading, onApprove, onReject }: ClaimCardProps) {
   return (
-    <Card key={claim.id} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+    <Card key={claim.id} className="p-6 flex flex-col gap-6 bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card transition-shadow hover:shadow-level-2">
+      <div className="flex justify-between items-start flex-wrap gap-4">
 
-        <div style={{ flex: 1, minWidth: '300px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-            <span style={{
-              backgroundColor: claim.status === 'PENDING' ? '#fef08a' : claim.status === 'APPROVED' ? '#bbf7d0' : '#fecaca',
-              color: claim.status === 'PENDING' ? '#854d0e' : claim.status === 'APPROVED' ? '#166534' : '#991b1b',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              letterSpacing: '0.05em'
-            }}>
+        <div className="flex-1 min-w-[300px]">
+          <div className="flex items-center gap-2 mb-3">
+            <span className={`px-2 py-1 rounded text-label-sm font-bold tracking-wide uppercase
+              ${claim.status === 'PENDING' ? 'bg-secondary-container text-on-secondary-container' : 
+                claim.status === 'APPROVED' ? 'bg-primary-container text-on-primary-container' : 
+                'bg-error-container text-on-error-container'}`}
+            >
               {claim.status}
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+            <span className="flex items-center gap-1 text-on-surface-variant text-label-md">
               <Clock size={14} />
               {new Date(claim.createdAt).toLocaleDateString()}
             </span>
           </div>
 
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#0f172a' }}>
+          <h3 className="text-title-lg font-bold mb-4 text-on-surface">
             {claim.listing?.name || 'Unknown Business'}
           </h3>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', backgroundColor: '#f8fafc', padding: '1rem', borderRadius: '8px' }}>
+          <div className="grid grid-cols-2 gap-4 bg-surface-container-highest p-4 rounded-xl border border-outline-variant/30">
             <div>
-              <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#64748b', fontWeight: 600, marginBottom: '0.25rem' }}>Requested By</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#334155', fontWeight: 500 }}>
-                <User size={16} color="#64748b" />
+              <div className="text-label-sm uppercase text-on-surface-variant font-bold mb-1">Requested By</div>
+              <div className="flex items-center gap-2 text-on-surface font-medium text-body-md">
+                <User size={16} className="text-on-surface-variant" />
                 {claim.user?.name || 'Unknown User'}
               </div>
-              <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.25rem', paddingLeft: '1.5rem' }}>
+              <div className="text-body-sm text-on-surface-variant mt-1 pl-6">
                 {claim.user?.email}
               </div>
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#64748b', fontWeight: 600, marginBottom: '0.25rem' }}>Business Info</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#334155', fontWeight: 500 }}>
-                <Building size={16} color="#64748b" />
+              <div className="text-label-sm uppercase text-on-surface-variant font-bold mb-1">Business Info</div>
+              <div className="flex items-center gap-2 text-on-surface font-medium text-body-md">
+                <Building size={16} className="text-on-surface-variant" />
                 ID: {claim.listingId.substring(0, 8)}...
               </div>
             </div>
@@ -60,12 +56,12 @@ export function ClaimCard({ claim, actionLoading, onApprove, onReject }: ClaimCa
         </div>
 
         {claim.status === 'PENDING' && (
-          <div style={{ display: 'flex', gap: '0.75rem', alignSelf: 'center' }}>
+          <div className="flex gap-3 self-center">
             <Button
               variant="secondary"
               onClick={() => onReject(claim.id)}
               disabled={actionLoading === claim.id}
-              style={{ backgroundColor: '#fee2e2', color: '#b91c1c', border: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              className="flex items-center gap-2 bg-error-container text-on-error-container hover:bg-error hover:text-on-error border-none"
             >
               <X size={16} /> Reject
             </Button>
@@ -73,7 +69,7 @@ export function ClaimCard({ claim, actionLoading, onApprove, onReject }: ClaimCa
               variant="primary"
               onClick={() => onApprove(claim.id)}
               disabled={actionLoading === claim.id}
-              style={{ backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              className="flex items-center gap-2"
             >
               <Check size={16} /> Approve
             </Button>

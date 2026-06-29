@@ -7,6 +7,21 @@ import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
 import ProductGrid from './components/ProductGrid';
 
+import StandardLayout from './layouts/StandardLayout';
+import RealEstateLayout from './layouts/RealEstateLayout';
+import TransportationLayout from './layouts/TransportationLayout';
+import ElectronicsRepairLayout from './layouts/ElectronicsRepairLayout';
+import ConstructionLayout from './layouts/ConstructionLayout';
+import ChildrenServicesLayout from './layouts/ChildrenServicesLayout';
+import HomeGardenLayout from './layouts/HomeGardenLayout';
+import ClothingLayout from './layouts/ClothingLayout';
+import GiftShopLayout from './layouts/GiftShopLayout';
+import FurnitureLayout from './layouts/FurnitureLayout';
+import ToursLayout from './layouts/ToursLayout';
+import BeautyHealthLayout from './layouts/BeautyHealthLayout';
+import HobbiesSportsLayout from './layouts/HobbiesSportsLayout';
+import BusinessServiceLayout from './layouts/BusinessServiceLayout';
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const business = await getBusinessBySlug(slug);
@@ -72,124 +87,63 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
     } : undefined
   };
 
+  // Route to the appropriate layout based on category name
+  const categoryName = business.category?.name || '';
+  let LayoutComponent = StandardLayout;
+
+  switch (categoryName) {
+    case 'Real Estate agencies':
+      LayoutComponent = RealEstateLayout;
+      break;
+    case 'Transportation and Delivery Service':
+      LayoutComponent = TransportationLayout;
+      break;
+    case 'Electronics Repair Serivce':
+      LayoutComponent = ElectronicsRepairLayout;
+      break;
+    case 'Construction & Repair Service':
+      LayoutComponent = ConstructionLayout;
+      break;
+    case "Children's Interactions Services":
+      LayoutComponent = ChildrenServicesLayout;
+      break;
+    case 'Home & Garden Services':
+      LayoutComponent = HomeGardenLayout;
+      break;
+    case 'Clothing & Accessories Shops':
+      LayoutComponent = ClothingLayout;
+      break;
+    case 'Gitf & Souvenir Shops': // using the exact string from the user prompt
+      LayoutComponent = GiftShopLayout;
+      break;
+    case 'Furniture & Interior Shops':
+      LayoutComponent = FurnitureLayout;
+      break;
+    case 'Toure Providers': // using the exact string from the user prompt
+      LayoutComponent = ToursLayout;
+      break;
+    case 'Beauty & Health Services':
+      LayoutComponent = BeautyHealthLayout;
+      break;
+    case 'Hobbies & Sports Service':
+      LayoutComponent = HobbiesSportsLayout;
+      break;
+    case 'Business Service':
+      LayoutComponent = BusinessServiceLayout;
+      break;
+    default:
+      LayoutComponent = StandardLayout;
+      break;
+  }
+
   return (
-    <div>
+    <div className="bg-surface min-h-screen">
       {/* Inject JSON-LD into the head for Google and AI agents */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
       />
-
-      {/* Hero Image Banner */}
-      <div style={{ width: '100%', height: business.layout === 'premium' ? '500px' : '350px', backgroundImage: `url(${business.image})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, transparent 100%)' }}></div>
-        <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', alignItems: business.layout === 'premium' ? 'center' : 'flex-end', justifyContent: business.layout === 'premium' ? 'center' : 'flex-start', paddingBottom: business.layout === 'premium' ? '0' : '2rem' }}>
-           <div style={{ textAlign: business.layout === 'premium' ? 'center' : 'left' }}>
-              <div style={{ color: '#60a5fa', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '2px', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
-                {business.category.name} • {business.island.name}
-              </div>
-              <h1 style={{ fontSize: business.layout === 'premium' ? '4.5rem' : '3.5rem', color: 'white', marginBottom: '0.5rem', textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>{business.name}</h1>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: business.layout === 'premium' ? 'center' : 'flex-start', gap: '1rem', fontSize: '1.25rem', color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
-                <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>★ {business.averageRating}</span>
-                <span>({business.reviewCount} verified reviews)</span>
-              </div>
-           </div>
-        </div>
-      </div>
-
-      <div className="container section">
-        {!business.isClaimed && <ClaimButton listingId={business.id} />}
-
-        <div style={{ display: 'flex', gap: '2.5rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-            
-            {/* Main Content Area */}
-            <div style={{ flex: '1 1 600px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-              <Card>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>About this business</h3>
-                <p style={{ fontSize: '1.125rem', color: 'var(--text-muted)', lineHeight: 1.8 }}>
-                  {business.description}
-                </p>
-              </Card>
-
-              {/* Products & Services Showcase */}
-              {business.products && business.products.length > 0 && (
-                <ProductGrid products={business.products} />
-              )}
-
-              {/* Reviews Section */}
-              <Card>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Reviews</h2>
-                <ReviewForm listingId={business.id} />
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                  {business.reviews && business.reviews.length > 0 ? (
-                    business.reviews.map(review => (
-                      <div key={review.id} style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', backgroundColor: '#f9fafb' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                          <div style={{ width: '2.5rem', height: '2.5rem', backgroundColor: '#e5e7eb', borderRadius: '50%', overflow: 'hidden' }}>
-                            {review.user?.image ? (
-                              <img src={review.user.image} alt={review.user.name || 'User'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            ) : (
-                              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6b7280', fontWeight: 'bold' }}>
-                                {(review.user?.name || 'U').charAt(0).toUpperCase()}
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            <div style={{ fontWeight: 'bold' }}>{review.user?.name || 'Anonymous User'}</div>
-                            <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-                              {new Date(review.createdAt).toLocaleDateString()}
-                            </div>
-                          </div>
-                          <div style={{ marginLeft: 'auto', color: '#eab308', fontWeight: 'bold', fontSize: '1.125rem' }}>
-                            {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                          </div>
-                        </div>
-                        <p style={{ margin: 0, lineHeight: 1.6 }}>{review.comment}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <div style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                      No reviews yet. Be the first to review this business!
-                    </div>
-                  )}
-                </div>
-              </Card>
-            </div>
-
-            {/* Sticky Sidebar Widget */}
-            <div style={{ width: '100%', maxWidth: '350px', position: 'sticky', top: '100px', flexShrink: 0 }}>
-              <Card style={{ border: '2px solid #eff6ff', boxShadow: 'var(--shadow-lg)' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1.5rem', textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>Contact Business</h3>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#dbeafe', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
-                      📞
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>Phone Number</div>
-                      <div style={{ fontWeight: 'bold', fontSize: '1.125rem' }}>{business.phone}</div>
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#16a34a' }}>
-                      📍
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>Location</div>
-                      <div style={{ fontWeight: 'bold' }}>{business.address}</div>
-                    </div>
-                  </div>
-                  <div style={{ marginTop: '1rem' }}>
-                     <MessageForm receiverId={business.userId} listingId={business.id} />
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-        </div>
-      </div>
+      <LayoutComponent business={business} />
     </div>
   );
 }

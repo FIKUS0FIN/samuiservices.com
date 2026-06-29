@@ -51,9 +51,9 @@ export default async function IslandDirectory({
   return (
     <div className="flex flex-col lg:flex-row h-[calc(100vh-81px)] overflow-hidden">
       {/* Sidebar Filters */}
-      <div className="w-full lg:w-80 flex-shrink-0 overflow-y-auto border-b lg:border-b-0 lg:border-r border-outline-muted p-6 bg-surface-card z-10">
-        <h2 className="text-headline-md font-bold mb-2 text-text-main">{islandName} Services</h2>
-        <p className="text-text-muted text-body-sm mb-8">Browse local businesses and top-rated services.</p>
+      <div className="w-full lg:w-80 flex-shrink-0 overflow-y-auto border-b lg:border-b-0 lg:border-r border-outline-variant p-6 bg-surface-container-lowest z-10">
+        <h2 className="text-display-sm font-bold mb-2 text-on-surface">{islandName} Services</h2>
+        <p className="text-on-surface-variant text-body-md mb-8">Browse local businesses and top-rated services.</p>
         <FilterSidebar categories={categories} />
       </div>
 
@@ -61,7 +61,7 @@ export default async function IslandDirectory({
       <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-surface">
         <div className="max-w-3xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <p className="font-semibold text-text-main">{islandBusinesses.length} businesses found</p>
+            <p className="font-medium text-title-md text-on-surface">{islandBusinesses.length} businesses found</p>
             <select className="input-field w-auto py-2">
               <option>Recommended</option>
               <option>Highest Rated</option>
@@ -71,8 +71,8 @@ export default async function IslandDirectory({
 
           <div className="flex flex-col gap-6">
             {islandBusinesses.length === 0 ? (
-              <Card className="text-center p-12 shadow-level-1">
-                <p className="text-text-muted text-body-lg">No businesses found yet. Be the first to add yours!</p>
+              <Card className="text-center p-12 shadow-level-1 bg-surface-container-lowest border border-outline-variant rounded-card">
+                <p className="text-on-surface-variant text-body-lg">No businesses found yet. Be the first to add yours!</p>
               </Card>
             ) : (
               islandBusinesses.map(business => (
@@ -84,13 +84,13 @@ export default async function IslandDirectory({
       </div>
 
       {/* Sticky Interactive Map (Desktop only) */}
-      <div className="hidden lg:block flex-1 relative border-l border-outline-muted z-0">
+      <div className="hidden lg:block flex-1 relative border-l border-outline-variant z-0 bg-surface-container-lowest">
         {islandBusinesses.length > 0 && islandBusinesses.some(b => b.lat && b.lng) ? (
            <div className="h-full w-full">
              <DynamicMap businesses={islandBusinesses as unknown as any} />
            </div>
         ) : (
-          <div className="flex items-center justify-center h-full w-full bg-surface-card text-text-muted">
+          <div className="flex items-center justify-center h-full w-full bg-surface-container-lowest text-on-surface-variant font-medium">
              Map unavailable
           </div>
         )}

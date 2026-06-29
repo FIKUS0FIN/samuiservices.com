@@ -7,17 +7,16 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ activeTab }: DashboardSidebarProps) {
   return (
-    <Card style={{ padding: '2rem 1.5rem', alignSelf: 'start' }}>
-      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem', padding: 0, margin: 0 }}>
+    <Card className="p-8 self-start bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card">
+      <ul className="list-none flex flex-col gap-2 p-0 m-0">
         <li>
           <Link
             href="/dashboard"
-            style={{
-              display: 'block',
-              padding: '0.5rem',
-              fontWeight: activeTab === 'listings' ? 600 : 'normal',
-              color: activeTab === 'listings' ? 'var(--primary-color)' : 'var(--text-muted)'
-            }}
+            className={`block p-3 rounded-md transition-colors ${
+              activeTab === 'listings' 
+                ? 'bg-primary-container text-on-primary-container font-bold text-label-md' 
+                : 'text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface text-body-md'
+            }`}
           >
             My Listings
           </Link>
@@ -25,12 +24,11 @@ export function DashboardSidebar({ activeTab }: DashboardSidebarProps) {
         <li>
           <Link
             href="/dashboard/inbox"
-            style={{
-              display: 'block',
-              padding: '0.5rem',
-              fontWeight: activeTab === 'inbox' ? 600 : 'normal',
-              color: activeTab === 'inbox' ? 'var(--primary-color)' : 'var(--text-muted)'
-            }}
+            className={`block p-3 rounded-md transition-colors ${
+              activeTab === 'inbox' 
+                ? 'bg-primary-container text-on-primary-container font-bold text-label-md' 
+                : 'text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface text-body-md'
+            }`}
           >
             Inbox
           </Link>
@@ -38,31 +36,32 @@ export function DashboardSidebar({ activeTab }: DashboardSidebarProps) {
         <li>
           <a
             href="#"
-            style={{
-              display: 'block',
-              padding: '0.5rem',
-              fontWeight: activeTab === 'analytics' ? 600 : 'normal',
-              color: activeTab === 'analytics' ? 'var(--primary-color)' : 'var(--text-muted)'
-            }}
+            className={`block p-3 rounded-md transition-colors ${
+              activeTab === 'analytics' 
+                ? 'bg-primary-container text-on-primary-container font-bold text-label-md' 
+                : 'text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface text-body-md'
+            }`}
           >
             Analytics
           </a>
         </li>
         <li>
-          <a
-            href="#"
-            style={{
-              display: 'block',
-              padding: '0.5rem',
-              fontWeight: activeTab === 'settings' ? 600 : 'normal',
-              color: activeTab === 'settings' ? 'var(--primary-color)' : 'var(--text-muted)'
-            }}
+          <Link
+            href="/dashboard/settings"
+            className={`block p-3 rounded-md transition-colors ${
+              activeTab === 'settings' 
+                ? 'bg-primary-container text-on-primary-container font-bold text-label-md' 
+                : 'text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface text-body-md'
+            }`}
           >
             Account Settings
-          </a>
+          </Link>
         </li>
         <li>
-          <Link href="/api/auth/signout" style={{ display: 'block', padding: '0.5rem', color: 'red', marginTop: '1rem' }}>
+          <Link 
+            href="/api/auth/signout" 
+            className="block p-3 mt-4 text-error font-medium hover:bg-error-container hover:text-on-error-container rounded-md transition-colors text-body-md"
+          >
             Log Out
           </Link>
         </li>

@@ -16,55 +16,55 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.5rem' }}>Platform Overview</h1>
-        <p style={{ color: 'var(--text-muted)' }}>Monitor the health and activity of the Samui Services directory.</p>
+      <div className="mb-8">
+        <h1 className="font-display text-display-sm font-bold text-on-surface mb-2">Platform Overview</h1>
+        <p className="font-body-lg text-on-surface-variant">Monitor the health and activity of the Samui Services directory.</p>
       </div>
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
-        <Card style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#64748b' }}>Total Users</h3>
-            <div style={{ padding: '0.75rem', backgroundColor: '#f0fdf4', borderRadius: '12px' }}>
-              <Users color="#16a34a" size={24} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <h3 className="font-label-md text-on-surface-variant uppercase tracking-widest text-sm">Total Users</h3>
+            <div className="p-3 bg-secondary-container text-on-secondary-container rounded-xl">
+              <Users size={24} />
             </div>
           </div>
-          <div style={{ fontSize: '3rem', fontWeight: 800, color: '#0f172a', lineHeight: 1 }}>{usersCount}</div>
-        </Card>
+          <div className="font-display text-5xl font-bold text-on-surface leading-none">{usersCount}</div>
+        </div>
         
-        <Card style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#64748b' }}>Total Listings</h3>
-            <div style={{ padding: '0.75rem', backgroundColor: '#eff6ff', borderRadius: '12px' }}>
-              <Store color="#2563eb" size={24} />
+        <div className="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <h3 className="font-label-md text-on-surface-variant uppercase tracking-widest text-sm">Total Listings</h3>
+            <div className="p-3 bg-primary-container text-on-primary-container rounded-xl">
+              <Store size={24} />
             </div>
           </div>
-          <div style={{ fontSize: '3rem', fontWeight: 800, color: '#0f172a', lineHeight: 1 }}>{listingsCount}</div>
-        </Card>
+          <div className="font-display text-5xl font-bold text-on-surface leading-none">{listingsCount}</div>
+        </div>
 
-        <Card style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#64748b' }}>Pending Claims</h3>
-            <div style={{ padding: '0.75rem', backgroundColor: claimsCount > 0 ? '#fef2f2' : '#f8fafc', borderRadius: '12px' }}>
-              <ClipboardList color={claimsCount > 0 ? '#ef4444' : '#94a3b8'} size={24} />
+        <div className="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <h3 className="font-label-md text-on-surface-variant uppercase tracking-widest text-sm">Pending Claims</h3>
+            <div className={`p-3 rounded-xl ${claimsCount > 0 ? 'bg-error-container text-on-error-container' : 'bg-surface-container text-on-surface-variant'}`}>
+              <ClipboardList size={24} />
             </div>
           </div>
-          <div style={{ fontSize: '3rem', fontWeight: 800, color: claimsCount > 0 ? '#ef4444' : '#0f172a', lineHeight: 1 }}>{claimsCount}</div>
-        </Card>
+          <div className={`font-display text-5xl font-bold leading-none ${claimsCount > 0 ? 'text-error' : 'text-on-surface'}`}>{claimsCount}</div>
+        </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
-        <Card style={{ padding: '2rem', border: '1px solid #e2e8f0' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem', color: '#0f172a' }}>Quick Actions</h2>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <Link href="/add-listing" style={{ padding: '0.75rem 1.5rem', backgroundColor: 'var(--primary-color)', color: 'white', borderRadius: '8px', fontWeight: 500, textDecoration: 'none' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 bg-surface-container-lowest p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/30">
+          <h2 className="font-display text-headline-lg mb-6 text-on-surface font-bold">Quick Actions</h2>
+          <div className="flex flex-wrap gap-4">
+            <Link href="/add-listing" className="px-6 py-3 bg-primary text-on-primary rounded-lg font-label-md shadow-md active:scale-95 transition-all">
               Add New Listing
             </Link>
-            <Link href="/admin/import" style={{ padding: '0.75rem 1.5rem', backgroundColor: '#f1f5f9', color: '#334155', borderRadius: '8px', fontWeight: 500, textDecoration: 'none' }}>
+            <Link href="/admin/import" className="px-6 py-3 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-lg font-label-md hover:bg-surface-container-low transition-colors">
               Run Seed Script
             </Link>
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );

@@ -44,41 +44,41 @@ export function MessageCard({
   const otherParty = isReceived ? message.sender : message.receiver;
 
   return (
-    <Card style={{ padding: '1.5rem', borderLeft: isMessageUnread ? '4px solid var(--primary-color)' : '1px solid var(--border-color)' }} className="fade-in-up">
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', alignItems: 'flex-start' }}>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <div style={{ width: '40px', height: '40px', backgroundColor: '#e2e8f0', borderRadius: '50%', overflow: 'hidden' }}>
+    <Card className={`p-6 transition-all duration-300 rounded-card bg-surface-container-lowest ${isMessageUnread ? 'border-l-4 border-l-primary shadow-level-2' : 'border border-outline-variant shadow-level-1'}`}>
+      <div className="flex flex-col md:flex-row justify-between mb-4 md:items-start gap-2">
+        <div className="flex gap-4 items-center">
+          <div className="w-10 h-10 bg-surface-container-highest rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center">
             {otherParty?.image ? (
-              <img src={otherParty.image} alt={otherParty.name || 'User'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={otherParty.image} alt={otherParty.name || 'User'} className="w-full h-full object-cover" />
             ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+              <span className="text-on-surface-variant font-medium">
                 {(otherParty?.name || 'U').charAt(0).toUpperCase()}
-              </div>
+              </span>
             )}
           </div>
           <div>
-            <div style={{ fontWeight: isMessageUnread ? 700 : 600 }}>
+            <div className={`text-title-sm text-on-surface ${isMessageUnread ? 'font-bold' : 'font-medium'}`}>
               {isReceived ? (otherParty?.name || 'Anonymous User') : `To: ${otherParty?.name || 'User'}`}
-              {isMessageUnread && <span style={{ marginLeft: '8px', width: '8px', height: '8px', backgroundColor: 'var(--primary-color)', borderRadius: '50%', display: 'inline-block' }}></span>}
+              {isMessageUnread && <span className="ml-2 w-2 h-2 bg-primary rounded-full inline-block align-middle"></span>}
             </div>
-            <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+            <div className="text-on-surface-variant text-body-sm">
               {new Date(message.createdAt).toLocaleString()}
             </div>
           </div>
         </div>
         {message.listing && (
-          <Link href={`/${message.listing.island?.slug || 'all'}/${message.listing.id}`} style={{ fontSize: '0.875rem', color: 'var(--primary-color)' }}>
+          <Link href={`/${message.listing.island?.slug || 'all'}/${message.listing.id}`} className="text-label-md text-primary font-medium hover:underline">
             Re: {message.listing.name}
           </Link>
         )}
       </div>
 
-      <p style={{ margin: 0, padding: '1rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-sm)', fontWeight: isMessageUnread ? 500 : 400 }}>
+      <p className={`m-0 p-4 bg-surface-container-highest rounded-md text-on-surface text-body-md ${isMessageUnread ? 'font-medium' : 'font-normal'}`}>
         {message.content}
       </p>
 
       {isReceived && (
-        <div style={{ marginTop: '1rem', textAlign: 'right' }}>
+        <div className="mt-4 text-right">
           <Button variant="secondary" onClick={() => onExpandMessage(message)}>
             {isReplying ? 'Cancel Reply' : 'Reply'}
           </Button>

@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { getServerSession } from 'next-auth';
@@ -38,25 +37,27 @@ export default async function Dashboard() {
   });
 
   return (
-    <div className="section">
-      <div className="container">
+    <div className="section bg-background min-h-screen">
+      <div className="container pt-12">
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12">
           <div>
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>My Dashboard</h1>
-            <p style={{ color: 'var(--text-muted)' }}>Welcome back, {session.user.name || session.user.email}!</p>
+            <h1 className="font-display text-display-md font-bold text-primary mb-2">My Dashboard</h1>
+            <p className="font-body-lg text-on-surface-variant text-body-lg">Welcome back, {session.user.name || session.user.email}!</p>
           </div>
           <Link href="/add-listing">
-            <Button variant="primary">+ Add New Listing</Button>
+            <Button variant="primary" className="shadow-md hover:shadow-lg active:scale-95 transition-all px-6">+ Add New Listing</Button>
           </Link>
         </div>
 
-        <div className="dashboard-grid">
+        <div className="dashboard-grid grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8">
           {/* Sidebar Menu */}
-          <DashboardSidebar activeTab="listings" />
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 self-start shadow-sm">
+            <DashboardSidebar activeTab="listings" />
+          </div>
 
           {/* Main Content */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+          <div className="flex flex-col gap-12">
             <ActiveListings listings={listings} />
             <SavedFavorites favorites={favorites} />
           </div>

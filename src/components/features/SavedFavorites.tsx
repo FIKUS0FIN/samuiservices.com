@@ -13,11 +13,11 @@ type FavoriteWithListing = Favorite & {
 export function SavedFavorites({ favorites }: { favorites: FavoriteWithListing[] }) {
   return (
     <div>
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Saved Favorites ({favorites.length})</h2>
+      <h2 className="text-headline-sm font-bold text-on-surface mb-6">Saved Favorites ({favorites.length})</h2>
 
       {favorites.length === 0 ? (
-        <Card style={{ padding: '3rem', textAlign: 'center' }}>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>You haven&apos;t saved any listings to your favorites yet.</p>
+        <Card className="p-12 text-center bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card">
+          <p className="text-on-surface-variant text-body-lg mb-4">You haven&apos;t saved any listings to your favorites yet.</p>
           <Link href="/all">
             <Button variant="secondary">Browse Listings</Button>
           </Link>
@@ -26,22 +26,22 @@ export function SavedFavorites({ favorites }: { favorites: FavoriteWithListing[]
         favorites.map(favorite => {
           const listing = favorite.listing;
           return (
-            <Card key={listing.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', marginBottom: '1rem' }}>
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                <div style={{ width: '80px', height: '60px', backgroundColor: '#e2e8f0', borderRadius: 'var(--radius-sm)' }}>
+            <Card key={listing.id} className="flex flex-col md:flex-row justify-between md:items-center p-6 mb-4 bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card transition-shadow hover:shadow-level-2 gap-4">
+              <div className="flex gap-4 items-center">
+                <div className="w-20 h-16 bg-surface-container-highest rounded-md overflow-hidden flex-shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {listing.image && <img src={listing.image} alt={listing.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }} />}
+                  {listing.image && <img src={listing.image} alt={listing.name} className="w-full h-full object-cover" />}
                 </div>
                 <div>
-                  <h4 style={{ fontSize: '1.125rem', marginBottom: '0.25rem', marginTop: 0 }}>{listing.name}</h4>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                  <h4 className="text-title-lg font-bold text-on-surface m-0 mb-1">{listing.name}</h4>
+                  <div className="text-on-surface-variant text-body-sm">
                     {listing.category?.name || 'Uncategorized'} • {listing.island?.name || 'Unknown Location'}
                   </div>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div className="flex flex-wrap gap-2">
                 <Link href={`/${listing.island?.slug || 'all'}/${listing.id}`}>
-                  <Button variant="secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>View Public</Button>
+                  <Button variant="secondary" className="px-4 py-2 text-sm bg-surface-container hover:bg-surface-container-highest border-none text-on-surface font-medium">View Public</Button>
                 </Link>
               </div>
             </Card>

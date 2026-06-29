@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SALA Spa &amp; Wellness | Samui Services</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#0058be",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-tertiary-fixed": "#311400",
+                    "on-tertiary-container": "#fffbff",
+                    "on-primary-fixed-variant": "#004395",
+                    "on-primary-container": "#fefcff",
+                    "inverse-surface": "#213145",
+                    "primary-container": "#2170e4",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#adc6ff",
+                    "on-surface-variant": "#424754",
+                    "on-tertiary-fixed-variant": "#723600",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb786",
+                    "on-error": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed": "#6ffbbe",
+                    "surface-variant": "#d3e4fe",
+                    "on-primary-fixed": "#001a42",
+                    "outline-variant": "#c2c6d6",
+                    "on-secondary-fixed": "#002113",
+                    "surface-tint": "#005ac2",
+                    "tertiary-container": "#b75b00",
+                    "tertiary": "#924700",
+                    "outline": "#727785",
+                    "on-secondary-fixed-variant": "#005236",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container": "#e5eeff",
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-secondary-container": "#00714d",
+                    "secondary": "#006c49",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#6cf8bb",
+                    "surface-container-high": "#dce9ff",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#eaf1ff",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed-dim": "#adc6ff",
+                    "background": "#f8f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "xl": "80px",
+                    "lg": "48px",
+                    "sm": "12px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "headline-sm": ["Montserrat"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Montserrat"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "display": ["Montserrat"],
+                    "headline-md": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"]
+            },
+            "fontSize": {
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-gradient {
+            background: linear-gradient(to top, rgba(11, 28, 48, 0.8) 0%, rgba(11, 28, 48, 0) 100%);
+        }
+        .service-card-hover {
+            transition: all 0.3s ease;
+        }
+        .service-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(0, 88, 190, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-fixed">
+<!-- TopNavBar -->
+<header class="bg-surface/80 backdrop-blur-md dark:bg-on-surface/80 docked full-width top-0 sticky z-50 shadow-sm">
+<div class="flex justify-between items-center w-full px-md max-w-container-max mx-auto h-xl">
+<div class="flex items-center gap-lg">
+<span class="font-display text-headline-md text-primary dark:text-inverse-primary tracking-tight">Samui Services</span>
+<nav class="hidden md:flex gap-gutter items-center">
+<a class="font-body-md text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Koh Samui</a>
+<a class="font-body-md text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Koh Phangan</a>
+<a class="font-body-md text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Koh Tao</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="hidden md:block font-body-md text-body-md font-headline-sm text-headline-sm text-primary dark:text-inverse-primary hover:text-primary transition-colors duration-200">List your Service</button>
+<div class="p-xs bg-surface-container rounded-full md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</div>
+</div>
+</div>
+</header>
+<main class="w-full">
+<!-- Hero Section -->
+<section class="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC4J0mUC9QkGd-pcET6geYJbbvUg0zqIOBU0hxXhF9xihaY3DkJ13qZNmSkFqE9-X4-ctY0j-2AQDwGDmIn0NXnKRSR0xSHBT5kd8juz1nr3MUJRWxOf5zwMhPuKopaGt0BVvvXNXYPpqIb3L7ZXUwoJx3gtXp7yppm2CtricEHSO9f30zlO6W61shp3tnPpadWvR-XRi0--rMlnjzigOtY6pcw2Rq0OmviqTeHT-9LaG0t6TbOBs0Dcql8ZfJRVRtRUGS3PvbEfY"/>
+<div class="absolute inset-0 hero-gradient"></div>
+<div class="absolute inset-0 flex items-end">
+<div class="max-w-container-max mx-auto w-full px-md pb-xl">
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-xs">
+<div class="bg-secondary text-on-secondary px-sm py-xs rounded-full flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-sm text-label-sm">Verified Provider</span>
+</div>
+</div>
+<h1 class="font-display text-display text-white mb-xs">SALA Spa &amp; Wellness</h1>
+<div class="flex flex-wrap items-center gap-md text-white/90">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.9 (248 reviews)</span>
+</div>
+<div class="flex items-center gap-xs border-l border-white/20 pl-md">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-body-md text-body-md">Choeng Mon, Koh Samui</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content & Booking Grid -->
+<section class="max-w-container-max mx-auto px-md py-xl grid grid-cols-1 lg:grid-cols-12 gap-lg lg:gap-xl">
+<!-- Main Content Area -->
+<div class="lg:col-span-8 flex flex-col gap-xl">
+<!-- About Us -->
+<div class="flex flex-col gap-md" id="about">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">About Us</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                        Discover a sanctuary of serenity at <span class="text-primary font-semibold">SALA Spa &amp; Wellness</span>, a premier wellness center nestled in the heart of Koh Samui. Our philosophy blends centuries-old traditional Thai healing techniques with cutting-edge modern beauty treatments to provide a holistic rejuvenating experience. 
+                    </p>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                        Whether you are seeking the rhythmic pressure of an authentic <span class="italic">Thai massage</span>, the quiet indulgence of our beauty salon, or a comprehensive detox journey, our expert therapists are dedicated to restoring your inner balance. Experience the true essence of island relaxation in our tranquil, sun-drenched facility.
+                    </p>
+<div class="flex flex-wrap gap-xs mt-sm">
+<span class="bg-surface-container text-on-surface-variant px-md py-xs rounded-full font-label-sm text-label-sm">#KohSamuiSpa</span>
+<span class="bg-surface-container text-on-surface-variant px-md py-xs rounded-full font-label-sm text-label-sm">#ThaiMassage</span>
+<span class="bg-surface-container text-on-surface-variant px-md py-xs rounded-full font-label-sm text-label-sm">#WellnessCenter</span>
+<span class="bg-surface-container text-on-surface-variant px-md py-xs rounded-full font-label-sm text-label-sm">#BeautySalon</span>
+</div>
+</div>
+<!-- Service Menu & Pricing -->
+<div class="flex flex-col gap-md" id="services">
+<div class="flex items-end justify-between border-b border-outline-variant pb-base">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Service Menu</h2>
+<span class="font-label-md text-label-md text-primary">All prices in THB</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Service Item 1 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant service-card-hover flex flex-col justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Traditional Thai Massage</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Deep pressure and rhythmic stretching to unblock energy lines.</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant">90 min</span>
+<span class="font-headline-sm text-headline-sm text-primary">1,200 THB</span>
+</div>
+</div>
+<!-- Service Item 2 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant service-card-hover flex flex-col justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Aromatherapy Oil Massage</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Essential oils blended for deep relaxation and skin nourishment.</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant">60 min</span>
+<span class="font-headline-sm text-headline-sm text-primary">1,500 THB</span>
+</div>
+</div>
+<!-- Service Item 3 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant service-card-hover flex flex-col justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Deep Tissue Wellness Therapy</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Targeted muscle relief for active travelers and athletes.</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant">90 min</span>
+<span class="font-headline-sm text-headline-sm text-primary">1,800 THB</span>
+</div>
+</div>
+<!-- Service Item 4 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant service-card-hover flex flex-col justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Rejuvenating Facial Treatment</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Premium organic products to restore your natural island glow.</p>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant">60 min</span>
+<span class="font-headline-sm text-headline-sm text-primary">2,000 THB</span>
+</div>
+</div>
+<!-- Service Item 5 (Wide) -->
+<div class="md:col-span-2 bg-surface-container-lowest p-md rounded-xl border border-outline-variant service-card-hover flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Luxury Manicure &amp; Pedicure</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Full pampering session including scrub and polish.</p>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary">1,100 THB</span>
+</div>
+</div>
+</div>
+<!-- Meet Our Experts -->
+<div class="flex flex-col gap-md" id="experts">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Meet Our Experts</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Expert 1 -->
+<div class="flex items-center gap-md bg-surface-container-low p-md rounded-xl">
+<div class="w-24 h-24 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of Elena Rodriguez, a professional esthetician with a warm smile, wearing a cream-colored business blazer. The background is a soft-focus, modern spa reception with light wood panels and warm lighting. Her expression is welcoming and expert, perfectly reflecting the corporate modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsocndlmXvrnwtRJPC4EE3q6P22ZPro7rNNBgfZ2QjM8EpTXrgY0GIAGFrREVcXvVAlsmjG_2Lbk6VrrMKqorNLxzAK6V-8hLHDY-S-srYNYDYFrqKufO8lATLelSP17wDmEmXvEc8YM5myKsn2cyGvoiQGH5RZNdU4YLD4wZgrWpbUUhchN8UzY6Q6bNl3EEdMoNe9_ObaeVf3WVqKymG4Bs7ircdklt8fLCBm9BWvQIaDIac4gRwU_P6N8eKyOHLxAB7MbZ_FoU"/>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Elena Rodriguez</h4>
+<p class="font-label-md text-label-md text-primary mb-xs">Senior Esthetician</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">10+ years experience in luxury skincare and facial therapeutics.</p>
+</div>
+</div>
+<!-- Expert 2 -->
+<div class="flex items-center gap-md bg-surface-container-low p-md rounded-xl">
+<div class="w-24 h-24 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of Anong Suk-on, a Lead Thai Massage Therapist in her 40s with a peaceful, professional expression. She is wearing a traditional yet modern Thai silk spa uniform in soft teal. The lighting is soft and natural, emphasizing trust and tranquility. The aesthetic is clean and high-end, aligned with tropical luxury wellness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_GYiTktDvqLeuPhiGbP12bJzfVi4Ic2bXYPCl1A8umfCdKL4sJ4q8VIZSLuz-8I2DL5OSskkaDWPI5qoK4cTvulQ5QXtaPIwxfphm0gQW3HQPK3vS3I67-BiGsHREOQe35K8sAyb8CptKW7qAn8idXWv1x7aU6vWSLoIBjWL-5QtlIGEZhfJmn-FpKTckQywnLPzG5gvzVug7KRgSEWsp0_LMiggh5Vt191Sba9DFWenN12ZJcVQWR987744LwD7WHp8qvzgAWw4"/>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Anong Suk-on</h4>
+<p class="font-label-md text-label-md text-primary mb-xs">Lead Massage Therapist</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Certified Traditional Medicine Expert specializing in deep tissue therapy.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Booking Sidebar (Sticky) -->
+<aside class="lg:col-span-4">
+<div class="sticky top-28 bg-white p-lg rounded-xl shadow-lg border border-outline-variant flex flex-col gap-md">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant">Starting from</span>
+<span class="font-headline-md text-headline-md text-on-surface">1,100 THB</span>
+</div>
+<div class="space-y-sm">
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Select Date</label>
+<div class="relative">
+<input class="w-full h-12 px-md border border-outline rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" type="date"/>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Select Time</label>
+<select class="w-full h-12 px-md border border-outline rounded-lg focus:ring-2 focus:ring-primary focus:border-primary appearance-none">
+<option>10:00 AM</option>
+<option>11:30 AM</option>
+<option>01:00 PM</option>
+<option>02:30 PM</option>
+<option>04:00 PM</option>
+</select>
+</div>
+</div>
+<button class="w-full py-md bg-primary text-white font-headline-sm text-headline-sm rounded-lg hover:bg-primary-container active:scale-[0.98] transition-all shadow-md shadow-primary/20">
+                        Book an Appointment
+                    </button>
+<div class="flex items-center justify-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span class="font-label-sm text-label-sm font-semibold">No pre-payment required</span>
+</div>
+<div class="pt-md border-t border-outline-variant mt-sm">
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">info</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Free cancellation up to 24 hours before your appointment.</p>
+</div>
+</div>
+</div>
+</aside>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high dark:bg-inverse-surface border-t border-outline-variant full-width">
+<div class="w-full py-xl px-md grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter max-w-container-max mx-auto">
+<div class="flex flex-col gap-md">
+<span class="font-display text-headline-sm text-primary">Samui Services</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Samui Services. Professional Island Directory.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-label-md text-on-surface">Company</h5>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Partner Program</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-label-md text-on-surface">Support</h5>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-label-md text-on-surface">Legal</h5>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the booking button
+        const bookBtn = document.querySelector('button.bg-primary');
+        if (bookBtn) {
+            bookBtn.addEventListener('click', () => {
+                bookBtn.textContent = 'Checking availability...';
+                setTimeout(() => {
+                    bookBtn.textContent = 'Confirm Booking';
+                }, 1000);
+            });
+        }
+    </script>
+</body></html>

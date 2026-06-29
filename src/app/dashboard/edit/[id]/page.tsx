@@ -118,15 +118,15 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
   }
 
   return (
-    <div className="section">
-      <div className="container" style={{ maxWidth: '800px' }}>
+    <div className="section bg-surface">
+      <div className="container max-w-[800px]">
         
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>Edit Listing</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.25rem' }}>Update your business details and photos.</p>
+        <div className="text-center mb-12">
+          <h1 className="text-display-md md:text-display-lg font-bold mb-4 text-on-surface drop-shadow-sm">Edit Listing</h1>
+          <p className="text-on-surface-variant text-body-lg md:text-body-xl">Update your business details and photos.</p>
         </div>
 
-        <Card style={{ padding: '3rem' }}>
+        <Card className="p-8 md:p-12 shadow-level-2 border border-outline-variant bg-surface-container-lowest rounded-card">
           <ListingForm
             action={updateListing}
             listing={listing}

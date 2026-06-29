@@ -14,7 +14,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
     <div className="relative group">
       <FavoriteToggle listingId={business.id} initialIsFavorited={!!business.isFavorited} />
       <Link href={`/listing/${business.id}`} className="block no-underline text-inherit">
-        <Card className={`!p-0 flex flex-col md:flex-row gap-4 border-none shadow-level-1 overflow-hidden rounded-card bg-surface-card transition-shadow duration-300 hover:shadow-level-2 ${business.isPremium ? 'ring-2 ring-secondary-container' : ''}`}>
+        <Card className={`!p-0 flex flex-col md:flex-row gap-4 border-none shadow-level-1 overflow-hidden rounded-card bg-surface-container-lowest transition-shadow duration-300 hover:shadow-level-2 ${business.isPremium ? 'ring-2 ring-secondary-container' : ''}`}>
 
           <div className="relative h-48 md:h-auto md:w-64 flex-shrink-0 p-2">
             <div
@@ -23,7 +23,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
             ></div>
 
              <div className="absolute top-4 left-4 flex flex-col gap-2 z-10 md:hidden">
-              <span className="bg-surface/90 text-text-main text-xs font-bold px-3 py-1 rounded-pill backdrop-blur-sm shadow-sm">
+              <span className="bg-surface/90 text-on-surface text-label-sm font-bold px-3 py-1 rounded-pill backdrop-blur-sm shadow-sm">
                 {business.category?.name || 'Uncategorized'}
               </span>
             </div>
@@ -41,14 +41,14 @@ export function BusinessCard({ business }: BusinessCardProps) {
               )}
             </div>
 
-            <h3 className="text-headline-sm text-text-main font-bold m-0 mb-2">
+            <h3 className="text-title-lg text-on-surface font-bold m-0 mb-2">
               {business.name}
             </h3>
 
             <div className="flex items-center gap-1.5 mb-2">
               <span className="text-accent">★</span>
-              <span className="font-bold text-text-main">{business.averageRating.toFixed(1)}</span>
-              <span className="text-text-muted text-sm">({business.reviewCount} reviews)</span>
+              <span className="font-bold text-on-surface">{business.averageRating.toFixed(1)}</span>
+              <span className="text-on-surface-variant text-body-sm">({business.reviewCount} reviews)</span>
             </div>
           </div>
         </Card>

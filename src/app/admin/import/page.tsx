@@ -33,27 +33,24 @@ export default function AdminImportPage() {
 
   return (
     <div>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Import & Seed Data</h1>
-        <p style={{ color: 'var(--text-muted)' }}>Manage your database records and sample data.</p>
+      <div className="mb-8">
+        <h1 className="text-display-sm md:text-display-md font-bold text-on-surface mb-2">Import & Seed Data</h1>
+        <p className="text-body-lg text-on-surface-variant">Manage your database records and sample data.</p>
       </div>
 
-      <Card style={{ padding: '2rem', maxWidth: '600px' }}>
-        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Seed Test Data</h2>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+      <Card className="p-8 max-w-2xl bg-surface-container-lowest shadow-level-1 border border-outline-variant rounded-card">
+        <h2 className="text-headline-sm font-bold mb-4 text-on-surface">Seed Test Data</h2>
+        <p className="text-body-lg text-on-surface-variant mb-6 leading-relaxed">
           Running this tool will populate your database with the 10 core service categories (Construction, Plumbers, etc.) 
           and insert a set of high-quality sample listings for testing purposes. It safely skips existing records to prevent duplicates.
         </p>
 
         {message && (
-          <div style={{ 
-            padding: '1rem', 
-            marginBottom: '1.5rem', 
-            borderRadius: '4px',
-            backgroundColor: message.type === 'success' ? '#dcfce7' : '#fee2e2',
-            color: message.type === 'success' ? '#166534' : '#991b1b',
-            fontWeight: 500
-          }}>
+          <div className={`p-4 mb-6 rounded-md font-medium text-body-md ${
+            message.type === 'success' 
+              ? 'bg-primary-container text-on-primary-container border border-primary/20' 
+              : 'bg-error-container text-on-error-container border border-error/20'
+          }`}>
             {message.text}
           </div>
         )}
@@ -62,7 +59,7 @@ export default function AdminImportPage() {
           variant="primary" 
           onClick={handleSeed} 
           disabled={loading}
-          style={{ minWidth: '150px' }}
+          className="min-w-[150px] py-3"
         >
           {loading ? 'Seeding...' : 'Run Seed Script'}
         </Button>

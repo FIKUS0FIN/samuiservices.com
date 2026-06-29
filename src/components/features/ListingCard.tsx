@@ -14,7 +14,7 @@ export function ListingCard({ business }: ListingCardProps) {
     <div className="relative h-full w-full max-w-sm mx-auto group">
       <FavoriteToggle listingId={business.id} initialIsFavorited={!!business.isFavorited} />
       <Link href={`/listing/${business.id}`} className="block h-full no-underline text-inherit">
-        <Card className="!p-0 h-full flex flex-col border-none shadow-level-1 overflow-hidden rounded-card bg-surface-card transition-shadow duration-300 hover:shadow-level-2">
+        <Card className="!p-0 h-full flex flex-col border-none shadow-level-1 overflow-hidden rounded-card bg-surface-container-lowest transition-shadow duration-300 hover:shadow-level-2">
 
           <div className="relative h-48 w-full overflow-hidden p-2">
             <div 
@@ -24,7 +24,7 @@ export function ListingCard({ business }: ListingCardProps) {
             
             {/* Badges */}
             <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-              <span className="bg-surface/90 text-text-main text-xs font-bold px-3 py-1 rounded-pill backdrop-blur-sm shadow-sm">
+              <span className="bg-surface/90 text-on-surface text-label-sm font-bold px-3 py-1 rounded-pill backdrop-blur-sm shadow-sm">
                 {business.category?.name || 'Uncategorized'}
               </span>
               {business.isPremium && (
@@ -37,23 +37,23 @@ export function ListingCard({ business }: ListingCardProps) {
 
           <div className="p-5 flex flex-col flex-1">
             <div className="flex justify-between items-start mb-2">
-              <h3 className="text-headline-sm text-text-main font-bold m-0 line-clamp-2">
+              <h3 className="text-title-lg text-on-surface font-bold m-0 line-clamp-2">
                 {business.name}
               </h3>
             </div>
 
             <div className="flex items-center gap-1.5 mb-3">
               <span className="text-accent">★</span>
-              <span className="font-bold text-text-main">{business.averageRating.toFixed(1)}</span>
-              <span className="text-text-muted text-sm">({business.reviewCount} reviews)</span>
+              <span className="font-bold text-on-surface">{business.averageRating.toFixed(1)}</span>
+              <span className="text-on-surface-variant text-body-sm">({business.reviewCount} reviews)</span>
             </div>
 
-            <div className="text-text-muted text-sm mb-4 flex items-center gap-1.5">
+            <div className="text-on-surface-variant text-body-sm mb-4 flex items-center gap-1.5">
               <span className="text-outline">📍</span> {business.island?.name || 'Samui'}
             </div>
             
-            <div className="mt-auto pt-4 border-t border-outline-muted/30">
-               <span className="text-primary font-bold text-sm">View Profile →</span>
+            <div className="mt-auto pt-4 border-t border-outline-variant/30">
+               <span className="text-primary font-bold text-label-md">View Profile →</span>
             </div>
           </div>
         </Card>

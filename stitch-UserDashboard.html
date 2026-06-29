@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IslandLink | Provider Dashboard</title>
+<!-- Google Fonts: Montserrat & Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#fffbff",
+                    "primary-container": "#2170e4",
+                    "on-background": "#0b1c30",
+                    "on-tertiary-fixed-variant": "#723600",
+                    "on-secondary-container": "#00714d",
+                    "tertiary-fixed-dim": "#ffb786",
+                    "tertiary-fixed": "#ffdcc6",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-secondary-fixed-variant": "#005236",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-container": "#6cf8bb",
+                    "inverse-primary": "#adc6ff",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#005ac2",
+                    "surface-dark": "#1e293b",
+                    "secondary": "#006c49",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#f8f9ff",
+                    "tertiary": "#924700",
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-tertiary-fixed": "#311400",
+                    "surface-variant": "#d3e4fe",
+                    "primary-fixed": "#d8e2ff",
+                    "on-error": "#ffffff",
+                    "surface-container": "#e5eeff",
+                    "secondary-fixed": "#6ffbbe",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "on-surface": "#0b1c30",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary": "#0058be",
+                    "on-surface-variant": "#424754",
+                    "outline-variant": "#c2c6d6",
+                    "on-primary-fixed-variant": "#004395",
+                    "on-primary-fixed": "#001a42",
+                    "on-error-container": "#93000a",
+                    "surface": "#f8f9ff",
+                    "tertiary-container": "#b75b00",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-container": "#fefcff",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "background": "#f8f9ff",
+                    "on-secondary-fixed": "#002113"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "48px",
+                    "xs": "4px",
+                    "md": "24px",
+                    "container-max": "1280px",
+                    "base": "8px",
+                    "xl": "80px",
+                    "sm": "12px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Montserrat"],
+                    "display": ["Montserrat"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "headline-sm": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .sidebar-scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+      .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(0, 88, 190, 0.1);
+        border-radius: 10px;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-white">
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar (Left) -->
+<aside class="h-screen w-64 bg-surface-container-low flex flex-col gap-base p-md border-r border-outline-variant/30 hidden lg:flex z-50">
+<div class="mb-md">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Samui Services</span>
+<div class="mt-base flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white font-bold text-label-md">IP</div>
+<div class="flex flex-col">
+<span class="text-label-md font-bold text-on-surface">Provider Dashboard</span>
+<span class="text-body-sm text-on-surface-variant text-[11px]">Samui Services Professional</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<!-- Navigation Tab 1 (Active) -->
+<a class="flex items-center gap-sm p-sm bg-primary-container text-on-primary-container font-bold rounded-lg transition-transform hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="font-label-md">My Listings</span>
+</a>
+<!-- Navigation Tab 2 -->
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inbox">inbox</span>
+<span class="font-label-md">Inbox</span>
+</a>
+<!-- Navigation Tab 3 -->
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-label-md">Analytics</span>
+</a>
+<!-- Navigation Tab 4 -->
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t border-outline-variant/20">
+<button class="w-full bg-secondary-container text-on-secondary-container py-sm rounded-lg font-bold text-label-md transition-all active:scale-95 hover:shadow-md">
+                    Upgrade Account
+                </button>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+<!-- TopNavBar -->
+<header class="h-20 bg-surface/80 backdrop-blur-md sticky top-0 border-b border-outline-variant/30 px-md lg:px-lg flex items-center justify-between z-40">
+<div class="flex items-center gap-md flex-1">
+<div class="relative w-full max-w-md hidden md:block">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-lg pr-md py-sm bg-surface-container-low border-none rounded-full focus:ring-2 focus:ring-primary/20 text-body-sm transition-all" placeholder="Search your listings..." type="text"/>
+</div>
+<button class="lg:hidden p-sm text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="flex items-center gap-md">
+<button class="bg-primary text-white px-md py-sm rounded-full font-bold text-label-md transition-all active:scale-95 hover:shadow-lg flex items-center gap-xs">
+<span class="material-symbols-outlined !text-[20px]">add</span>
+<span class="">Add New Listing</span>
+</button>
+<div class="flex items-center gap-sm border-l border-outline-variant/30 pl-md">
+<button class="relative p-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="ml-sm">
+<img class="w-10 h-10 rounded-full object-cover border-2 border-primary/10" data-alt="A close-up high-resolution professional headshot of a service provider in a bright, modern tropical office setting. The lighting is warm and natural, suggesting a Koh Samui daytime environment. The person is smiling confidently, wearing a linen shirt, embodying a professional yet approachable island-business persona. The aesthetic is clean, sharp, and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmdKFh9_dMItlFdmxWExeDvbHdMmHb-2ZT4QxRGEHMRT1JnMWiSVnl77IrUIPM4piFSXNeWRGwCSRaSFdAsVjlxp5EjDgf1DUt68NVvH9N3cIcsUJpVmhWnqlY5UBUgufeBqebTuFXeR6xMz2K6L8FMPPbO912ZdhBOsSD1soYvAK2-7FhyuS12TqGtqH2HgHRlskZY3vW5lFMiiwoa2VL8fUAsxRxgE0kF_9Nr2bF09_pN78WyAmo0sDnqQOWqLbM9KjKJT24fLM"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Canvas -->
+<section class="flex-1 overflow-y-auto sidebar-scroll p-md lg:p-lg space-y-xl">
+<!-- Dashboard Header -->
+<div class="max-w-container-max mx-auto">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">My Dashboard</h1>
+<p class="text-body-lg text-on-surface-variant mt-xs">Manage your business listings, review activity, and monitor performance.</p>
+</div>
+<!-- Bento Grid Performance Overview (Bonus context) -->
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="glass-card p-md rounded-xl border border-outline-variant/20 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<span class="text-label-md text-on-surface-variant">Profile Views (7d)</span>
+<div class="flex items-end justify-between mt-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">1,248</span>
+<span class="text-secondary font-bold text-label-sm flex items-center gap-1">+12% <span class="material-symbols-outlined !text-[16px]">trending_up</span></span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl border border-outline-variant/20 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<span class="text-label-md text-on-surface-variant">Active Leads</span>
+<div class="flex items-end justify-between mt-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">24</span>
+<span class="text-on-surface-variant font-medium text-label-sm">Updated 2m ago</span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl border border-outline-variant/20 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<span class="text-label-md text-on-surface-variant">Response Rate</span>
+<div class="flex items-end justify-between mt-md">
+<span class="font-headline-md text-headline-md font-bold text-secondary">98%</span>
+<span class="text-secondary-fixed-dim bg-secondary/10 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Top Provider</span>
+</div>
+</div>
+</div>
+<!-- Active Listings Section -->
+<div class="max-w-container-max mx-auto">
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Active Listings</h2>
+<a class="text-primary font-bold text-label-md hover:underline" href="#">View All</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-md">
+<!-- Listing Card 1 -->
+<div class="bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant/20 group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div class="relative h-48">
+<img class="w-full h-full object-cover" data-alt="A professional plumbing service technician working in a luxurious, modern Thai villa bathroom. The lighting is bright and airy with high-end fixtures. The scene emphasizes cleanliness, reliability, and modern tools. The background shows lush tropical greenery through a large window, reinforcing the Koh Samui island location." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYPo1yrb5yIV8FsBQ9lX9Xmgdx3enC3qMusq9lgdJ4u0uTFF1feUG6DB3V7MAAlXH_QkMbT8YNALNYBSlMg8L_ytVS2gbO8XhuEICzzLY5iiGGiHYmKJPr8ADHIqVPONBmKTgIn-uPk-93MsO0-SBaTpa7yHg3D1ulMRH6_MQ8-dByd5TcAZ0pfG1jeJJDKaATb40cgrBkjbmU0v5QQ9usFf_xlf3oLn3Tb1n7_FATCzVLqcAGzn0qmgawN1A3SFMd4BtTkbw3uNI"/>
+<div class="absolute top-sm right-sm bg-white/90 backdrop-blur px-sm py-xs rounded-full shadow-sm">
+<div class="flex items-center gap-1 text-[#f59e0b]">
+<span class="material-symbols-outlined !text-[16px] fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold text-on-surface">4.9</span>
+</div>
+</div>
+</div>
+<div class="p-md">
+<h3 class="font-headline-sm text-on-surface group-hover:text-primary transition-colors">Island Pro Plumbing</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-body-sm mt-xs">
+<span class="material-symbols-outlined !text-[16px]">location_on</span>
+<span class="">Koh Phangan, Surat Thani</span>
+</div>
+<div class="mt-md flex gap-sm">
+<button class="flex-1 py-sm bg-surface-container-high text-primary font-bold text-label-md rounded-lg hover:bg-primary-container hover:text-white transition-all">Edit</button>
+<button class="flex-1 py-sm border border-outline text-on-surface-variant font-bold text-label-md rounded-lg hover:border-primary hover:text-primary transition-all">View Public</button>
+</div>
+</div>
+</div>
+<!-- Listing Card 2 -->
+<div class="bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant/20 group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div class="relative h-48">
+<img class="w-full h-full object-cover" data-alt="An expansive solar panel installation on the roof of a high-end beach house on Koh Samui. The turquoise ocean is visible in the background under a clear azure sky. The sunlight is brilliant and golden, highlighting the sleek, modern technology of the solar array. The atmosphere is sustainable, tropical, and technologically advanced." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgGFElsnckvCfQdh0AZeBznTUfPED5RdVoCkBVa9yWGaWVR_uYyWQpKL_boJ5i9JVooF-IYSToNFOvuwdiAiZxyiy8iDZ80lCWlWdTXTkoIGOlFuJ8zk6neZnUlzcqlrKIXTJLa1iVxTsiJZvJiknMsnoQK9IN2Rje3_5AyBDYV8Mbhv8ViNnfYmwB4zj0VRbQVytpJFgkxPvWQ-WcQI3z6VXCHDC2F_S_0T52sL4UGsdStXMaj8C-WDCoXQbO3WswjObTeFSvB1Q"/>
+<div class="absolute top-sm right-sm bg-white/90 backdrop-blur px-sm py-xs rounded-full shadow-sm">
+<div class="flex items-center gap-1 text-[#f59e0b]">
+<span class="material-symbols-outlined !text-[16px] fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold text-on-surface">4.8</span>
+</div>
+</div>
+</div>
+<div class="p-md">
+<h3 class="font-headline-sm text-on-surface group-hover:text-primary transition-colors">Koh Samui Solar</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-body-sm mt-xs">
+<span class="material-symbols-outlined !text-[16px]">location_on</span>
+<span class="">Bophut, Koh Samui</span>
+</div>
+<div class="mt-md flex gap-sm">
+<button class="flex-1 py-sm bg-surface-container-high text-primary font-bold text-label-md rounded-lg hover:bg-primary-container hover:text-white transition-all">Edit</button>
+<button class="flex-1 py-sm border border-outline text-on-surface-variant font-bold text-label-md rounded-lg hover:border-primary hover:text-primary transition-all">View Public</button>
+</div>
+</div>
+</div>
+<!-- Listing Card 3 (Draft or Empty State Slot) -->
+<div class="border-2 border-dashed border-outline-variant/50 rounded-xl flex flex-col items-center justify-center p-lg bg-surface-container-lowest/50 group cursor-pointer hover:border-primary/50 transition-colors">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary !text-[32px]">add</span>
+</div>
+<span class="font-headline-sm text-on-surface-variant">Create New Listing</span>
+<p class="text-body-sm text-outline text-center mt-xs">Add a new service to the Samui Services network.</p>
+</div>
+</div>
+</div>
+<!-- Saved Favorites Section -->
+<div class="max-w-container-max mx-auto pb-xl">
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Saved Services</h2>
+<a class="text-primary font-bold text-label-md hover:underline" href="#">Manage Saved</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Compact Saved Card 1 -->
+<div class="flex items-center gap-md p-sm bg-white rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-md transition-all">
+<img class="w-16 h-16 rounded-lg object-cover" data-alt="A small, focused shot of a tropical landscaping service in Thailand. Vibrant bougainvillea and palm fronds are being pruned by a professional in a bright environment. The focus is on the lush colors and precision of the work." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB00n-rb-_tofqjUmqWkDR-4YhMhEb_tKotZslEoImF2XXYP2aZKfeCUmzOGzC9LqBUK5yuigVrvOQWmLEUDK0xBz-Z61s6YFPTorbkBzR2fa3e6dU165yaxvXnQWaDlyw40Ok8oNVWPzyAF76grawJQM694YDsk8f8aczGnj8wI6eEOYL602mfiZEAFt5skcI6g9DhU-u5F62PBly2ZgX4Wqji-tWhhmjtvZue4_pP03Nm4x84V-hJoXURthrJ55Zz01uRvOHC9wA"/>
+<div class="flex flex-col min-w-0">
+<span class="font-bold text-label-md text-on-surface truncate">Green Leaf Gardens</span>
+<div class="flex items-center gap-1 text-on-surface-variant text-[11px]">
+<span class="material-symbols-outlined !text-[12px] text-[#f59e0b] fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="">4.7 (12 reviews)</span>
+</div>
+</div>
+</div>
+<!-- Compact Saved Card 2 -->
+<div class="flex items-center gap-md p-sm bg-white rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-md transition-all">
+<img class="w-16 h-16 rounded-lg object-cover" data-alt="A modern electric vehicle charging station at a tropical resort. The branding is clean and minimal. Soft sunlight filters through palm trees in the background. High-tech and eco-friendly vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt998S6qNjrOQUkYsKTERkhoUrJ8DxsCPeueZseZZ57pzOlzXhknKw0AkDuYH9X0pn1c6mB7guNGJI0ovIDViFazp1mZvlN_UcVSkIJk6DcI1JUVmJKGYt3EEfAGWjAoKFxOYI_Z2nAXWkwpuGnLW4xGI7ia4TNVe3CQQ0jaSX0tDLuCbjJoATAsFzpXUhBEB78gd9z6smHc_v3Sb41r3wHF6Rpn00xzq9rZqR1QvMg4JkVJMmtxBvnER07LASPHd6VRpJbrjVZeQ"/>
+<div class="flex flex-col min-w-0">
+<span class="font-bold text-label-md text-on-surface truncate">Island EV Solutions</span>
+<div class="flex items-center gap-1 text-on-surface-variant text-[11px]">
+<span class="material-symbols-outlined !text-[12px] text-[#f59e0b] fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="">5.0 (5 reviews)</span>
+</div>
+</div>
+</div>
+<!-- Compact Saved Card 3 -->
+<div class="flex items-center gap-md p-sm bg-white rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-md transition-all">
+<img class="w-16 h-16 rounded-lg object-cover" data-alt="High-quality drone photography capturing a coastal property in Thailand. The drone is modern and professional, flying over sparkling blue water and white sand. The mood is aspirational and precise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCl4uMSU2PqPVTGKoz8j-Pc1djOSnjSpqW9TGchXvA8y40vIXC-VX8puQgPds4hxen3_a4AUD2fXbHidESJblSutEezyPFpvzEguk9eAJNFcbtZr1X-KSffr5ZF3XplrpdqWFjglC-Gp4mX3t7Rd-KEcd4sgwAsk5qqy2pobOqlkVZb5bA56bNV2I58ujZNzbzokhA6hijGCnpVBs_YeNr5auaVIbjLyCSMobez0hQM-WrQjNKf8xl5COk9FhKokd9ezRpPHyWcNX8"/>
+<div class="flex flex-col min-w-0">
+<span class="font-bold text-label-md text-on-surface truncate">SkyEye Media</span>
+<div class="flex items-center gap-1 text-on-surface-variant text-[11px]">
+<span class="material-symbols-outlined !text-[12px] text-[#f59e0b] fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="">4.9 (42 reviews)</span>
+</div>
+</div>
+</div>
+<!-- Compact Saved Card 4 -->
+<div class="flex items-center gap-md p-sm bg-white rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-md transition-all">
+<img class="w-16 h-16 rounded-lg object-cover" data-alt="A clean, minimalist pool maintenance scene. Crystal clear turquoise water in a luxury infinity pool overlooking the Gulf of Thailand. Tools are laid out neatly on the stone deck." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU1wwe04Av63uzvLVqursncXOvZtPrYuG4EkRFjg9PtKzURbI3M4iiZGNowIm5yZGN4Thc64OzGtUAHE79UBx7vltmlvtJrqo8zDuQnCPGz6HvicsvoVaDvxlEA2UzBaTipRiPL1cCswUhGD7OU8iYdncmgnPU1gsrdPNIJOC2gOr-cA2sUyopMZIFs9E5o673PNVQ7BB62Hj25At0-keT61a5gWqNlmOWOzT2lIDAPpMIc0zh87tei1O0fOni6I0Uitn6C-jfVdU"/>
+<div class="flex flex-col min-w-0">
+<span class="font-bold text-label-md text-on-surface truncate">Blue Haven Pools</span>
+<div class="flex items-center gap-1 text-on-surface-variant text-[11px]">
+<span class="material-symbols-outlined !text-[12px] text-[#f59e0b] fill-current" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="">4.6 (18 reviews)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom NavBar for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-outline-variant/30 flex items-center justify-around px-md z-50">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+<span class="text-[10px] font-bold">Listings</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">inbox</span>
+<span class="text-[10px] font-medium">Inbox</span>
+</a>
+<div class="relative -top-6">
+<button class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="text-[10px] font-medium">Stats</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Account</span>
+</a>
+</nav>
+</main>
+</div>
+<!-- Atmospheric Micro-interaction Script -->
+<script>
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.classList.add('scale-[0.98]');
+            });
+            el.addEventListener('mouseup', () => {
+                el.classList.remove('scale-[0.98]');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.classList.remove('scale-[0.98]');
+            });
+        });
+        
+        // Simple scroll observer for header transparency
+        const scrollCanvas = document.querySelector('section');
+        const header = document.querySelector('header');
+        scrollCanvas.addEventListener('scroll', () => {
+            if (scrollCanvas.scrollTop > 20) {
+                header.classList.add('shadow-sm');
+                header.classList.remove('border-transparent');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

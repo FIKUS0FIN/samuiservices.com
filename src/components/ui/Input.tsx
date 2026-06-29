@@ -22,25 +22,21 @@ export function Input({
   const baseStyle = fullWidth ? { width: '100%', ...style } : style;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: fullWidth ? '100%' : 'auto' }}>
+    <div className={`flex flex-col gap-2 ${fullWidth ? 'w-full' : 'w-full md:w-auto'}`}>
       {label && (
-        <label htmlFor={inputId} style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '0.875rem' }}>
+        <label htmlFor={inputId} className="font-label-md text-sm text-on-surface-variant ml-1">
           {label}
         </label>
       )}
       <input 
         id={inputId}
-        className={`input-field ${className}`}
-        style={{
-          ...baseStyle,
-          borderColor: error ? 'var(--error-color, #ef4444)' : 'var(--border-color)',
-        }}
+        className={`bg-surface-container-low border rounded-lg p-3 font-body-md text-on-surface placeholder:opacity-50 transition-all focus:border-primary focus:ring-1 focus:ring-primary ${error ? 'border-error' : 'border-outline-variant'} ${className}`}
         aria-invalid={!!error}
         aria-describedby={[ariaDescribedBy, error ? errorId : undefined].filter(Boolean).join(' ') || undefined}
         {...props}
       />
       {error && (
-        <span id={errorId} style={{ color: 'var(--error-color, #ef4444)', fontSize: '0.75rem' }}>
+        <span id={errorId} className="text-error text-xs ml-1">
           {error}
         </span>
       )}

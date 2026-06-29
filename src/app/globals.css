@@ -9,6 +9,21 @@
     @apply bg-surface text-text-main font-body leading-loose min-h-screen flex flex-col antialiased;
   }
 
+  /* Stitch Custom Utilities */
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  .hero-gradient {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold tracking-tight mb-4;
   }
@@ -26,20 +41,20 @@
 @layer components {
   /* Layout Classes */
   .container {
-    @apply w-full max-w-container mx-auto px-6;
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6;
   }
 
   .section {
-    @apply py-section;
+    @apply py-16 md:py-24;
   }
 
   /* Components */
   .card {
-    @apply bg-surface-card rounded-card p-6 shadow-level-1 border border-outline-muted transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:shadow-level-2;
+    @apply bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:shadow-md;
   }
 
   .glass-nav {
-    @apply bg-surface/80 backdrop-blur-md border-b border-outline-muted sticky top-0 z-[100];
+    @apply bg-surface/80 backdrop-blur-md border-b border-outline-variant sticky top-0 z-[100];
   }
 
   /* Forms */
@@ -48,11 +63,11 @@
   }
 
   .input-label {
-    @apply block text-sm font-medium mb-2 text-text-muted;
+    @apply block font-label-md text-sm mb-2 text-on-surface-variant;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-global border border-outline-muted bg-surface-card text-text-main font-body text-body-md transition-colors duration-200 ease-in-out focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/10 min-h-[48px];
+    @apply w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-container-low text-on-surface font-body-md transition-colors duration-200 ease-in-out focus:outline-none focus:border-primary focus:ring-[1px] focus:ring-primary min-h-[48px];
   }
 
   /* Tabs */

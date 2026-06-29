@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-// Helper to log in programmatically using our Test Credentials Provider
 async function loginAs(page, email) {
   // Go to a dummy page or the sign-in page to trigger the credentials login
   await page.goto('/api/auth/signin?callbackUrl=/dashboard');
@@ -10,8 +9,8 @@ async function loginAs(page, email) {
   if (await passwordInput.count() > 0) {
     await passwordInput.fill(process.env.ADMIN_TEST_PASSWORD || 'secret');
   }
-  await page.click('button:has-text("Sign in with Test Login")');
-  await page.waitForURL('/dashboard');
+  await page.click('button[type="submit"]');
+  await page.waitForURL('**/dashboard', { timeout: 10000 });
 }
 
 test.describe.serial('Platform Flows', () => {

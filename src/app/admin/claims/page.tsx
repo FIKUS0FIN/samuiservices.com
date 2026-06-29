@@ -58,27 +58,27 @@ export default function AdminClaimsPage() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
         <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem', fontWeight: 700, color: '#0f172a' }}>Claim Requests</h1>
-          <p style={{ color: 'var(--text-muted)' }}>Review and manage ownership claims for businesses on the platform.</p>
+          <h1 className="text-display-sm md:text-display-md font-bold text-on-surface mb-2">Claim Requests</h1>
+          <p className="text-body-lg text-on-surface-variant">Review and manage ownership claims for businesses on the platform.</p>
         </div>
       </div>
 
       {loading ? (
-        <Card style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+        <Card className="p-8 text-center text-on-surface-variant bg-surface-container-lowest shadow-level-1 border border-outline-variant rounded-card">
           Loading claims...
         </Card>
       ) : claims.length === 0 ? (
-        <Card style={{ padding: '4rem 2rem', textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', padding: '1rem', backgroundColor: '#f1f5f9', borderRadius: '50%', marginBottom: '1rem' }}>
-            <Building style={{ width: '2rem', height: '2rem', color: '#94a3b8' }} />
+        <Card className="p-16 text-center bg-surface-container-lowest shadow-level-1 border border-outline-variant rounded-card">
+          <div className="inline-flex p-4 bg-surface-container rounded-full mb-4">
+            <Building className="w-8 h-8 text-on-surface-variant" />
           </div>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#334155', marginBottom: '0.5rem' }}>No pending claims</h3>
-          <p style={{ color: 'var(--text-muted)' }}>All business claim requests have been processed.</p>
+          <h3 className="text-headline-sm font-bold text-on-surface mb-2">No pending claims</h3>
+          <p className="text-body-lg text-on-surface-variant">All business claim requests have been processed.</p>
         </Card>
       ) : (
-        <div style={{ display: 'grid', gap: '1rem' }}>
+        <div className="grid gap-4">
           {claims.map((claim) => (
             <ClaimCard
               key={claim.id}

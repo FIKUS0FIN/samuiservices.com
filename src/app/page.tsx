@@ -22,78 +22,64 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
   return (
     <div>
       {/* Hero Section */}
-      <section style={{
-        position: 'relative',
-        backgroundImage: 'url("https://images.unsplash.com/photo-1516815231560-8f41ec531527?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        color: 'white',
-        overflow: 'hidden',
-        minHeight: '400px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '6rem 1.5rem 3rem 1.5rem'
-      }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.2) 100%)', zIndex: 1 }}></div>
+      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img alt="Tropical beach in Koh Samui with palm trees and clear blue water" className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1537956965359-7573183d1f57?q=80&w=2000&auto=format&fit=crop" />
+          <div className="absolute inset-0 bg-surface/20"></div>
+          <div className="absolute inset-0 hero-gradient"></div>
+        </div>
         
-        <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', width: '100%', maxWidth: '800px' }}>
-          <h1 className="fade-in-up" style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', lineHeight: 1.1, marginBottom: '1rem', textShadow: '0 2px 10px rgba(0,0,0,0.3)', fontWeight: 800 }}>
-            Discover Local Services in Samui
+        <div className="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-xl text-center flex flex-col items-center">
+          <h1 className="font-display text-headline-lg-mobile md:text-display text-on-primary font-bold mb-4 max-w-3xl drop-shadow-lg">
+            Discover the Best Services in Koh Samui
           </h1>
-          <p className="fade-in-up" style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', marginBottom: '2rem', opacity: 0.9, textShadow: '0 2px 10px rgba(0,0,0,0.3)', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
-            Find trusted professionals for everything you need on the island.
+          <p className="font-body-lg text-body-md md:text-body-lg text-on-primary mb-8 max-w-2xl drop-shadow-md">
+            Find trusted professionals for your home, business, and lifestyle on the island.
           </p>
           
-          <div className="fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <div className="w-full max-w-4xl">
             <HeroSearch />
           </div>
         </div>
       </section>
 
       {/* Main Content Area */}
-      <section style={{ padding: '4rem 0', backgroundColor: '#f8fafc' }}>
-        <div className="container" style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+      <section className="section bg-surface">
+        <div className="container flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Left Sidebar */}
-          <aside style={{ width: '250px', flexShrink: 0, position: 'sticky', top: '2rem' }}>
+          <aside className="w-full lg:w-[250px] shrink-0 lg:sticky lg:top-8 z-10 bg-surface-container-lowest rounded-card shadow-level-1 p-4 lg:bg-transparent lg:shadow-none lg:p-0">
             <ServiceFilter categories={categories} />
           </aside>
           
           {/* Right Content */}
-          <main style={{ flex: 1 }}>
+          <main className="flex-1 w-full">
 
             {categorySlug ? (
               // View when category is filtered
               <div>
-                <div style={{ marginBottom: '1.5rem' }}>
-                   <h2 style={{ fontSize: '1.25rem', margin: 0, color: '#0f172a', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <div className="mb-6">
+                   <h2 className="text-title-lg font-bold text-on-surface uppercase tracking-widest m-0">
                      RESULTS FOR &quot;{categories.find(c => c.slug === categorySlug)?.name?.toUpperCase()}&quot;
                    </h2>
                 </div>
                 {allListings.length > 0 ? (
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                    gap: '1.5rem',
-                    animation: 'fadeInUp 0.4s ease forwards'
-                  }}>
+                  <div className="grid-cards fade-in-up">
                     {listings.map((listing) => (
                       <ListingCard key={listing.id} business={listing} />
                     ))}
                   </div>
                 ) : (
-                  <div style={{ textAlign: 'center', padding: '6rem 2rem', color: 'var(--text-muted)', background: 'white', borderRadius: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
-                    <div style={{ fontSize: '4rem', marginBottom: '1.5rem', opacity: 0.5 }}>🏝️</div>
-                    <h3 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', color: '#0f172a', fontWeight: 700 }}>No services found</h3>
-                    <p style={{ fontSize: '1.125rem', maxWidth: '400px', margin: '0 auto 2rem auto' }}>We couldn&apos;t find any services matching this category yet.</p>
+                  <div className="text-center py-24 px-8 text-on-surface-variant bg-surface-container-lowest rounded-card border border-outline-variant shadow-level-1">
+                    <div className="text-6xl mb-6 opacity-50">🏝️</div>
+                    <h3 className="text-2xl mb-3 text-on-surface font-bold">No services found</h3>
+                    <p className="text-lg max-w-[400px] mx-auto mb-8">We couldn&apos;t find any services matching this category yet.</p>
                   </div>
                 )}
               </div>
             ) : (
               // Redesigned View with Sections (No Filter)
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+              <div className="flex flex-col gap-12">
 
                 {parentCategories.map(parentCat => {
                    const childIds = parentCat.children.map(c => c.id);
@@ -102,20 +88,16 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
                    if (parentListings.length === 0) return null;
 
                    return (
-                     <div key={parentCat.id}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
-                          <h2 style={{ fontSize: '1.25rem', margin: 0, color: '#0f172a', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                     <div key={parentCat.id} className="w-full">
+                        <div className="flex justify-between items-end mb-6">
+                          <h2 className="text-title-lg font-bold text-on-surface uppercase tracking-widest m-0">
                             {parentCat.name}
                           </h2>
-                          <Link href={`/?category=${parentCat.children[0]?.slug || parentCat.slug}`} style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--primary-color)' }}>
+                          <Link href={`/?category=${parentCat.children[0]?.slug || parentCat.slug}`} className="text-label-md font-bold text-primary hover:text-primary-hover transition-colors">
                             View All →
                           </Link>
                         </div>
-                        <div style={{
-                          display: 'grid',
-                          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                          gap: '1.5rem'
-                        }}>
+                        <div className="grid-cards">
                           {parentListings.map((listing) => (
                             <ListingCard key={listing.id} business={listing} />
                           ))}

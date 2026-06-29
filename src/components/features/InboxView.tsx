@@ -67,16 +67,24 @@ export function InboxView({ receivedMessages, sentMessages, currentUserId }: Inb
 
   return (
     <div>
-      <div className="tab-list">
+      <div className="flex gap-4 border-b border-outline-variant mb-6 pb-2">
         <button 
-          className={`tab-btn ${activeTab === 'received' ? 'tab-active' : ''}`}
+          className={`pb-2 border-b-2 font-medium text-title-md transition-colors bg-transparent border-t-0 border-l-0 border-r-0 cursor-pointer ${
+            activeTab === 'received' 
+              ? 'border-primary text-primary' 
+              : 'border-transparent text-on-surface-variant hover:text-on-surface hover:border-outline'
+          }`}
           onClick={() => { setActiveTab('received'); setReplyingTo(null); }}
         >
           Received
-          {unreadCount > 0 && <span className="badge-unread">{unreadCount}</span>}
+          {unreadCount > 0 && <span className="ml-2 bg-error text-on-error text-label-sm font-bold px-2 py-0.5 rounded-full">{unreadCount}</span>}
         </button>
         <button 
-          className={`tab-btn ${isSentTab ? 'tab-active' : ''}`}
+          className={`pb-2 border-b-2 font-medium text-title-md transition-colors bg-transparent border-t-0 border-l-0 border-r-0 cursor-pointer ${
+            isSentTab 
+              ? 'border-primary text-primary' 
+              : 'border-transparent text-on-surface-variant hover:text-on-surface hover:border-outline'
+          }`}
           onClick={() => { setActiveTab('sent'); setReplyingTo(null); }}
         >
           Sent
@@ -84,13 +92,13 @@ export function InboxView({ receivedMessages, sentMessages, currentUserId }: Inb
       </div>
 
       {activeMessages.length === 0 ? (
-        <Card style={{ padding: '3rem', textAlign: 'center' }}>
-          <p style={{ color: 'var(--text-muted)', margin: 0 }}>
+        <Card className="p-12 text-center bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card">
+          <p className="text-on-surface-variant text-body-lg m-0">
             {activeTab === 'received' ? "You don't have any messages yet." : "You haven't sent any messages yet."}
           </p>
         </Card>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div className="flex flex-col gap-4">
           {activeMessages.map(message => (
             <MessageCard
               key={message.id}

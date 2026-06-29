@@ -44,13 +44,13 @@ export default async function InboxPage() {
   });
 
   return (
-    <div className="section">
+    <div className="section bg-surface">
       <div className="container">
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+        <div className="flex justify-between items-center mb-12">
           <div>
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Inbox</h1>
-            <p style={{ color: 'var(--text-muted)' }}>Manage your messages</p>
+            <h1 className="text-display-md font-bold mb-2 text-on-surface">Inbox</h1>
+            <p className="text-on-surface-variant text-body-lg">Manage your messages</p>
           </div>
         </div>
 
@@ -59,7 +59,7 @@ export default async function InboxPage() {
           <DashboardSidebar activeTab="inbox" />
 
           {/* Main Content */}
-          <div style={{ flex: 1 }}>
+          <div className="flex-1 min-w-0">
             <InboxView 
               receivedMessages={receivedMessages} 
               sentMessages={sentMessages}

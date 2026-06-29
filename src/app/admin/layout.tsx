@@ -25,70 +25,48 @@ export default async function AdminLayout({
   }
 
   return (
-    <div style={{ backgroundColor: '#f8fafc', minHeight: 'calc(100vh - 64px)', display: 'flex' }}>
+    <div className="min-h-[calc(100vh-64px)] flex bg-surface">
       
       {/* Premium Sidebar */}
-      <aside style={{ 
-        width: '260px', 
-        backgroundColor: 'white', 
-        borderRight: '1px solid #e2e8f0',
-        padding: '2rem 1.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'sticky',
-        top: '64px',
-        height: 'calc(100vh - 64px)',
-        overflowY: 'auto'
-      }}>
-        <div style={{ marginBottom: '2.5rem', paddingLeft: '0.5rem' }}>
-          <h2 style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '0.5rem' }}>Management</h2>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a' }}>Super Admin</div>
+      <aside className="w-[260px] bg-surface-container-lowest border-r border-outline-variant p-6 flex flex-col sticky top-[64px] h-[calc(100vh-64px)] overflow-y-auto z-10">
+        <div className="mb-10 pl-2">
+          <h2 className="font-label-sm text-xs font-bold tracking-widest uppercase text-on-surface-variant mb-2">Management</h2>
+          <div className="font-headline-sm text-xl font-bold text-on-surface">Super Admin</div>
         </div>
 
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <Link href="/admin" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '8px', color: '#475569', fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s', backgroundColor: 'transparent' }} className="admin-nav-link">
+        <nav className="flex-1 flex flex-col gap-1">
+          <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface font-label-md hover:bg-surface-container-low transition-colors">
             <LayoutDashboard size={18} />
             Overview
           </Link>
-          <Link href="/admin/listings" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '8px', color: '#475569', fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s' }} className="admin-nav-link">
+          <Link href="/admin/listings" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface font-label-md hover:bg-surface-container-low transition-colors">
             <Store size={18} />
             Manage Listings
           </Link>
-          <Link href="/admin/users" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '8px', color: '#475569', fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s' }} className="admin-nav-link">
+          <Link href="/admin/users" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface font-label-md hover:bg-surface-container-low transition-colors">
             <Users size={18} />
             Manage Users
           </Link>
-          <Link href="/admin/claims" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '8px', color: '#475569', fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s' }} className="admin-nav-link">
+          <Link href="/admin/claims" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface font-label-md hover:bg-surface-container-low transition-colors">
             <ClipboardCheck size={18} />
             Claim Requests
           </Link>
-          <Link href="/admin/import" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', borderRadius: '8px', color: '#475569', fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s' }} className="admin-nav-link">
+          <Link href="/admin/import" className="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface font-label-md hover:bg-surface-container-low transition-colors">
             <Database size={18} />
             Seed Database
           </Link>
         </nav>
 
-        <div style={{ marginTop: 'auto', paddingTop: '2rem' }}>
-          <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1rem', borderRadius: '8px', color: '#64748b', fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s', border: '1px solid #e2e8f0' }} className="admin-nav-back">
+        <div className="mt-auto pt-8">
+          <Link href="/dashboard" className="flex items-center gap-2 px-4 py-3 rounded-lg text-on-surface-variant font-label-md hover:text-on-surface hover:bg-surface-container-low border border-outline-variant transition-colors">
             <ArrowLeft size={16} />
             Back to User Dash
           </Link>
         </div>
-        
-        <style>{`
-          .admin-nav-link:hover {
-            background-color: #f1f5f9 !important;
-            color: #0f172a !important;
-          }
-          .admin-nav-back:hover {
-            background-color: #f8fafc;
-            color: #334155 !important;
-          }
-        `}</style>
       </aside>
 
       {/* Admin Main Content */}
-      <main style={{ flexGrow: 1, padding: '2rem 3rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <main className="flex-grow p-8 md:p-12 max-w-7xl mx-auto w-full min-w-0">
         {children}
       </main>
     </div>

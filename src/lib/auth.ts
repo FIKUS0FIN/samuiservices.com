@@ -56,6 +56,9 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: '/auth/signin',
+  },
   callbacks: {
     async signIn({ user }) {
       if (user.email === 'dmytro@apex-root.com') {
