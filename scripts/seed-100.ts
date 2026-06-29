@@ -26,9 +26,34 @@ const PRODUCT_IMAGES = [
 ];
 
 const ISLANDS = [
-  { name: 'Koh Samui', slug: 'samui', lat: { min: 9.4, max: 9.6 }, lng: { min: 99.9, max: 100.1 } },
-  { name: 'Koh Phangan', slug: 'phangan', lat: { min: 9.65, max: 9.75 }, lng: { min: 99.95, max: 100.05 } },
-  { name: 'Koh Tao', slug: 'tao', lat: { min: 10.05, max: 10.15 }, lng: { min: 99.8, max: 99.85 } }
+  { 
+    name: 'Koh Samui', 
+    slug: 'samui', 
+    hubs: [
+      { lat: 9.53, lng: 100.06 }, // Chaweng
+      { lat: 9.47, lng: 100.05 }, // Lamai
+      { lat: 9.55, lng: 100.03 }, // Bophut
+      { lat: 9.57, lng: 99.99 },  // Maenam
+      { lat: 9.53, lng: 99.93 }   // Nathon
+    ] 
+  },
+  { 
+    name: 'Koh Phangan', 
+    slug: 'phangan', 
+    hubs: [
+      { lat: 9.71, lng: 99.98 },  // Thong Sala
+      { lat: 9.67, lng: 100.06 }, // Haad Rin
+      { lat: 9.75, lng: 99.96 }   // Srithanu
+    ] 
+  },
+  { 
+    name: 'Koh Tao', 
+    slug: 'tao', 
+    hubs: [
+      { lat: 10.09, lng: 99.82 }, // Sairee
+      { lat: 10.06, lng: 99.82 }  // Chalok
+    ] 
+  }
 ];
 
 async function main() {
@@ -113,6 +138,11 @@ async function main() {
       image: PRODUCT_IMAGES[faker.number.int({ min: 0, max: PRODUCT_IMAGES.length - 1 })],
     }));
 
+    const hub = islandConf.hubs[faker.number.int({ min: 0, max: islandConf.hubs.length - 1 })];
+    // Add jitter +/- 0.015 (~1.5km) to spread businesses out in the towns
+    const jitterLat = (Math.random() - 0.5) * 0.03;
+    const jitterLng = (Math.random() - 0.5) * 0.03;
+
     const businessName = faker.company.name() + (randomCategory.name.includes('Restaurant') ? ' Restaurant' : '');
     const slug = faker.helpers.slugify(businessName).toLowerCase() + '-' + faker.string.alphanumeric(4);
 
@@ -125,8 +155,8 @@ async function main() {
           image: image,
           phone: faker.phone.number(),
           address: faker.location.streetAddress() + ', ' + randomIsland.name,
-          lat: faker.location.latitude({ max: islandConf.lat.max, min: islandConf.lat.min }),
-          lng: faker.location.longitude({ max: islandConf.lng.max, min: islandConf.lng.min }),
+          lat: hub.lat + jitterLat,
+          lng: hub.lng + jitterLng,
           averageRating: faker.number.float({ min: 3.5, max: 5.0, fractionDigits: 1 }),
           reviewCount: faker.number.int({ min: 10, max: 800 }),
           isPremium: isPremium,

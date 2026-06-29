@@ -13,7 +13,7 @@ export function ListingCard({ business }: ListingCardProps) {
   return (
     <div className="relative h-full w-full max-w-sm mx-auto group">
       <FavoriteToggle listingId={business.id} initialIsFavorited={!!business.isFavorited} />
-      <Link href={`/listing/${business.id}`} className="block h-full no-underline text-inherit">
+      <Link href={`/listing/${business.slug}`} className="block h-full no-underline text-inherit">
         <Card className="!p-0 h-full flex flex-col border-none shadow-level-1 overflow-hidden rounded-card bg-surface-container-lowest transition-shadow duration-300 hover:shadow-level-2">
 
           <div className="relative h-48 w-full overflow-hidden p-2">

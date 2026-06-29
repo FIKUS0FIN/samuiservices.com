@@ -13,7 +13,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
   return (
     <div className="relative group">
       <FavoriteToggle listingId={business.id} initialIsFavorited={!!business.isFavorited} />
-      <Link href={`/listing/${business.id}`} className="block no-underline text-inherit">
+      <Link href={`/listing/${business.slug}`} className="block no-underline text-inherit">
         <Card className={`!p-0 flex flex-col md:flex-row gap-4 border-none shadow-level-1 overflow-hidden rounded-card bg-surface-container-lowest transition-shadow duration-300 hover:shadow-level-2 ${business.isPremium ? 'ring-2 ring-secondary-container' : ''}`}>
 
           <div className="relative h-48 md:h-auto md:w-64 flex-shrink-0 p-2">
