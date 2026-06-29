@@ -4,13 +4,7 @@ import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
 let dbUrl = process.env["DATABASE_URL"] || "file:./dev.db";
-if (dbUrl.startsWith("libsql://") || dbUrl.startsWith("turso://")) {
-  const authToken = process.env["TURSO_AUTH_TOKEN"];
-  if (authToken && !dbUrl.includes("authToken=")) {
-    const separator = dbUrl.includes("?") ? "&" : "?";
-    dbUrl = `${dbUrl}${separator}authToken=${authToken}`;
-  }
-} else if (!dbUrl.startsWith("file:") && !dbUrl.startsWith("postgres") && !dbUrl.startsWith("mysql")) {
+if (!dbUrl.startsWith("file:") && !dbUrl.startsWith("postgres") && !dbUrl.startsWith("mysql")) {
   dbUrl = `file:${dbUrl}`;
 }
 
