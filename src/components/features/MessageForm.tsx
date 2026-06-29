@@ -89,7 +89,7 @@ export function MessageForm({ receiverId, listingId }: MessageFormProps) {
             <Button type="button" variant="secondary" onClick={() => setShowForm(false)} style={{ flex: 1 }}>
               Cancel
             </Button>
-            <Button type="submit" variant="primary" disabled={loading} style={{ flex: 1 }}>
+            <Button type="submit" variant="primary" isLoading={loading} style={{ flex: 1 }}>
               {loading ? 'Sending...' : 'Send'}
             </Button>
           </div>

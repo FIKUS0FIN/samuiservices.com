@@ -38,7 +38,7 @@ export function ReplyForm({ initialContent = '', isSubmitting, onSubmit, onCance
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit" variant="primary" disabled={isSubmitting}>
+        <Button type="submit" variant="primary" isLoading={isSubmitting}>
           {isSubmitting ? 'Sending...' : 'Send Reply'}
         </Button>
       </div>

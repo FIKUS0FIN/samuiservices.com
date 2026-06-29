@@ -13,10 +13,12 @@ export function Input({
   style = {},
   className = '',
   id,
+  'aria-describedby': ariaDescribedBy,
   ...props 
 }: InputProps) {
   const generatedId = useId();
   const inputId = id || generatedId;
+  const errorId = `${inputId}-error`;
   const baseStyle = fullWidth ? { width: '100%', ...style } : style;
 
   return (
@@ -33,10 +35,12 @@ export function Input({
           ...baseStyle,
           borderColor: error ? 'var(--error-color, #ef4444)' : 'var(--border-color)',
         }}
+        aria-invalid={!!error}
+        aria-describedby={[ariaDescribedBy, error ? errorId : undefined].filter(Boolean).join(' ') || undefined}
         {...props}
       />
       {error && (
-        <span style={{ color: 'var(--error-color, #ef4444)', fontSize: '0.75rem' }}>
+        <span id={errorId} style={{ color: 'var(--error-color, #ef4444)', fontSize: '0.75rem' }}>
           {error}
         </span>
       )}
