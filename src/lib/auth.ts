@@ -9,7 +9,8 @@ let _prismaClient: PrismaClient | null = null;
 function initPrismaClient(): PrismaClient {
   if (_prismaClient) return _prismaClient;
 
-  if (process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_TEST_MODE === "true" || process.env.RENDER === "true") {
+  // Render, Vercel, or local Next.js production builds won't have CF_PAGES
+  if (process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_TEST_MODE === "true" || process.env.RENDER === "true" || !process.env.CF_PAGES) {
     // Hide native modules from bundlers by using eval to prevent Cloudflare WebAssembly/Native errors
         const req = eval('require');
     const { PrismaLibSql } = req("@prisma/adapter-libsql");
@@ -46,6 +47,7 @@ export const prisma = new Proxy({} as PrismaClient, {
 });
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET || "fallback_secret_for_development",
   adapter: PrismaAdapter(prisma) as any, // eslint-disable-line @typescript-eslint/no-explicit-any
   providers: [
     GoogleProvider({
@@ -98,7 +100,7 @@ if (process.env.NEXT_PUBLIC_TEST_MODE === "true" || process.env.ADMIN_TEST_PASSW
         let adminPassword = process.env.ADMIN_TEST_PASSWORD;
         console.log("process.env.ADMIN_TEST_PASSWORD exists:", !!adminPassword);
 
-        if (process.env.NODE_ENV === "production") {
+        if (process.env.NODE_ENV === "production" && process.env.CF_PAGES) {
           try {
                             const { getCloudflareContext } = require("@opennextjs/cloudflare");
             const { env } = getCloudflareContext();

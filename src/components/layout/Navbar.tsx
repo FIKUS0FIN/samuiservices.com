@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { Button } from '@/components/ui/Button';
+import { LogoutButton } from '@/components/features/LogoutButton';
 
 export async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -24,12 +25,15 @@ export async function Navbar() {
 
         <div className="flex gap-4 items-center">
           {session ? (
-            <Link href="/dashboard">
-              <Button variant="secondary" className="!px-4 !py-2 !text-sm flex items-center gap-2">
-                {session.user?.image && <img src={session.user.image} alt="Avatar" className="w-5 h-5 rounded-full" />}
-                Dashboard
-              </Button>
-            </Link>
+            <>
+              <Link href="/dashboard">
+                <Button variant="secondary" className="!px-4 !py-2 !text-sm flex items-center gap-2">
+                  {session.user?.image && <img src={session.user.image} alt="Avatar" className="w-5 h-5 rounded-full" />}
+                  Dashboard
+                </Button>
+              </Link>
+              <LogoutButton />
+            </>
           ) : (
             <Link href="/dashboard">
               <Button variant="secondary" className="!px-4 !py-2 !text-sm">Login</Button>
