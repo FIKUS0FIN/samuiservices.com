@@ -7,7 +7,7 @@ describe('Input Component', () => {
     render(<Input placeholder="Enter text" />)
     const input = screen.getByPlaceholderText('Enter text')
     expect(input).toBeInTheDocument()
-    expect(input).toHaveClass('input-field')
+    expect(input).toHaveClass('bg-surface-container-low')
   })
 
   it('renders a label when provided', () => {
@@ -20,35 +20,30 @@ describe('Input Component', () => {
     render(<Input error="This field is required" />)
     const errorText = screen.getByText('This field is required')
     expect(errorText).toBeInTheDocument()
-    // Test for the color style
-    expect(errorText).toHaveStyle({ color: 'var(--error-color, #ef4444)' })
+    // Test for the error class
+    expect(errorText).toHaveClass('text-error')
   })
 
   it('sets input border color when error is provided', () => {
     render(<Input placeholder="Error input" error="Error message" />)
     const input = screen.getByPlaceholderText('Error input')
 
-    // In vitest/jsdom, CSS variables passed via inline style are kept as strings.
-    // However, JS properties map `borderColor` to inline style objects. Let's just check the style attribute.
-    expect(input.getAttribute('style')).toContain('border-color: var(--error-color, #ef4444)')
+    expect(input).toHaveClass('border-error')
   })
 
   it('applies fullWidth style to container and input when true', () => {
     const { container } = render(<Input fullWidth placeholder="Full width" />)
     const input = screen.getByPlaceholderText('Full width')
 
-    // The wrapper div should have width: 100%
+    // The wrapper div should have w-full class
     const wrapper = container.firstChild as HTMLElement
-    expect(wrapper).toHaveStyle({ width: '100%' })
-
-    // The input should have width: 100%
-    expect(input).toHaveStyle({ width: '100%' })
+    expect(wrapper).toHaveClass('w-full')
   })
 
   it('appends custom className to the input', () => {
     render(<Input placeholder="Custom class" className="custom-input-class" />)
     const input = screen.getByPlaceholderText('Custom class')
-    expect(input).toHaveClass('input-field')
+    expect(input).toHaveClass('bg-surface-container-low')
     expect(input).toHaveClass('custom-input-class')
   })
 

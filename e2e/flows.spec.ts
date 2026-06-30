@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-async function loginAs(page, email) {
+async function loginAs(page: Page, email: string) {
   // Go to a dummy page or the sign-in page to trigger the credentials login
   await page.goto('/api/auth/signin?callbackUrl=/dashboard');
   // NextAuth automatically generates a form for the Credentials provider
