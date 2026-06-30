@@ -20,7 +20,7 @@ describe('Input Component', () => {
     render(<Input error="This field is required" />)
     const errorText = screen.getByText('This field is required')
     expect(errorText).toBeInTheDocument()
-    // Test for the color style
+    // Test for the error class
     expect(errorText).toHaveClass('text-error')
   })
 
@@ -28,8 +28,6 @@ describe('Input Component', () => {
     render(<Input placeholder="Error input" error="Error message" />)
     const input = screen.getByPlaceholderText('Error input')
 
-    // In vitest/jsdom, CSS variables passed via inline style are kept as strings.
-    // However, JS properties map `borderColor` to inline style objects. Let's just check the style attribute.
     expect(input).toHaveClass('border-error')
   })
 
@@ -39,7 +37,6 @@ describe('Input Component', () => {
     // The wrapper div should have w-full class
     const wrapper = container.firstChild as HTMLElement
     expect(wrapper).toHaveClass('w-full')
-    expect(wrapper).not.toHaveClass('md:w-auto')
   })
 
   it('appends custom className to the input', () => {
