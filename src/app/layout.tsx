@@ -3,7 +3,6 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
-export const dynamic = 'force-dynamic';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -13,6 +12,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://samuiservices.com'),
   title: 'Samui Services - The Premier Service Directory',
   description: 'Find the best local services, construction, delivery, and more in Koh Samui, Phangan, and Tao.',
   manifest: '/manifest.json',

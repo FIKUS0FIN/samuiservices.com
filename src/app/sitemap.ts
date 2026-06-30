@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { getAllIslands, getBusinessesByIsland } from '@/lib/db'
+import { getAllIslands, getBusinessesByIsland, getAllCategories } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,6 +26,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
+  // Dynamic Category routes
+  const categories = await getAllCategories()
+  const categoryRoutes = categories.map((cat) => ({
+    url: `${baseUrl}/?category=${cat.slug}`,
+    lastModified: new Date().toISOString(),
+    changeFrequency: 'daily' as const,
+    priority: 0.8,
+  }))
+
   // Dynamic Business routes
   const businessRoutes = []
   for (const island of islands) {
@@ -40,5 +49,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...routes, ...islandRoutes, ...businessRoutes]
+  return [...routes, ...islandRoutes, ...categoryRoutes, ...businessRoutes]
 }

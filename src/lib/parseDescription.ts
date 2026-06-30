@@ -35,8 +35,8 @@ export function parseDescriptionAndReviews(
     for (const block of blocks) {
       if (!block.trim()) continue;
       
-      const textMatch = block.match(/>\s*"(.*?)"/s);
-      const authorMatch = block.match(/>\s*\*\*\s*-\s*(.*?)\s*(?:\((.*?)\))?\*\*/s);
+      const textMatch = block.match(/>\s*"([\s\S]*?)"/);
+      const authorMatch = block.match(/>\s*\*\*\s*-\s*([\s\S]*?)\s*(?:\(([\s\S]*?)\))?\*\*/);
       
       if (textMatch) {
         let text = textMatch[1].trim();

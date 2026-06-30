@@ -5,6 +5,8 @@ import { Metadata } from 'next';
 
 import StandardLayout from './layouts/StandardLayout';
 import RealEstateLayout from './layouts/RealEstateLayout';
+
+export const revalidate = 3600; // 1 hour caching for optimal performance
 import TransportationLayout from './layouts/TransportationLayout';
 import ElectronicsRepairLayout from './layouts/ElectronicsRepairLayout';
 import ConstructionLayout from './layouts/ConstructionLayout';
@@ -38,6 +40,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const optimizedTitle = `Top ${business.category.name} in ${business.island.name} | ${business.name} Reviews & Info`;
   const optimizedDescription = `${business.name} is a highly-rated ${business.category.name} located in ${business.island.name}, Koh Samui. ${business.averageRating > 0 ? `Rated ${business.averageRating} stars.` : ''} Check out reviews, opening hours, photos, and contact information.`;
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://samuiservices.com';
+
   return {
     title: optimizedTitle,
     description: business.description || optimizedDescription,
@@ -52,9 +56,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: 'summary_large_image',
     },
     alternates: {
-      canonical: `https://www.samuibusinessdirectory.com/listing/${slug}`,
+      canonical: `${baseUrl}/listing/${slug}`,
       types: {
-        'text/markdown': `https://www.samuibusinessdirectory.com/api/agent/listing/${slug}`
+        'text/markdown': `${baseUrl}/api/agent/listing/${slug}`
       }
     }
   };
@@ -72,6 +76,8 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
   const hours = safeParse(business.hours, []);
   const allImages = business.image ? [business.image, ...galleryImages] : galleryImages;
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://samuiservices.com';
+  
   // 1. LocalBusiness Schema
   const localBusinessSchema = {
     '@context': 'https://schema.org',
@@ -79,7 +85,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
     name: business.name,
     image: allImages.length > 0 ? allImages : undefined,
     telephone: business.phone || undefined,
-    url: business.website || `https://www.samuibusinessdirectory.com/listing/${slug}`,
+    url: business.website || `${baseUrl}/listing/${slug}`,
     address: {
       '@type': 'PostalAddress',
       streetAddress: business.address || '',
@@ -141,19 +147,19 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://www.samuibusinessdirectory.com/'
+        item: `${baseUrl}/`
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: business.island.name,
-        item: `https://www.samuibusinessdirectory.com/island/${business.island.slug}`
+        item: `${baseUrl}/${business.island.slug}`
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: business.category.name,
-        item: `https://www.samuibusinessdirectory.com/category/${business.category.slug}`
+        item: `${baseUrl}/?category=${business.category.slug}`
       },
       {
         '@type': 'ListItem',
