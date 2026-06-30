@@ -4,7 +4,11 @@ export async function getBusinessesByIsland(islandSlug: string, categorySlugs?: 
   const whereClause: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
   
   if (islandSlug !== 'all') {
-    whereClause.island = { slug: islandSlug };
+    if (islandSlug === 'samui') {
+      whereClause.island = { slug: { notIn: ['phangan', 'tao'] } };
+    } else {
+      whereClause.island = { slug: islandSlug };
+    }
   }
   
   if (categorySlugs && categorySlugs.length > 0) {

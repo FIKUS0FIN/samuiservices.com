@@ -36,12 +36,20 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
           </li>
           <li><span className="text-outline">/</span></li>
+          {business.island.slug !== 'samui' && business.island.slug !== 'phangan' && business.island.slug !== 'tao' && (
+            <>
+              <li>
+                <Link href={`/samui`} className="hover:text-primary transition-colors">Koh Samui</Link>
+              </li>
+              <li><span className="text-outline">/</span></li>
+            </>
+          )}
           <li>
-            <Link href={`/island/${business.island.slug}`} className="hover:text-primary transition-colors">{business.island.name}</Link>
+            <Link href={`/${business.island.slug}`} className="hover:text-primary transition-colors">{business.island.name}</Link>
           </li>
           <li><span className="text-outline">/</span></li>
           <li>
-            <Link href={`/category/${business.category.slug}`} className="hover:text-primary transition-colors">{business.category.name}</Link>
+            <Link href={`/?category=${business.category.slug}`} className="hover:text-primary transition-colors">{business.category.name}</Link>
           </li>
           <li><span className="text-outline">/</span></li>
           <li className="text-on-surface truncate" aria-current="page">{business.name}</li>
