@@ -39,6 +39,7 @@ export function HeroSearch() {
       <div className="relative w-full md:w-64">
         <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-outline w-5 h-5" />
         <select
+          aria-label="Select location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           className="w-full pl-10 pr-4 py-4 rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary focus:border-primary text-on-surface appearance-none bg-surface-container-lowest"

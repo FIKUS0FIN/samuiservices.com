@@ -88,21 +88,21 @@ test.describe.serial('Platform Flows', () => {
   test('User can send a message to a business', async ({ page }) => {
     await loginAs(page, 'test@example.com');
     await page.goto('/');
-    
+
     // Go to first listing
     const firstListing = page.locator('.listing-card-container a').first();
     if (await firstListing.count() > 0) {
       const href = await firstListing.getAttribute('href');
       if (href) await page.goto(href);
-      
+
       // Wait for the listing page to load
       await page.waitForSelector('text=Message Business');
       await page.click('text=Message Business');
-      
+
       // Fill the message
       await page.fill('textarea[placeholder="Type your message here..."]', 'Hello, I have a question about your services.');
       await page.click('button:has-text("Send")');
-      
+
       // Expect success
       await expect(page.getByText('Message sent successfully!')).toBeVisible();
     }
