@@ -155,6 +155,51 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
             </section>
           )}
 
+          {/* Location & Map */}
+          {((business.lat && business.lng) || business.address) && (
+            <section className="flex flex-col gap-4" aria-labelledby="location-heading">
+              <h2 id="location-heading" className="text-2xl font-bold text-on-surface">Location</h2>
+              <div className="bg-surface rounded-2xl border border-outline-variant overflow-hidden flex flex-col shadow-sm">
+                <div className="p-4 md:p-6 border-b border-outline-variant/30 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-surface-container-lowest">
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold text-on-surface flex items-center gap-2">
+                      <span className="text-xl">📍</span> {business.name}
+                    </div>
+                    {business.address && (
+                      <div className="text-on-surface-variant text-sm pl-7 leading-relaxed">
+                        {business.address}
+                      </div>
+                    )}
+                  </div>
+                  {business.mapLink && (
+                    <a 
+                      href={business.mapLink} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="whitespace-nowrap bg-primary-container text-on-primary-container px-5 py-2.5 rounded-xl font-bold text-sm hover:brightness-95 transition flex items-center gap-2 shadow-sm"
+                    >
+                      Open in Google Maps
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                    </a>
+                  )}
+                </div>
+                <div className="w-full h-[300px] md:h-[400px] bg-surface-container-highest relative">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    frameBorder="0"
+                    style={{ border: 0 }}
+                    src={`https://maps.google.com/maps?q=${business.lat && business.lng ? `${business.lat},${business.lng}` : encodeURIComponent(`${business.name} ${business.address || ''}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                    allowFullScreen
+                    aria-hidden="false"
+                    tabIndex={0}
+                    title={`Map showing location of ${business.name}`}
+                  ></iframe>
+                </div>
+              </div>
+            </section>
+          )}
+
           {/* Gallery Grid */}
           {gallery.length > 0 && (
             <section className="flex flex-col gap-4" aria-labelledby="gallery-heading">
