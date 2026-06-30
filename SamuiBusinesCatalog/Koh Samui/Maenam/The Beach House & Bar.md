@@ -1,0 +1,33 @@
+# The Beach House & Bar
+
+**Category:** food & beverage
+**District:** Maenam
+**Source:** https://www.samuibusinessdirectory.com/directory/category/food+%26+beverage
+
+## Details
+Maenam
+View More
+## Google Maps Data
+**Address:** Santiburi Koh Samui 12/12, ตำบล แม่น้ำ อำเภอเกาะสมุย สุราษฎร์ธานี 84330, Thailand
+**Phone:** 077 965 900
+**Website:** https://santiburisamui.com/dining/the-beach-house-restaurant/
+**Rating:** 4.4/5.0
+**Google Maps Link:** https://maps.google.com/?cid=4396423067955243090
+
+### Working Hours
+- Monday: 11:00 AM – 10:30 PM
+- Tuesday: 11:00 AM – 10:30 PM
+- Wednesday: 11:00 AM – 10:30 PM
+- Thursday: 11:00 AM – 10:30 PM
+- Friday: 11:00 AM – 10:30 PM
+- Saturday: 11:00 AM – 10:30 PM
+- Sunday: 11:00 AM – 10:30 PM
+
+### Top Reviews
+- **Vladislav Lenskii** (5/5): "European price with European service. Coffee was good and coconut panna cotta looked and tasted great!  Staff is friendly and helpful. Good view on the beach 🏝️  The only minus was the 10 % service bill addition (just include it in the price)."
+- **Paul Wilson** (4/5): "Lovely meal overlooking the beech at night with both house singers as well as fire performers for entertainment - it was excellent. Particularly good Beef Cheek Rendang. Staff were very attentive but not overly so as to be in the way of a lovely chilled out evening."
+- **carissa hope lynch** (5/5): "We had lunch, dinner, and lunch here again! It’s so delicious, the food is so fresh, the premises lovely, clean, lively and comfortable atmosphere. Ken is very attentive and went out of his way to make us and our little one feel right at home. Highly recommend!"
+
+### Gallery
+![Google Photo 1](images/The Beach House & Bar_google_1.jpg)
+![Google Photo 2](images/The Beach House & Bar_google_2.jpg)

@@ -1,0 +1,32 @@
+# H Bistro
+
+**Category:** food & beverage
+**District:** Bophut
+**Source:** https://www.samuibusinessdirectory.com/directory/category/food+%26+beverage
+
+## Details
+Bophut
+View More
+## Google Maps Data
+**Address:** H26G+M8P, Bo Put, Ko Samui District, Surat Thani 84320, Thailand
+**Phone:** 077 245 511
+**Rating:** 4.3/5.0
+**Google Maps Link:** https://maps.google.com/?cid=10719386228704853366
+
+### Working Hours
+- Monday: 7:00 AM – 10:30 PM
+- Tuesday: 7:00 AM – 10:30 PM
+- Wednesday: 7:00 AM – 10:30 PM
+- Thursday: 7:00 AM – 10:30 PM
+- Friday: 7:00 AM – 10:30 PM
+- Saturday: 7:00 AM – 10:30 PM
+- Sunday: 7:00 AM – 10:30 PM
+
+### Top Reviews
+- **Nadiya Bondarenko** (5/5): "We had dinner at HBistro for my husband’s birthday, and it was truly an exceptional experience.  From the moment of booking, the staff were very attentive to every detail. They asked about our preferences in advance and offered several menu options, including wine pairing. We chose the Mediterranean set menu with wine pairing on the beach. There was a chance of rain, and the team thoughtfully informed us about an indoor option — but luckily, we had perfect weather and could enjoy the beach setting.  For the occasion, they prepared a beautiful romantic gazebo decorated with flowers just for us, which made the evening feel very special. We also had a dedicated waitress who was incredibly attentive and responsive — we really felt like VIP guests.  The food deserves a special mention: everything was delicious, beautifully presented, and the wine pairing complemented the dishes perfectly. We were also surprised with a birthday cake, which was a lovely and thoughtful gesture.  Overall, it’s a great choice if you’re looking for a truly special dining experience — absolutely worth it."
+- **wilasinee petchsuk** (5/5): "The food was delicious, all the staff were lovely – P'A, P'Ball, P'Noi, and everyone else as usual – and the music was great. It was a very warm and welcoming atmosphere, especially during my most frequent visits."
+- **Naama Tal** (1/5): "We We took the Mediterranean set and unfortunately it was really disappointing. It was very expensive, and still the food was honestly not good at all. It felt like they used expensive ingredients but without much attention to the actual flavors. The waiter was very nice and the atmosphere was good, but aside from that the food was poor, and we ended up with stomach aches throughout the night and the following day. Sadly, we wouldn’t recommend this place."
+
+### Gallery
+![Google Photo 1](images/H Bistro_google_1.jpg)
+![Google Photo 2](images/H Bistro_google_2.jpg)

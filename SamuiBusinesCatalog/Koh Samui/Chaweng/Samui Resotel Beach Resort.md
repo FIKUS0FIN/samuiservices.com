@@ -1,0 +1,33 @@
+# Samui Resotel Beach Resort
+
+**Category:** accommodation
+**District:** Chaweng
+**Source:** https://www.samuibusinessdirectory.com/directory/category/accommodation
+
+## Details
+Chaweng
+View More
+## Google Maps Data
+**Address:** 17 Moo 3, Chaweng Beach, Koh Samui, Suratthani, ตำบล บ่อผุด อำเภอเกาะสมุย สุราษฎร์ธานี 84320, Thailand
+**Phone:** 077 422 374
+**Website:** https://www.samuiresotel.com/
+**Rating:** 4.3/5.0
+**Google Maps Link:** https://maps.google.com/?cid=13021383521100242362
+
+### Working Hours
+- Monday: Open 24 hours
+- Tuesday: Open 24 hours
+- Wednesday: Open 24 hours
+- Thursday: Open 24 hours
+- Friday: Open 24 hours
+- Saturday: Open 24 hours
+- Sunday: Open 24 hours
+
+### Top Reviews
+- **Ben Ferrara** (5/5): "We had one of the Ocean Pool Villas for our stay. It was clean, bright, spacious, and comfortable. The beach view and easy access to the beach was great. It was very relaxing to lounge by your private pool while feeling like you're on the beach.  The majority of the staff are quite friendly and pleasant. Anything we asked of them was done without hesitation or fuss. The breakfast buffet isn't the best I have had, but was very good none the less and with quite a good selection.  The location of the resort is down the quieter end of Chaweng Beach which I didn't really mind, but if you want to be closer to the action you may want to reconsider."
+- **Domir Deanelle** (4/5): "We had a great stay here, Rooms were kept clean and refreshed, Good size with a nice view. Service was excellent, Had met our needs. Pool was great, Small gym but good enough if you want to get a quick workout in! Very happy with beachfront access from the resort. It’s a great location to visit the city and Surrounding area. We rented scooters Tour of the city with no issue.  Boom is the hotel customer service rep, she is an absolute gem! She went above and beyond to help us with our needs. Always smiling and happy, her  Positivity is contagious. She and her colleagues made our stay all that much better! 💯"
+- **Farwa Rizvi** (3/5): "I booked my hotel through Agoda. I had two nights stay at the hotel. The staff is very sweet especially the girls on the reception desk.  The room was very big and spacious however the bathroom had an unpleasant smell.  The only downside with regards to the food was lack of vegetarian and halal options in room service and breakfast buffet. The fruit quality in the breakfast isn’t good either so despite paying for breakfast you have to eat out.  The location is nice. Beach is accessible. Although lighting of the passageway leading to the beach at night should be present."
+
+### Gallery
+![Google Photo 1](images/Samui Resotel Beach Resort_google_1.jpg)
+![Google Photo 2](images/Samui Resotel Beach Resort_google_2.jpg)

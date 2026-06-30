@@ -1,0 +1,27 @@
+---
+title: "The Briza"
+slug: "the-briza"
+category: "accommodation"
+district: "Chaweng"
+metaTitle: "The Briza - Top accommodation in Chaweng | Koh Samui"
+metaDescription: "Our stay at the Briza Beach Resort was overall a pleasant experience, and the property itself is very সুন্দর and well-maintained. The location is convenien..."
+address: "173 22 หมู่ที่ 2 Tambon Bo Put, Amphoe Ko Samui, Chang Wat Surat Thani 84320, Thailand"
+phone: "077 231 997"
+website: "http://www.thebriza.com/"
+mapLink: "https://maps.google.com/?cid=13859450015798529619"
+rating: 3.9
+images:
+  - "https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/businesses/the-briza-1.jpg"
+  - "https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/businesses/the-briza-2.jpg"
+---
+
+## Top Reviews
+> "Our stay at the Briza Beach Resort was overall a pleasant experience, and the property itself is very সুন্দর and well-maintained. The location is convenient, making it easy to explore the surrounding area.  Our room was spacious and comfortable, and the private pool on the terrace was definitely the highlight of our stay – perfect for relaxing and enjoying some quiet time.  However, there are a few downsides worth mentioning. The bathroom facilities are somewhat outdated and could use renovation. Additionally, the resort does not provide its own sun loungers on the beach, and the section of beach directly next to the resort is not really suitable for swimming.  On the positive side, the staff were consistently friendly, attentive, and helpful, which made our stay more enjoyable. For a 4-star resort, we expected a bit more in some areas, but overall everything was fine and we had a nice stay."
+> **- simona Cuomo (4/5/5)**
+
+> "Two friends and I stayed at the Briza Beach Resort from March 20 to April 3, 2026, and had a wonderful time. We had two adjoining duplex suites, 109 and 110, with a small pool off our patios. The suites were spacious, bright, and clean. The pool was great. A few days after our arrival, I tripped while walking down the hill outside the resort, and broke a bone in my foot. I got stellar treatment at the Bangkok Hospital Samui, but had to spend the rest of the vacation in an air cast and on crutches. The staff at the resort were wonderfully helpful and accommodating, and I can’t say enough about Tom, Alai, and Mary (and others whose names I’m sorry I didn’t catch) who patiently and cheerfully ferried me in a golf cart to and from the restaurant, the beach, the front entrance, and my room several times every day. The staff here really go the extra mile (in this case, literally!) There was a tasty breakfast buffet each day, including a coffee machine that made fabulous lattes. The three of us took a cooking class from the chef,  and we enjoyed it so much we took another one the second week using a different menu. The cooking classes were very well organized and we even got nice aprons to take home. The food we made was enough for our dinner, as well as leftovers that the staff warmed up and served us for lunch the next day. I want to shout out to many of the other great staff at this place as well - Laila, Jessie, Nuda, Pat, Boobo, and many more. Kudos to the managers - Ken, Sak, and others whose names I wish I’d written down. The place is very well run.  To be honest, when we first arrived, we weren’t sure we were going to enjoy our stay. Given the name of the resort, we were disappointed to find that there isn’t really a “beach”per se. There is a raised concrete platform area overlooking the water, with lounge chairs, massage services, and a beach bar. There are steps down to the shore, and sometimes there is a small beach area and other times it is covered by the tide. (Maybe it’s better at other times of the year? I don’t know.)  But once we got over that and focused on the great features that the resort does have (including beautiful spacious suites, lovely pools, attractive grounds, nice ocean view, and beach areas just a short walk down the shore. And have I mentioned the great staff?) we enjoyed our stay very much."
+> **- Allison Matichuk (5/5/5)**
+
+> "Spent 5 nights here in Feb 2026.  As per other reviews the hotel could do with some touch up. However it was better than I expected - after reading some of the other reviews.  Didn’t start off too well - our room had windows South and East. So very warm when entering.  Was told give the a/c 5 minutes.  Then disaster - power cut (the whole island). Clearly not the hotels fault.  Power was soon restored to the island except the local area - apparently sub station issue.  It wasn’t until around 9 pm that power was restored and we could cool the room down a bit.  After that we made sure cleaning closed the curtains during the day. Breakfast is reasonable - the chef cooking eggs is really nice. We had room 32X with a plunge pool. This was great as not overlooked. Note some of the larger villas have pool but these are very open. The two largest villas nearest to the sea are very public !  One has the massage area adjacent to the Not recommended if steps are an issue. The majority of room will have some steps to access. For us it was 76 steps up and down to breakfast."
+> **- Michael Godfrey (4/5/5)**
+

@@ -1,0 +1,27 @@
+---
+title: "InterContinental Resort"
+slug: "intercontinental-resort"
+category: "accommodation"
+district: "Taling Ngam"
+metaTitle: "InterContinental Resort - Top accommodation in Taling Ngam | Koh Samui"
+metaDescription: "Had a wonderful stay at InterContinental Koh Samui Resort.  Everything exceeded our expectations—from the beautiful resort and stunning views to the excell..."
+address: "295 Moo 3, Taling Ngam Beach, ตำบล ตลิ่งงาม Koh Samui, สุราษฎร์ธานี 84140, Thailand"
+phone: "077 429 100"
+website: "https://www.ihg.com/intercontinental/hotels/us/en/koh-samui/usmks/hoteldetail?cm_mmc=GoogleMaps-_-IC-_-TH-_-USMKS"
+mapLink: "https://maps.google.com/?cid=10613894506370169029"
+rating: 4.7
+images:
+  - "https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/businesses/intercontinental-resort-1.jpg"
+  - "https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/businesses/intercontinental-resort-2.jpg"
+---
+
+## Top Reviews
+> "Had a wonderful stay at InterContinental Koh Samui Resort.  Everything exceeded our expectations—from the beautiful resort and stunning views to the excellent food and outstanding service. Every member of staff we met was warm, friendly, and genuinely attentive, making us feel welcome throughout our stay.  The Club InterContinental experience was fantastic, and we also enjoyed the activities offered by the resort, especially the Mat Pilates session, which was professionally conducted and very enjoyable.  A special thank you to the entire team for helping make our father’s birthday celebration even more memorable. We truly appreciated the hospitality and attention to detail.  We will definitely be returning and highly recommend this resort to anyone visiting Koh Samui."
+> **- fai feng (5/5/5)**
+
+> "The experience at this InterContinental is truly wonderful. From the superior and attentive service (thank you, Lisa), to the delicious and attractively presented food, no small detail goes unnoticed to make a stay more pleasant. The facility may be slightly older than some newer properties elsewhere, but it is lovingly maintained and seamlessly integrated with the beautiful environs which host it. The beach and swimming pool areas are all well placed and managed, and the gym, with views of the water, is wonderful for an aerobic or strength workout. You can do a full body work out on the various machines/barbells. We did not take any of the numerous excursions, choosing to go zen on site, but they looked fun. A fair number of guests, many German, with children, but the peaceful ambience of the place was hardly ever broken, except, perhaps during the slightly louder-than-desired (for us) saxophone background music at Flame bar one night. The performer was nonetheless very good. But some people dig that kind of accompaniment, so who am I to complain? We very much enjoyed the Buddha-bar type vibe in the background by the DJ one night at the Amber restaurant (amazing Thai food, especially the Phad Thai, steamed sea bass and vermicelli/crab curry). Good mix of younger family and senior clientele. Not a party place but a great setting for relaxation and reflection. Bonus point on the bottled water available. Food usually quickly delivered, with a smile; Flame at lunchtime slightly slow one day when it was not busy, but quality top-notch. We also had a Thai and oil massage, respectively, and they were heavenly. Perhaps the best I’ve had. Would come back anytime and recommend highly to any and all! Great experience!!"
+> **- Dave Trouba (5/5/5)**
+
+> "What an experience! I came here with my husband to celebrate our wedding anniversary and they certainly made us feel appreciated as guests as soon as we pulled up to the property. We made sure to notify the hotel in advance about our anniversary celebration and they surprised us with a bunch of perks! I also have IHG Platinum status with the IHG Premier credit card and we were upgraded to the king club lounge room and they explained that we were also able to visit the club lounge, where you have access to snacks and soft drinks (including coffees, milkshakes, and smoothies) throughout the day. If you have access to the lounge, they also have cocktail hour from 5:00 PM to 7:00 PM each day and you can order from any assortment of alcoholic (and no-alcoholic) beverages on the menu, from cocktails to beer. This time is perfect to watch the stunning sunset every day. The cocktails at sunset were one of the highlights each day. The staff at the club lounge consistently provided excellent service, especially Cream who tended to us most of the time. The breakfast buffet at Amber had a nice assortment of food and attentive staff. Lobby staff were always very friendly and helpful, especially Miu and Latin, who made us feel so welcomed as guests. We visited the Baan Spa on the property on our last day for the 4-hour Touch of Celestial Beauty treatment. Koy and Rose did a phenomenal job and checked in on us to confirm that the massage pressure and room temperature was to our likings. This hotel also has its own private dock and I highly recommend going out all the way to the end of it at night to see the stars much more clearly. I'm usually more of a traveler who visits large, busy metropolitan cities and I wasn't sure if I would even enjoy staying at an island resort in a more remote area. After our 4 night stay here, I can absolutely recommend staying here. The beauty of the property itself, the scenic views, and the hospitality of the staff makes this resort a true winner."
+> **- Justin Chiu (5/5/5)**
+

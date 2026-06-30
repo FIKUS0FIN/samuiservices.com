@@ -1,0 +1,35 @@
+---
+title: "Lucky To Be Alive"
+slug: "lucky-to-be-alive"
+category: "nightlife"
+district: "Fisherman's Village"
+metaTitle: "Lucky To Be Alive - Top nightlife in Fisherman's Village | Koh Samui"
+metaDescription: "Excellent selection of Thai craft beers with 7 on a rotating tap and more in cans.  Superb service by the bar woman Trina who is very polite and always smi..."
+address: "79, ตำบล บ่อผุด อำเภอเกาะสมุย สุราษฎร์ธานี 84320, Thailand"
+phone: "098 345 2490"
+website: "https://www.facebook.com/craftbeerkohsamui"
+mapLink: "https://maps.google.com/?cid=14826029868452148831"
+rating: 4.8
+hours:
+  - "Monday: 5:00 – 11:00 PM"
+  - "Tuesday: Closed"
+  - "Wednesday: 5:00 – 11:00 PM"
+  - "Thursday: 5:00 – 11:00 PM"
+  - "Friday: 4:00 PM – 12:00 AM"
+  - "Saturday: 5:00 PM – 12:00 AM"
+  - "Sunday: 5:00 – 11:00 PM"
+images:
+  - "https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/businesses/lucky-to-be-alive-1.jpg"
+  - "https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/businesses/lucky-to-be-alive-2.jpg"
+---
+
+## Top Reviews
+> "Excellent selection of Thai craft beers with 7 on a rotating tap and more in cans.  Superb service by the bar woman Trina who is very polite and always smiling.  The first night I tried 2 different hazy IPA’s and 1 IPA, all draft, super tasty and very fresh.  We went back the second night and they had all already changed one of the drafts and I was able to try 3 entirely different draft IPA’s, again of great quality.  It isn’t cheap, but then again I haven’t come across cheap craft beer anywhere in South East Asia. We didn’t eat at any of the street food stalls, but other people were bringing food back to the bar area and it looked very tasty. If you like craft beer and fancy a change from the usual; Chang, Singha & Leo I’d highly recommend this place."
+> **- Mark Wilson (5/5/5)**
+
+> "Small but excellent – highly recommended! They have 7 fantastic beers on tap and many more great craft beers from Thai microbreweries in the fridge. The staff member was incredibly friendly, and we discovered some amazing new craft beers while feeling completely at home. Thanks for this wonderful little gem! 🍻"
+> **- S. Mayar (5/5/5)**
+
+> "Superb range of craft beers in an area awash with Singha etc. Sours, Lagers, IPAs and a decent DIPA on the 7 taps, plus cans and bottles in the fridge (cider and stouts too) Really friendly service, would strongly recommend a visit."
+> **- Russ Wyld (5/5/5)**
+
