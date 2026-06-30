@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Listing, Category } from '@prisma/client';
@@ -26,6 +26,14 @@ interface ListingsMapProps {
   zoom?: number;
 }
 
+const DISTRICT_ZONES = [
+  { name: 'Chaweng / Bo Put', center: [9.535, 100.035], radius: 3500, gradientId: 'grad-boput', colors: ['#00c6ff', '#0072ff'] },
+  { name: 'Lamai / Maret', center: [9.470, 100.045], radius: 3000, gradientId: 'grad-maret', colors: ['#f857a6', '#ff5858'] },
+  { name: 'Mae Nam', center: [9.570, 99.990], radius: 3000, gradientId: 'grad-maenam', colors: ['#11998e', '#38ef7d'] },
+  { name: 'Nathon / Ang Thong', center: [9.530, 99.930], radius: 2500, gradientId: 'grad-nathon', colors: ['#F2994A', '#F2C94C'] },
+  { name: 'Taling Ngam / South', center: [9.440, 99.950], radius: 3500, gradientId: 'grad-taling', colors: ['#8E2DE2', '#4A00E0'] },
+];
+
 export default function ListingsMap({ businesses, center = [9.5120, 100.0136], zoom = 11 }: ListingsMapProps) {
   // Center defaults to Koh Samui
   
@@ -33,12 +41,47 @@ export default function ListingsMap({ businesses, center = [9.5120, 100.0136], z
   const markers = businesses.filter(b => b.lat && b.lng);
 
   return (
-    <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
+    <div style={{ height: '100%', width: '100%', overflow: 'hidden', position: 'relative' }}>
+      
+      {/* SVG Defs for beautiful UI/UX gradients */}
+      <svg style={{ width: 0, height: 0, position: 'absolute' }}>
+        <defs>
+          {DISTRICT_ZONES.map(d => (
+            <radialGradient id={d.gradientId} key={d.gradientId} cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor={d.colors[0]} stopOpacity={0.5} />
+              <stop offset="100%" stopColor={d.colors[1]} stopOpacity={0.0} />
+            </radialGradient>
+          ))}
+        </defs>
+      </svg>
+
       <MapContainer center={center} zoom={zoom} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          className="map-tiles-custom"
         />
+
+        {/* District Highlight Circles */}
+        {DISTRICT_ZONES.map(d => (
+          <Circle 
+            key={d.name}
+            center={d.center as [number, number]}
+            radius={d.radius}
+            pathOptions={{
+              fillColor: `url(#${d.gradientId})`,
+              fillOpacity: 1,
+              color: d.colors[0],
+              weight: 2,
+              opacity: 0.4,
+              dashArray: '5, 5'
+            }}
+          >
+            <Tooltip direction="center" permanent={false} opacity={0.8} className="font-bold border-0 shadow-lg text-sm rounded-xl px-3 py-1 bg-white/90 backdrop-blur-md text-on-surface">
+              {d.name} District
+            </Tooltip>
+          </Circle>
+        ))}
         {markers.map((business) => (
           <Marker 
             key={business.id} 
