@@ -3,6 +3,8 @@ import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
 import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { ReviewWidget } from '@/components/features/ReviewWidget';
+import { parseDescriptionAndReviews } from '@/lib/parseDescription';
 import ProductGrid from '../components/ProductGrid';
 import Link from 'next/link';
 
@@ -20,6 +22,13 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
   const services = safeParse(business.services, []);
   const gallery = safeParse(business.galleryImages, []);
   const hours = safeParse(business.hours, []);
+
+  const { description: parsedDescription, reviews: scrapedReviews } = parseDescriptionAndReviews(
+    business.description, 
+    business.name, 
+    business.category?.name, 
+    business.island?.name
+  );
 
   // Use up to 3 images for a beautiful hero grid if available
   const heroImages = gallery.length >= 3 
@@ -143,10 +152,13 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
           {/* About */}
           <section className="flex flex-col gap-4" id="about">
             <h2 className="text-2xl font-bold text-on-surface">About {business.name}</h2>
-            <p className="text-lg text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface p-6 rounded-2xl border border-outline-variant" itemProp="description">
-              {business.description}
+            <p className="text-lg text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface p-6 rounded-2xl border border-outline-variant shadow-sm" itemProp="description">
+              {parsedDescription}
             </p>
           </section>
+
+          {/* Top Scraped Reviews Widget */}
+          <ReviewWidget reviews={scrapedReviews} />
 
           {/* Hours Box */}
           {hours.length > 0 && (
