@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getAllIslands, getBusinessesByIsland, getAllCategories } from '@/lib/db'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400 // Cache for 24 hours
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://samuiservices.com'
