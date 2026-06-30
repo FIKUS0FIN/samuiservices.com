@@ -4,6 +4,7 @@ import { MessageForm } from "@/components/features/MessageForm";
 import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
 import ProductGrid from '../components/ProductGrid';
+import Link from 'next/link';
 
 // Utility for safe JSON parse
 const safeParse = (str: string | null | undefined, fallback: any = []) => {
@@ -15,7 +16,7 @@ const safeParse = (str: string | null | undefined, fallback: any = []) => {
   }
 };
 
-export default function StandardLayout({ business }: { business: any }) {
+export default function StandardLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   const services = safeParse(business.services, []);
   const gallery = safeParse(business.galleryImages, []);
   const hours = safeParse(business.hours, []);
@@ -26,14 +27,33 @@ export default function StandardLayout({ business }: { business: any }) {
     : [business.image || 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2000&auto=format&fit=crop'];
 
   return (
-    <div className="relative pb-24 lg:pb-0"> {/* Padding for mobile sticky bar */}
+    <article className="relative pb-24 lg:pb-0" itemScope itemType="https://schema.org/LocalBusiness">
       
+      {/* Visual Breadcrumb Navigation for SEO */}
+      <nav aria-label="Breadcrumb" className="bg-surface border-b border-outline-variant py-3 px-4 md:px-6">
+        <ol className="max-w-container-max mx-auto flex flex-wrap items-center gap-2 text-sm text-on-surface-variant font-medium">
+          <li>
+            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+          </li>
+          <li><span className="text-outline">/</span></li>
+          <li>
+            <Link href={`/island/${business.island.slug}`} className="hover:text-primary transition-colors">{business.island.name}</Link>
+          </li>
+          <li><span className="text-outline">/</span></li>
+          <li>
+            <Link href={`/category/${business.category.slug}`} className="hover:text-primary transition-colors">{business.category.name}</Link>
+          </li>
+          <li><span className="text-outline">/</span></li>
+          <li className="text-on-surface truncate" aria-current="page">{business.name}</li>
+        </ol>
+      </nav>
+
       {/* Dynamic Hero Section - UI/UX Designer Z-Pattern Start */}
-      <section className="relative w-full overflow-hidden">
+      <header className="relative w-full overflow-hidden">
         {heroImages.length >= 3 ? (
-          <div className="grid grid-cols-4 grid-rows-2 h-[60vh] md:h-[70vh] gap-1">
+          <div className="grid grid-cols-4 grid-rows-2 h-[50vh] md:h-[60vh] gap-1">
             <div className="col-span-4 md:col-span-2 row-span-2 relative">
-              <img className="w-full h-full object-cover" src={heroImages[0]} alt={business.name} />
+              <img className="w-full h-full object-cover" src={heroImages[0]} alt={business.name} itemProp="image" />
               <div className="absolute inset-0 hero-gradient opacity-60"></div>
             </div>
             <div className="hidden md:block col-span-2 row-span-1 relative">
@@ -46,8 +66,8 @@ export default function StandardLayout({ business }: { business: any }) {
             </div>
           </div>
         ) : (
-          <div className="w-full h-[60vh] md:h-[70vh] relative">
-            <img className="w-full h-full object-cover" src={heroImages[0]} alt={business.name} />
+          <div className="w-full h-[50vh] md:h-[60vh] relative">
+            <img className="w-full h-full object-cover" src={heroImages[0]} alt={business.name} itemProp="image" />
             <div className="absolute inset-0 hero-gradient"></div>
           </div>
         )}
@@ -61,64 +81,69 @@ export default function StandardLayout({ business }: { business: any }) {
                   {business.category?.name || 'Local Business'}
                 </span>
                 {business.priceLevel && (
-                  <span className="bg-surface/90 text-on-surface px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                  <span className="bg-surface/90 text-on-surface px-3 py-1 rounded-full text-xs font-bold shadow-md" itemProp="priceRange">
                     {business.priceLevel}
                   </span>
                 )}
               </div>
-              <h1 className="font-display text-4xl md:text-6xl text-white mb-2 drop-shadow-lg font-bold">
+              <h1 className="font-display text-4xl md:text-6xl text-white mb-2 drop-shadow-lg font-bold" itemProp="name">
                 {business.name}
               </h1>
               
               {/* Trust Indicators */}
               <div className="flex flex-wrap items-center gap-4 text-white">
                 {business.averageRating > 0 && (
-                  <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-md">
+                  <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-md" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
+                    <meta itemProp="ratingValue" content={business.averageRating.toString()} />
+                    <meta itemProp="reviewCount" content={business.reviewCount.toString()} />
                     <span className="text-amber-400 text-lg">★</span>
                     <span className="font-bold">{business.averageRating}</span>
                     <span className="text-white/80 text-sm">({business.reviewCount} reviews)</span>
                   </div>
                 )}
                 {business.address && (
-                  <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-md text-sm">
-                    <span>📍</span> {business.address.substring(0, 40)}{business.address.length > 40 ? '...' : ''}
+                  <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-md text-sm" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                    <span>📍</span> 
+                    <span itemProp="streetAddress">{business.address.substring(0, 40)}{business.address.length > 40 ? '...' : ''}</span>
+                    <meta itemProp="addressLocality" content={business.island.name} />
+                    <meta itemProp="addressCountry" content="TH" />
                   </div>
                 )}
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </header>
 
       {/* Main Grid Content */}
-      <section className="max-w-container-max mx-auto px-4 md:px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative">
+      <div className="max-w-container-max mx-auto px-4 md:px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative">
         
         {/* Main Column */}
         <div className="lg:col-span-8 flex flex-col gap-10">
           
           {/* Services Quick-Glance */}
           {services.length > 0 && (
-            <div className="flex flex-wrap gap-2">
+            <section className="flex flex-wrap gap-2" aria-label="Services Offered">
               {services.map((service: string, idx: number) => (
                 <span key={idx} className="bg-surface-container text-on-surface-variant px-4 py-2 rounded-xl text-sm font-medium border border-outline-variant">
                   {service}
                 </span>
               ))}
-            </div>
+            </section>
           )}
 
           {/* About */}
-          <div className="flex flex-col gap-4" id="about">
-            <h2 className="text-2xl font-bold text-on-surface">About</h2>
-            <p className="text-lg text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface p-6 rounded-2xl border border-outline-variant">
+          <section className="flex flex-col gap-4" id="about">
+            <h2 className="text-2xl font-bold text-on-surface">About {business.name}</h2>
+            <p className="text-lg text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface p-6 rounded-2xl border border-outline-variant" itemProp="description">
               {business.description}
             </p>
-          </div>
+          </section>
 
           {/* Hours Box */}
           {hours.length > 0 && (
-            <div className="flex flex-col gap-4">
-              <h2 className="text-2xl font-bold text-on-surface">Opening Hours</h2>
+            <section className="flex flex-col gap-4" aria-labelledby="hours-heading">
+              <h2 id="hours-heading" className="text-2xl font-bold text-on-surface">Opening Hours</h2>
               <div className="bg-surface p-6 rounded-2xl border border-outline-variant grid gap-2">
                 {hours.map((hour: string, idx: number) => (
                   <div key={idx} className="flex justify-between text-on-surface-variant py-1 border-b border-outline-variant/50 last:border-0">
@@ -127,21 +152,21 @@ export default function StandardLayout({ business }: { business: any }) {
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
           )}
 
           {/* Gallery Grid */}
           {gallery.length > 0 && (
-            <div className="flex flex-col gap-4">
-              <h2 className="text-2xl font-bold text-on-surface">Gallery</h2>
+            <section className="flex flex-col gap-4" aria-labelledby="gallery-heading">
+              <h2 id="gallery-heading" className="text-2xl font-bold text-on-surface">Gallery</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {gallery.map((img: string, idx: number) => (
                   <div key={idx} className="aspect-square rounded-xl overflow-hidden border border-outline-variant bg-surface-container-highest">
-                    <img src={img} alt={`Gallery image ${idx + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                    <img src={img} alt={`${business.name} - Gallery image ${idx + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
           )}
 
           {/* Products & Services */}
@@ -150,29 +175,31 @@ export default function StandardLayout({ business }: { business: any }) {
           )}
 
           {/* Reviews */}
-          <div className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold text-on-surface">Reviews</h2>
+          <section className="flex flex-col gap-4" aria-labelledby="reviews-heading">
+            <h2 id="reviews-heading" className="text-2xl font-bold text-on-surface">Customer Reviews</h2>
             <Card className="p-6 md:p-8 rounded-2xl shadow-sm border-outline-variant">
               <ReviewForm listingId={business.id} />
               <div className="flex flex-col gap-6 mt-8">
                 {business.reviews && business.reviews.length > 0 ? (
                   business.reviews.map((review: any) => (
-                    <div key={review.id} className="p-5 border border-outline-variant rounded-xl bg-surface-container-lowest">
+                    <div key={review.id} className="p-5 border border-outline-variant rounded-xl bg-surface-container-lowest" itemProp="review" itemScope itemType="https://schema.org/Review">
                       <div className="flex items-center gap-4 mb-3">
                         <div className="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold">
                           {(review.user?.name || 'U').charAt(0).toUpperCase()}
                         </div>
-                        <div className="flex-1">
-                          <div className="font-bold text-on-surface">{review.user?.name || 'Anonymous User'}</div>
+                        <div className="flex-1" itemProp="author" itemScope itemType="https://schema.org/Person">
+                          <div className="font-bold text-on-surface" itemProp="name">{review.user?.name || 'Anonymous User'}</div>
                           <div className="text-xs text-on-surface-variant">
+                            <meta itemProp="datePublished" content={new Date(review.createdAt).toISOString()} />
                             {new Date(review.createdAt).toLocaleDateString()}
                           </div>
                         </div>
-                        <div className="text-amber-500 font-bold tracking-widest">
+                        <div className="text-amber-500 font-bold tracking-widest" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                          <meta itemProp="ratingValue" content={review.rating.toString()} />
                           {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
                         </div>
                       </div>
-                      <p className="m-0 leading-relaxed text-on-surface-variant">{review.comment}</p>
+                      <p className="m-0 leading-relaxed text-on-surface-variant" itemProp="reviewBody">{review.comment}</p>
                     </div>
                   ))
                 ) : (
@@ -182,19 +209,39 @@ export default function StandardLayout({ business }: { business: any }) {
                 )}
               </div>
             </Card>
-          </div>
+          </section>
+
+          {/* FAQ Section */}
+          {faqs.length > 0 && (
+            <section className="flex flex-col gap-4 mt-4" aria-labelledby="faq-heading">
+              <h2 id="faq-heading" className="text-2xl font-bold text-on-surface">Frequently Asked Questions</h2>
+              <div className="flex flex-col gap-4">
+                {faqs.map((faq, idx) => (
+                  <details key={idx} className="bg-surface p-5 rounded-2xl border border-outline-variant group cursor-pointer transition-all">
+                    <summary className="font-bold text-lg text-on-surface outline-none list-none flex justify-between items-center">
+                      {faq.name}
+                      <span className="text-primary group-open:rotate-45 transition-transform text-2xl leading-none">+</span>
+                    </summary>
+                    <p className="mt-4 text-on-surface-variant leading-relaxed border-t border-outline-variant/30 pt-4">
+                      {faq.acceptedAnswer.text}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
         {/* Sidebar & Desktop Action Bar */}
-        <div className="hidden lg:block lg:col-span-4 relative">
+        <aside className="hidden lg:block lg:col-span-4 relative">
           <div className="sticky top-24 flex flex-col gap-6">
             
             {/* CTA Widget */}
             <div className="bg-primary text-on-primary rounded-2xl p-6 shadow-xl flex flex-col gap-4">
               <h3 className="font-bold text-xl mb-2">Interested?</h3>
               {business.phone && (
-                <a href={`tel:${business.phone}`} className="w-full bg-white text-primary text-center py-3 rounded-xl font-bold hover:bg-white/90 transition shadow-sm">
-                  📞 Call Now
+                <a href={`tel:${business.phone}`} itemProp="telephone" className="w-full bg-white text-primary text-center py-3 rounded-xl font-bold hover:bg-white/90 transition shadow-sm">
+                  📞 Call {business.phone}
                 </a>
               )}
               {business.mapLink && (
@@ -203,7 +250,7 @@ export default function StandardLayout({ business }: { business: any }) {
                 </a>
               )}
               {business.website && (
-                <a href={business.website} target="_blank" rel="noreferrer" className="w-full border-2 border-white/30 text-white text-center py-3 rounded-xl font-bold hover:bg-white/10 transition">
+                <a href={business.website} itemProp="url" target="_blank" rel="noreferrer" className="w-full border-2 border-white/30 text-white text-center py-3 rounded-xl font-bold hover:bg-white/10 transition">
                   🌐 Visit Website
                 </a>
               )}
@@ -219,8 +266,8 @@ export default function StandardLayout({ business }: { business: any }) {
               <ClaimButton listingId={business.id} />
             )}
           </div>
-        </div>
-      </section>
+        </aside>
+      </div>
 
       {/* Sticky Mobile Action Bar (Conversion Optimized) */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 flex items-center gap-3">
@@ -241,6 +288,6 @@ export default function StandardLayout({ business }: { business: any }) {
         )}
       </div>
       
-    </div>
+    </article>
   );
 }
