@@ -31,9 +31,8 @@ describe('Input Component', () => {
     expect(input).toHaveClass('border-error')
   })
 
-  it('applies fullWidth style to container and input when true', () => {
+  it('applies fullWidth style to container when true', () => {
     const { container } = render(<Input fullWidth placeholder="Full width" />)
-    const input = screen.getByPlaceholderText('Full width')
 
     // The wrapper div should have w-full class
     const wrapper = container.firstChild as HTMLElement
