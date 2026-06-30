@@ -4,6 +4,7 @@ import { PrismaLibSql } from "@prisma/adapter-libsql"
 import fs from 'fs'
 import fsPromises from 'fs/promises'
 import path from 'path'
+// @ts-ignore
 import matter from 'gray-matter'
 
 const dbUrl = process.env.DATABASE_URL || "file:./dev.db";
