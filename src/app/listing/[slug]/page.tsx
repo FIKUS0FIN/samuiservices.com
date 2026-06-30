@@ -52,7 +52,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: 'summary_large_image',
     },
     alternates: {
-      canonical: `https://www.samuibusinessdirectory.com/listing/${slug}`
+      canonical: `https://www.samuibusinessdirectory.com/listing/${slug}`,
+      types: {
+        'text/markdown': `https://www.samuibusinessdirectory.com/api/agent/listing/${slug}`
+      }
     }
   };
 }
