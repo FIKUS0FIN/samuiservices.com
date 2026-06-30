@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: ['GPTBot', 'ChatGPT-User', 'ClaudeBot', 'anthropic-ai', 'PerplexityBot', 'Applebot', 'OAI-SearchBot'],
-        allow: ['/api/agent/', '/llms.txt'],
+        allow: '/',
       }
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
