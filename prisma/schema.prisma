@@ -99,6 +99,10 @@ model Listing {
   googlePlaceId String? @unique
   website       String?
   hours         String?
+  galleryImages String? // Serialized JSON array of strings
+  services      String? // Serialized JSON array of strings
+  priceLevel    String?
+  mapLink       String?
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
