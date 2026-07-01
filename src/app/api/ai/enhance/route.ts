@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     }
 
     const prompt = `
-You are an expert SEO Content Writer and Keyword Strategist.
+You are an expert SEO Content Writer, Keyword Strategist, and Business Analyst.
 
 Business Name: ${businessName}
 Category: ${categoryName}
@@ -40,20 +40,21 @@ Location: ${islandName || 'Koh Samui'}, Thailand
 Current Description: ${description || 'No description provided.'}
 
 Your task is to rewrite the business description based on these guidelines:
-1. Hook the reader immediately and state the value proposition.
+1. Hook the reader immediately and clearly state the unique value proposition and business advantage.
 2. Write comprehensive, engaging body content using natural keyword integration (aim for 0.5-1.5% density for primary keywords like the category and location).
 3. Include E-E-A-T signals (e.g., mention expertise, reliability, and local presence).
-4. Use Markdown formatting. Include clear subheadings (H2/H3), bullet points for scannability, and bold text for emphasis.
-5. Conclude with a strong call-to-action (e.g., inviting them to visit or contact).
-6. Ensure the tone is professional, welcoming, and helpful to tourists and expats.
+4. Analyze the business context and incorporate a persuasive business analytics perspective—highlighting the value delivered to customers, market positioning, and why this business stands out competitively in the local area.
+5. Use Markdown formatting. Include clear subheadings (H2/H3), bullet points for scannability, and bold text for emphasis.
+6. Conclude with a strong call-to-action (e.g., inviting them to visit or contact).
+7. Ensure the tone is professional, authoritative, yet welcoming and helpful to tourists and expats.
 
 Output ONLY the rewritten Markdown description. Do not include any other conversational text or pleasantries.
 `;
 
-    // Run the Cloudflare Llama 3.1 model
-    const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+    // Run the Cloudflare Llama 3.1 70B model (the smarter one)
+    const response = await env.AI.run('@cf/meta/llama-3.1-70b-instruct', {
       messages: [
-        { role: 'system', content: 'You are an SEO writing assistant.' },
+        { role: 'system', content: 'You are an SEO writing assistant and business analyst.' },
         { role: 'user', content: prompt }
       ]
     });
