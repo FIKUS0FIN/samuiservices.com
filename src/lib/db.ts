@@ -12,7 +12,20 @@ export async function getBusinessesByIsland(islandSlug: string, categorySlugs?: 
   }
   
   if (categorySlugs && categorySlugs.length > 0) {
-    whereClause.category = { slug: { in: categorySlugs } };
+    const categoriesToFilter = await prisma.category.findMany({
+      where: { slug: { in: categorySlugs } },
+      include: { children: true }
+    });
+    
+    const allSlugs = new Set<string>();
+    for (const cat of categoriesToFilter) {
+      allSlugs.add(cat.slug);
+      for (const child of cat.children) {
+        allSlugs.add(child.slug);
+      }
+    }
+    
+    whereClause.category = { slug: { in: Array.from(allSlugs) } };
   }
 
   if (query) {

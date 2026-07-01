@@ -1,0 +1,1 @@
+DELETE FROM Category WHERE id NOT IN (SELECT DISTINCT categoryId FROM Listing) AND id NOT IN (SELECT DISTINCT parentId FROM Category WHERE parentId IS NOT NULL);

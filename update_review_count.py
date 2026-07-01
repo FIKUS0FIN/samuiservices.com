@@ -20,8 +20,10 @@ for row_id, description in rows:
         if count > 0:
             updates.append((count, row_id))
 
-for count, row_id in updates:
-    cursor.execute("UPDATE Listing SET reviewCount = ? WHERE id = ?", (count, row_id))
+with open('migration.sql', 'a') as f:
+    for count, row_id in updates:
+        cursor.execute("UPDATE Listing SET reviewCount = ? WHERE id = ?", (count, row_id))
+        f.write(f"UPDATE Listing SET reviewCount = {count} WHERE id = '{row_id}';\n")
 
 conn.commit()
 print(f"Updated {len(updates)} listings with their review counts.")
