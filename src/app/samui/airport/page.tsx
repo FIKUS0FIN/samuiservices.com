@@ -14,7 +14,7 @@ export default function AirportPage() {
       <div className="relative pt-20 pb-24 px-6 border-b border-primary/10 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1579730534241-d8ecb14ba963?auto=format&fit=crop&q=80&w=2000"
+            src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=2000"
             alt="Aircraft preparing for departure"
             fill
             className="object-cover opacity-20"
@@ -70,7 +70,7 @@ export default function AirportPage() {
           <div className="flex flex-col lg:flex-row gap-10 items-center bg-surface rounded-3xl overflow-hidden shadow-sm border border-outline-muted p-4 lg:p-0">
             <div className="w-full lg:w-1/2 h-64 lg:h-full min-h-[400px] relative rounded-2xl lg:rounded-none overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1616057745914-f58c73d9e875?auto=format&fit=crop&q=80&w=800"
+                src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&q=80&w=800"
                 alt="Tropical airport lounge"
                 fill
                 className="object-cover"

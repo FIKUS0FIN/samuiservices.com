@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { Palmtree, MapPin, Users, Waves, Navigation, Music } from 'lucide-react';
+import { Palmtree, MapPin, Users, Waves, Navigation, Music, Search, Star, Lightbulb, Sun, Droplets, ThermometerSun } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Best Koh Samui Beaches Guide - Chaweng, Lamai, Bophut & Maenam',
@@ -9,184 +9,253 @@ export const metadata: Metadata = {
 
 export default function BeachesPage() {
   return (
-    <div className="min-h-screen bg-surface-hover/20 pb-16">
-      {/* Hero Section with Image */}
-      <div className="relative pt-20 pb-24 px-6 border-b border-primary/10 overflow-hidden">
+    <div className="min-h-screen bg-surface-bright font-body-md text-on-surface overflow-x-hidden pb-16">
+      
+      {/* Hero Section */}
+      <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1544941913-75a7458ec2d1?auto=format&fit=crop&q=80&w=2000"
-            alt="Koh Samui tropical beach"
+            src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&q=80&w=2000"
+            alt="Aerial view of a pristine Koh Samui beach" 
             fill
-            className="object-cover opacity-20"
+            className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface via-surface/90 to-surface-hover/20 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
         </div>
-        
-        <div className="container mx-auto max-w-5xl text-center relative z-20">
-          <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-2xl mb-6 text-primary shadow-sm">
-            <Palmtree className="w-8 h-8" />
+        <div className="relative z-10 text-center px-margin-mobile max-w-2xl">
+          <h1 className="font-display text-display md:text-display text-white mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>Samui Beaches</h1>
+          <p className="font-body-lg text-body-lg text-white/90 mb-8" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+            Discover your piece of paradise among the golden sands and turquoise waters of Thailand's most beloved island.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <div className="bg-surface-container-lowest/90 backdrop-blur-md p-1 rounded-full flex items-center shadow-lg w-full max-w-md">
+              <Search className="ml-4 text-outline w-5 h-5" />
+              <input 
+                className="bg-transparent border-none focus:ring-0 w-full font-body-sm text-body-sm text-on-surface px-3 py-2 outline-none" 
+                placeholder="Search for your favorite beach..." 
+                type="text"
+              />
+              <button className="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md text-label-md mr-1 hover:shadow-md transition-all active:scale-95">Explore</button>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-text-main mb-6 leading-tight">
-            The Ultimate Koh Samui <br/> <span className="text-primary">Beaches Guide</span>
-          </h1>
-          <p className="text-lg md:text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
-            With over 40 kilometers of coastline, Koh Samui offers a beach for every type of traveler. Whether you're seeking vibrant nightlife, world-class dining, or a quiet stretch of pristine sand, find your perfect coastal paradise below.
+        </div>
+      </section>
+
+      {/* Beach Grid Section */}
+      <section className="max-w-container-max mx-auto px-gutter py-12 md:py-20">
+        <div className="flex flex-col gap-3 mb-12">
+          <h2 className="font-headline-lg text-headline-lg md:text-headline-lg text-primary">The Big Four</h2>
+          <div className="w-16 h-1 bg-secondary rounded-full"></div>
+          <p className="font-body-md text-body-md text-on-surface-variant max-w-xl mt-3">
+            From the electric energy of Chaweng to the tranquil shores of Maenam, explore the iconic coastlines that define the Koh Samui experience.
           </p>
         </div>
-      </div>
 
-      <div className="container mx-auto px-6 mt-16 max-w-6xl space-y-20">
-        
-        {/* Chaweng */}
-        <section className="scroll-mt-24" id="chaweng">
-          <div className="flex flex-col lg:flex-row gap-10 items-center bg-surface rounded-3xl overflow-hidden shadow-sm border border-outline-muted p-4 lg:p-0">
-            <div className="w-full lg:w-1/2 h-64 lg:h-full min-h-[400px] relative rounded-2xl lg:rounded-none overflow-hidden">
+        {/* Vertical Card List */}
+        <div className="grid grid-cols-1 gap-8">
+          
+          {/* Chaweng */}
+          <div className="group flex flex-col lg:flex-row bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-surface-container-high">
+            <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1596881775730-a8898ac8006f?auto=format&fit=crop&q=80&w=800"
-                alt="Chaweng Beach Koh Samui"
+                src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&q=80&w=800"
+                alt="Vibrant Chaweng Beach" 
                 fill
-                className="object-cover hover:scale-105 transition-transform duration-700"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="w-full lg:w-1/2 lg:py-12 lg:pr-12">
-              <div className="flex items-center gap-2 mb-4 text-primary font-semibold tracking-wide uppercase text-sm">
-                <Music className="w-4 h-4" /> The Vibrant Hub
-              </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-text-main mb-4">Chaweng Beach</h2>
-              <p className="text-text-muted leading-relaxed mb-6">
-                The undisputed center of action on Koh Samui. Chaweng boasts a stunning 7-kilometer stretch of fine, powdery white sand and warm, shallow waters. It is the island's most developed area, offering an unparalleled mix of beach clubs, world-class restaurants, shopping malls, and an energetic nightlife scene that goes until dawn.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-surface-hover/50 p-4 rounded-xl border border-outline-muted/50">
-                  <div className="flex items-center gap-2 text-text-main font-bold mb-1"><Users className="w-4 h-4 text-primary" /> Vibe</div>
-                  <div className="text-sm text-text-muted">High Energy, Busy, Fun</div>
+            <div className="flex-1 p-8 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="font-headline-md text-headline-md text-on-surface">Chaweng</h3>
+                  <div className="flex items-center gap-1 text-tertiary">
+                    <Star className="w-4 h-4 fill-current" />
+                    <span className="font-label-md text-label-md">4.8</span>
+                  </div>
                 </div>
-                <div className="bg-surface-hover/50 p-4 rounded-xl border border-outline-muted/50">
-                  <div className="flex items-center gap-2 text-text-main font-bold mb-1"><Waves className="w-4 h-4 text-primary" /> The Beach</div>
-                  <div className="text-sm text-text-muted">Soft white sand, active</div>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <span className="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Vibrant</span>
+                  <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Energetic</span>
+                  <span className="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">White Sand</span>
                 </div>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-8">
+                  The heartbeat of Koh Samui, Chaweng offers miles of powdery white sand, turquoise waters, and the island's most dynamic social scene.
+                </p>
               </div>
-              <p className="text-sm text-text-muted border-l-2 border-primary pl-4 italic">
-                <strong>Pro Tip:</strong> The beach is divided into three zones. Head to North Chaweng if you want a slightly quieter, family-friendly atmosphere while staying close to the amenities.
-              </p>
+              <div className="bg-surface-container-low p-6 rounded-xl border-l-4 border-primary">
+                <div className="flex items-center gap-2 mb-2">
+                  <Lightbulb className="text-primary w-5 h-5" />
+                  <span className="font-label-md text-label-md text-primary">Pro Tip</span>
+                </div>
+                <p className="font-body-sm text-body-sm text-on-surface-variant italic">
+                  Arrive early for the best beach club spots and enjoy the sunrise over the Gulf of Thailand.
+                </p>
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* Lamai */}
-        <section className="scroll-mt-24" id="lamai">
-          <div className="flex flex-col lg:flex-row-reverse gap-10 items-center bg-surface rounded-3xl overflow-hidden shadow-sm border border-outline-muted p-4 lg:p-0">
-            <div className="w-full lg:w-1/2 h-64 lg:h-full min-h-[400px] relative rounded-2xl lg:rounded-none overflow-hidden">
+          {/* Lamai */}
+          <div className="group flex flex-col lg:flex-row-reverse bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-surface-container-high">
+            <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
               <Image 
                 src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800"
-                alt="Lamai Beach Koh Samui"
+                alt="Scenic Lamai Beach" 
                 fill
-                className="object-cover hover:scale-105 transition-transform duration-700"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="w-full lg:w-1/2 lg:py-12 lg:pl-12">
-              <div className="flex items-center gap-2 mb-4 text-primary font-semibold tracking-wide uppercase text-sm">
-                <Navigation className="w-4 h-4" /> The Balanced Alternative
-              </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-text-main mb-4">Lamai Beach</h2>
-              <p className="text-text-muted leading-relaxed mb-6">
-                As the second largest resort area, Lamai offers a fantastic balance. It provides plenty of dining, shopping, and nightlife options, but maintains a more laid-back, less congested atmosphere than Chaweng. It's a favorite among digital nomads, long-term expats, and travelers who want convenience without the chaos.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-surface-hover/50 p-4 rounded-xl border border-outline-muted/50">
-                  <div className="flex items-center gap-2 text-text-main font-bold mb-1"><Users className="w-4 h-4 text-primary" /> Vibe</div>
-                  <div className="text-sm text-text-muted">Relaxed, Accessible</div>
+            <div className="flex-1 p-8 flex flex-col justify-between text-right lg:text-left">
+              <div>
+                <div className="flex lg:flex-row flex-row-reverse justify-between items-start mb-4">
+                  <h3 className="font-headline-md text-headline-md text-on-surface">Lamai</h3>
+                  <div className="flex items-center gap-1 text-tertiary">
+                    <Star className="w-4 h-4 fill-current" />
+                    <span className="font-label-md text-label-md">4.6</span>
+                  </div>
                 </div>
-                <div className="bg-surface-hover/50 p-4 rounded-xl border border-outline-muted/50">
-                  <div className="flex items-center gap-2 text-text-main font-bold mb-1"><Waves className="w-4 h-4 text-primary" /> The Beach</div>
-                  <div className="text-sm text-text-muted">Golden sand, deeper water</div>
+                <div className="flex flex-wrap lg:justify-start justify-end gap-2 mb-6">
+                  <span className="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Relaxed</span>
+                  <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Scenic</span>
+                  <span className="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">Iconic Boulders</span>
                 </div>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-8">
+                  A more laid-back alternative to Chaweng, Lamai retains a classic island feel with its dramatic granite boulders and deep waters perfect for swimming.
+                </p>
               </div>
-              <p className="text-sm text-text-muted border-l-2 border-primary pl-4 italic">
-                <strong>Pro Tip:</strong> Don't miss the famous Hin Ta and Hin Yai (Grandfather and Grandmother) rock formations located at the southern tip of Lamai beach.
-              </p>
+              <div className="bg-surface-container-low p-6 rounded-xl border-r-4 lg:border-r-0 lg:border-l-4 border-primary">
+                <div className="flex items-center lg:justify-start justify-end gap-2 mb-2">
+                  <Lightbulb className="text-primary w-5 h-5" />
+                  <span className="font-label-md text-label-md text-primary">Pro Tip</span>
+                </div>
+                <p className="font-body-sm text-body-sm text-on-surface-variant italic">
+                  Visit the Grandfather and Grandmother rocks nearby for a touch of local folklore and amazing views.
+                </p>
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* Bophut */}
-        <section className="scroll-mt-24" id="bophut">
-          <div className="flex flex-col lg:flex-row gap-10 items-center bg-surface rounded-3xl overflow-hidden shadow-sm border border-outline-muted p-4 lg:p-0">
-            <div className="w-full lg:w-1/2 h-64 lg:h-full min-h-[400px] relative rounded-2xl lg:rounded-none overflow-hidden">
+          {/* Bophut */}
+          <div className="group flex flex-col lg:flex-row bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-surface-container-high">
+            <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1601369792440-6f02888bf1c3?auto=format&fit=crop&q=80&w=800"
-                alt="Bophut Fisherman's Village Koh Samui"
+                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
+                alt="Bophut Fisherman's Village" 
                 fill
-                className="object-cover hover:scale-105 transition-transform duration-700"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="w-full lg:w-1/2 lg:py-12 lg:pr-12">
-              <div className="flex items-center gap-2 mb-4 text-primary font-semibold tracking-wide uppercase text-sm">
-                <MapPin className="w-4 h-4" /> The Charming Village
-              </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-text-main mb-4">Bophut Beach</h2>
-              <p className="text-text-muted leading-relaxed mb-6">
-                Bophut is synonymous with elegance and charm, anchored by the historic Fisherman's Village. Here, old wooden Chinese shop-houses have been converted into chic boutiques, trendy cafes, and upscale seaside restaurants. It is the perfect destination for couples and foodies seeking a sophisticated, romantic atmosphere.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-surface-hover/50 p-4 rounded-xl border border-outline-muted/50">
-                  <div className="flex items-center gap-2 text-text-main font-bold mb-1"><Users className="w-4 h-4 text-primary" /> Vibe</div>
-                  <div className="text-sm text-text-muted">Sophisticated, Romantic</div>
+            <div className="flex-1 p-8 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="font-headline-md text-headline-md text-on-surface">Bophut</h3>
+                  <div className="flex items-center gap-1 text-tertiary">
+                    <Star className="w-4 h-4 fill-current" />
+                    <span className="font-label-md text-label-md">4.7</span>
+                  </div>
                 </div>
-                <div className="bg-surface-hover/50 p-4 rounded-xl border border-outline-muted/50">
-                  <div className="flex items-center gap-2 text-text-main font-bold mb-1"><Waves className="w-4 h-4 text-primary" /> The Beach</div>
-                  <div className="text-sm text-text-muted">Coarse sand, great views</div>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <span className="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Sophisticated</span>
+                  <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Charming</span>
+                  <span className="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">Heritage</span>
                 </div>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-8">
+                  Blending authentic Thai culture with upscale leisure, Bophut is home to the historic Fisherman's Village and its trendy boutique shops and restaurants.
+                </p>
               </div>
-              <p className="text-sm text-text-muted border-l-2 border-primary pl-4 italic">
-                <strong>Pro Tip:</strong> Visit on a Friday evening! The entire main street of Fisherman's Village closes to traffic and transforms into a massive, bustling night market.
-              </p>
+              <div className="bg-surface-container-low p-6 rounded-xl border-l-4 border-primary">
+                <div className="flex items-center gap-2 mb-2">
+                  <Lightbulb className="text-primary w-5 h-5" />
+                  <span className="font-label-md text-label-md text-primary">Pro Tip</span>
+                </div>
+                <p className="font-body-sm text-body-sm text-on-surface-variant italic">
+                  Best visited on Friday evenings for the Fisherman's Village night market, a feast for all senses.
+                </p>
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* Maenam */}
-        <section className="scroll-mt-24" id="maenam">
-          <div className="flex flex-col lg:flex-row-reverse gap-10 items-center bg-surface rounded-3xl overflow-hidden shadow-sm border border-outline-muted p-4 lg:p-0">
-            <div className="w-full lg:w-1/2 h-64 lg:h-full min-h-[400px] relative rounded-2xl lg:rounded-none overflow-hidden">
+          {/* Maenam */}
+          <div className="group flex flex-col lg:flex-row-reverse bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-surface-container-high">
+            <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1582236531393-559d43d1a89c?auto=format&fit=crop&q=80&w=800"
-                alt="Maenam Beach Koh Samui"
+                src="https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?auto=format&fit=crop&q=80&w=800"
+                alt="Peaceful Maenam Beach" 
                 fill
-                className="object-cover hover:scale-105 transition-transform duration-700"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="w-full lg:w-1/2 lg:py-12 lg:pl-12">
-              <div className="flex items-center gap-2 mb-4 text-primary font-semibold tracking-wide uppercase text-sm">
-                <Palmtree className="w-4 h-4" /> The Quiet Sanctuary
-              </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-text-main mb-4">Maenam Beach</h2>
-              <p className="text-text-muted leading-relaxed mb-6">
-                If you are looking to escape the crowds entirely, Maenam is your sanctuary. Located on the northern coast, this long, pristine stretch of golden sand offers a deeply relaxed, "local" feel. It is wonderfully serene, making it the top choice for families and those seeking absolute tranquility.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-surface-hover/50 p-4 rounded-xl border border-outline-muted/50">
-                  <div className="flex items-center gap-2 text-text-main font-bold mb-1"><Users className="w-4 h-4 text-primary" /> Vibe</div>
-                  <div className="text-sm text-text-muted">Quiet, Peaceful, Family</div>
+            <div className="flex-1 p-8 flex flex-col justify-between text-right lg:text-left">
+              <div>
+                <div className="flex lg:flex-row flex-row-reverse justify-between items-start mb-4">
+                  <h3 className="font-headline-md text-headline-md text-on-surface">Maenam</h3>
+                  <div className="flex items-center gap-1 text-tertiary">
+                    <Star className="w-4 h-4 fill-current" />
+                    <span className="font-label-md text-label-md">4.5</span>
+                  </div>
                 </div>
-                <div className="bg-surface-hover/50 p-4 rounded-xl border border-outline-muted/50">
-                  <div className="flex items-center gap-2 text-text-main font-bold mb-1"><Waves className="w-4 h-4 text-primary" /> The Beach</div>
-                  <div className="text-sm text-text-muted">Golden sand, calm water</div>
+                <div className="flex flex-wrap lg:justify-start justify-end gap-2 mb-6">
+                  <span className="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Peaceful</span>
+                  <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Family-friendly</span>
+                  <span className="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">Secluded</span>
                 </div>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-8">
+                  A sanctuary for families and digital nomads seeking quietude. Maenam offers calm, shallow waters and spectacular views of Koh Phangan across the bay.
+                </p>
               </div>
-              <p className="text-sm text-text-muted border-l-2 border-primary pl-4 italic">
-                <strong>Pro Tip:</strong> The water here gets deep quite quickly compared to Chaweng, making it excellent for swimming regardless of the tide level.
-              </p>
+              <div className="bg-surface-container-low p-6 rounded-xl border-r-4 lg:border-r-0 lg:border-l-4 border-primary">
+                <div className="flex items-center lg:justify-start justify-end gap-2 mb-2">
+                  <Lightbulb className="text-primary w-5 h-5" />
+                  <span className="font-label-md text-label-md text-primary">Pro Tip</span>
+                </div>
+                <p className="font-body-sm text-body-sm text-on-surface-variant italic">
+                  Perfect for a sunset stroll away from the crowds. Look for the small local bars for authentic Thai hospitality.
+                </p>
+              </div>
             </div>
           </div>
-        </section>
 
-      </div>
+        </div>
+      </section>
+
+      {/* Weather and Tide Info */}
+      <section className="bg-surface-container px-6 py-12 md:py-20">
+        <div className="max-w-container-max mx-auto">
+          <div className="bg-surface-container-lowest rounded-3xl p-8 md:p-12 shadow-sm border border-outline-variant flex flex-col md:flex-row items-center gap-10">
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="font-headline-md text-headline-md text-on-surface mb-3">Today's Beach Forecast</h2>
+              <p className="font-body-md text-body-md text-on-surface-variant">Planning a swim? Check current conditions before heading out to the sands.</p>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 w-full md:w-auto">
+              <div className="text-center flex flex-col items-center">
+                <Sun className="text-tertiary mb-3 w-8 h-8" />
+                <div className="font-label-md text-label-md text-on-surface text-lg">31°C</div>
+                <div className="font-label-sm text-label-sm text-on-surface-variant">Clear</div>
+              </div>
+              
+              <div className="text-center flex flex-col items-center">
+                <Droplets className="text-primary mb-3 w-8 h-8" />
+                <div className="font-label-md text-label-md text-on-surface text-lg">Low Tide</div>
+                <div className="font-label-sm text-label-sm text-on-surface-variant">14:20 PM</div>
+              </div>
+              
+              <div className="text-center flex flex-col items-center">
+                <Waves className="text-secondary mb-3 w-8 h-8" />
+                <div className="font-label-md text-label-md text-on-surface text-lg">Calm</div>
+                <div className="font-label-sm text-label-sm text-on-surface-variant">0.3m Swell</div>
+              </div>
+              
+              <div className="text-center flex flex-col items-center">
+                <ThermometerSun className="text-error mb-3 w-8 h-8" />
+                <div className="font-label-md text-label-md text-on-surface text-lg">UV 9</div>
+                <div className="font-label-sm text-label-sm text-on-surface-variant">Very High</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
