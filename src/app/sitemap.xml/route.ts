@@ -31,7 +31,7 @@ export async function GET() {
   // Dynamic Business routes
   const businessRoutes = [];
   for (const island of islands) {
-    const businesses = await getBusinessesByIsland(island.slug);
+    const { listings: businesses } = await getBusinessesByIsland(island.slug, undefined, undefined, undefined, 1, 1000);
     for (const business of businesses) {
       businessRoutes.push({
         url: `${baseUrl}/listing/${business.slug}`,

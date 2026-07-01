@@ -1,6 +1,13 @@
 import { prisma } from './auth';
 
-export async function getBusinessesByIsland(islandSlug: string, categorySlugs?: string[], query?: string, currentUserId?: string) {
+export async function getBusinessesByIsland(
+  islandSlug: string, 
+  categorySlugs?: string[], 
+  query?: string, 
+  currentUserId?: string,
+  page: number = 1,
+  limit: number = 10
+) {
   const whereClause: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
   
   if (islandSlug !== 'all') {
@@ -32,25 +39,37 @@ export async function getBusinessesByIsland(islandSlug: string, categorySlugs?: 
     whereClause.name = { contains: query };
   }
 
-  const listings = await prisma.listing.findMany({
-    where: whereClause,
-    include: {
-      category: true,
-      island: true,
-      favorites: currentUserId ? {
-        where: { userId: currentUserId }
-      } : false
-    },
-    orderBy: [
-      { isPremium: 'desc' },
-      { createdAt: 'desc' }
-    ]
-  });
+  const skip = (page - 1) * limit;
 
-  return listings.map(listing => ({
-    ...listing,
-    isFavorited: listing.favorites && listing.favorites.length > 0
-  }));
+  const [listings, totalCount] = await Promise.all([
+    prisma.listing.findMany({
+      where: whereClause,
+      include: {
+        category: true,
+        island: true,
+        favorites: currentUserId ? {
+          where: { userId: currentUserId }
+        } : false
+      },
+      orderBy: [
+        { isPremium: 'desc' },
+        { createdAt: 'desc' }
+      ],
+      skip,
+      take: limit,
+    }),
+    prisma.listing.count({ where: whereClause })
+  ]);
+
+  const totalPages = Math.ceil(totalCount / limit);
+
+  return {
+    listings: listings.map(listing => ({
+      ...listing,
+      isFavorited: listing.favorites && listing.favorites.length > 0
+    })),
+    totalPages
+  };
 }
 
 export async function getAllIslands() {

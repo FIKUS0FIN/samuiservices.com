@@ -66,5 +66,8 @@
 	},
 	"vars": {
 		"CF_PAGES": "1"
+	},
+	"ai": {
+		"binding": "AI"
 	}
 }

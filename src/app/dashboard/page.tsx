@@ -7,34 +7,51 @@ import { prisma } from '@/lib/auth';
 import { DashboardSidebar } from '@/components/features/DashboardSidebar';
 import { ActiveListings } from '@/components/features/ActiveListings';
 import { SavedFavorites } from '@/components/features/SavedFavorites';
+import { Pagination } from '@/components/ui/Pagination';
 
 export const metadata = {
   title: 'Dashboard | Samui Services',
 };
 
-export default async function Dashboard() {
+export default async function Dashboard(props: { searchParams?: Promise<{ listingPage?: string, favPage?: string }> }) {
+  const searchParams = await props.searchParams;
+  const listingPage = searchParams?.listingPage ? parseInt(searchParams.listingPage, 10) : 1;
+  const favPage = searchParams?.favPage ? parseInt(searchParams.favPage, 10) : 1;
+  const limit = 10;
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     redirect('/api/auth/signin');
   }
 
-  // Fetch user's listings from the database
-  const listings = await prisma.listing.findMany({
-    where: { userId: session.user.id },
-    include: { category: true, island: true },
-    orderBy: { createdAt: 'desc' }
-  });
+  const [listings, totalListings] = await Promise.all([
+    prisma.listing.findMany({
+      where: { userId: session.user.id },
+      include: { category: true, island: true },
+      orderBy: { createdAt: 'desc' },
+      skip: (listingPage - 1) * limit,
+      take: limit
+    }),
+    prisma.listing.count({ where: { userId: session.user.id } })
+  ]);
 
-  const favorites = await prisma.favorite.findMany({
-    where: { userId: session.user.id },
-    include: {
-      listing: {
-        include: { category: true, island: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+  const [favorites, totalFavorites] = await Promise.all([
+    prisma.favorite.findMany({
+      where: { userId: session.user.id },
+      include: {
+        listing: {
+          include: { category: true, island: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' },
+      skip: (favPage - 1) * limit,
+      take: limit
+    }),
+    prisma.favorite.count({ where: { userId: session.user.id } })
+  ]);
+
+  const totalListingPages = Math.ceil(totalListings / limit);
+  const totalFavPages = Math.ceil(totalFavorites / limit);
 
   return (
     <div className="section bg-background min-h-screen">
@@ -58,8 +75,14 @@ export default async function Dashboard() {
 
           {/* Main Content */}
           <div className="flex flex-col gap-12">
-            <ActiveListings listings={listings} />
-            <SavedFavorites favorites={favorites} />
+            <div>
+              <ActiveListings listings={listings} totalCount={totalListings} />
+              <Pagination totalPages={totalListingPages} currentPage={listingPage} pageParamName="listingPage" />
+            </div>
+            <div>
+              <SavedFavorites favorites={favorites} totalCount={totalFavorites} />
+              <Pagination totalPages={totalFavPages} currentPage={favPage} pageParamName="favPage" />
+            </div>
           </div>
         </div>
 

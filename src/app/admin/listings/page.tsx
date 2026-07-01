@@ -2,22 +2,35 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { prisma } from '@/lib/auth';
 import Link from 'next/link';
+import { Pagination } from '@/components/ui/Pagination';
 
 export const metadata = {
   title: 'Manage Listings | Super Admin',
 };
 
-export default async function AdminListingsPage() {
-  const listings = await prisma.listing.findMany({
-    include: {
-      category: true,
-      island: true,
-      user: true,
-    },
-    orderBy: {
-      createdAt: 'desc'
-    }
-  });
+export default async function AdminListingsPage(props: { searchParams?: Promise<{ page?: string }> }) {
+  const searchParams = await props.searchParams;
+  const currentPage = searchParams?.page ? parseInt(searchParams.page, 10) : 1;
+  const limit = 10;
+  const skip = (currentPage - 1) * limit;
+
+  const [listings, totalCount] = await Promise.all([
+    prisma.listing.findMany({
+      include: {
+        category: true,
+        island: true,
+        user: true,
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      skip,
+      take: limit
+    }),
+    prisma.listing.count()
+  ]);
+
+  const totalPages = Math.ceil(totalCount / limit);
 
   return (
     <div>
@@ -93,6 +106,8 @@ export default async function AdminListingsPage() {
           </table>
         </div>
       </Card>
+      
+      <Pagination totalPages={totalPages} currentPage={currentPage} />
     </div>
   );
 }

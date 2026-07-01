@@ -3,18 +3,25 @@ import { getAllCategories, getBusinessesByIsland } from '@/lib/db';
 import { HeroSearch } from '@/components/features/HeroSearch';
 import { FilterSidebar } from '@/components/features/FilterSidebar';
 import { ListingCard } from '@/components/features/ListingCard';
+import { Pagination } from '@/components/ui/Pagination';
 
-export default async function Home(props: { searchParams?: Promise<{ category?: string, view?: string }> }) {
+export default async function Home(props: { searchParams?: Promise<{ category?: string, view?: string, page?: string }> }) {
   const searchParams = await props.searchParams;
   const categorySlug = searchParams?.category;
+  const currentPage = searchParams?.page ? parseInt(searchParams.page, 10) : 1;
   
   const categories = await getAllCategories();
   
   // Fetch listings based on filter. 
   const categoryFilter = categorySlug ? [categorySlug] : undefined;
-  const allListings = await getBusinessesByIsland('all', categoryFilter);
   
-  const listings = allListings.slice(0, 12);
+  // If no category is selected, we want to show a few items from each category, so we fetch more.
+  const limit = categorySlug ? 10 : 100; 
+  const result = await getBusinessesByIsland('all', categoryFilter, undefined, undefined, currentPage, limit);
+  const allListings = result.listings;
+  const totalPages = result.totalPages;
+  
+  const listings = allListings;
 
   // Separate listings by parent category for the homepage sections if no filter is applied
   const parentCategories = categories.filter(c => c.parentId === null);
@@ -64,11 +71,14 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
                    </h2>
                 </div>
                 {allListings.length > 0 ? (
-                  <div className="grid-cards fade-in-up">
-                    {listings.map((listing) => (
-                      <ListingCard key={listing.id} business={listing} />
-                    ))}
-                  </div>
+                  <>
+                    <div className="grid-cards fade-in-up mb-12">
+                      {listings.map((listing) => (
+                        <ListingCard key={listing.id} business={listing} />
+                      ))}
+                    </div>
+                    <Pagination totalPages={totalPages} currentPage={currentPage} />
+                  </>
                 ) : (
                   <div className="text-center py-24 px-8 text-on-surface-variant bg-surface-container-lowest rounded-card border border-outline-variant shadow-level-1">
                     <div className="text-6xl mb-6 opacity-50">🏝️</div>

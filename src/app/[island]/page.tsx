@@ -4,6 +4,7 @@ import { getBusinessesByIsland, getAllIslands, getAllCategories } from '@/lib/db
 import { FilterSidebar } from '@/components/features/FilterSidebar';
 import { BusinessCard } from '@/components/features/BusinessCard';
 import { Card } from '@/components/ui/Card';
+import { Pagination } from '@/components/ui/Pagination';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import DynamicMap from '@/components/features/DynamicMap';
@@ -42,9 +43,12 @@ export default async function IslandDirectory({
 
   const islandName = island === 'all' ? 'All' : island.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
   
+  const page = resolvedSearchParams.page ? parseInt(resolvedSearchParams.page as string, 10) : 1;
+  const limit = 10;
+  
   const session = await getServerSession(authOptions);
   
-  const islandBusinesses = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id);
+  const { listings: islandBusinesses, totalPages } = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id, page, limit);
   const categories = await getAllCategories();
 
   let mapCenter: [number, number] = [9.5120, 100.0136];
@@ -93,6 +97,8 @@ export default async function IslandDirectory({
               ))
             )}
           </div>
+          
+          <Pagination totalPages={totalPages} currentPage={page} />
         </div>
       </div>
 

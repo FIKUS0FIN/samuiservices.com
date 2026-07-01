@@ -10,10 +10,11 @@ type FavoriteWithListing = Favorite & {
   };
 };
 
-export function SavedFavorites({ favorites }: { favorites: FavoriteWithListing[] }) {
+export function SavedFavorites({ favorites, totalCount }: { favorites: FavoriteWithListing[], totalCount?: number }) {
+  const displayCount = totalCount !== undefined ? totalCount : favorites.length;
   return (
     <div>
-      <h2 className="text-headline-sm font-bold text-on-surface mb-6">Saved Favorites ({favorites.length})</h2>
+      <h2 className="text-headline-sm font-bold text-on-surface mb-6">Saved Favorites ({displayCount})</h2>
 
       {favorites.length === 0 ? (
         <Card className="p-12 text-center bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card">

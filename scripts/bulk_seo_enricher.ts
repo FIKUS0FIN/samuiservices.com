@@ -49,7 +49,7 @@ const generateSEOContent = async (businessName: string, categoryName: string, is
     throw new Error(`OpenAI API Error: ${errorText}`);
   }
 
-  const data = await response.json();
+  const data = await response.json() as any;
   return data.choices[0].message.content.trim();
 };
 

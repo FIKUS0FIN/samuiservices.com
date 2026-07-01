@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
@@ -49,6 +49,46 @@ export function ListingForm({
   cancelHref = '/dashboard'
 }: ListingFormProps) {
   const [products, setProducts] = useState(listing?.products || []);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isEnhancing, setIsEnhancing] = useState(false);
+  const [descriptionValue, setDescriptionValue] = useState(listing?.description || '');
+
+  const handleEnhanceSEO = async () => {
+    if (!formRef.current) return;
+    const formData = new FormData(formRef.current);
+    const name = formData.get('name') as string;
+    const categoryId = formData.get('categoryId') as string;
+    const islandId = formData.get('islandId') as string;
+    
+    if (!name || !categoryId) {
+      alert("Please fill out the Business Name and Category first.");
+      return;
+    }
+
+    const categoryName = categories.find(c => c.id === categoryId)?.name || '';
+    const islandName = islands.find(i => i.id === islandId)?.name || '';
+    
+    setIsEnhancing(true);
+    try {
+      const res = await fetch('/api/ai/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessName: name, categoryName, islandName, description: descriptionValue })
+      });
+      
+      if (res.ok) {
+        const data = await res.json() as { result: string };
+        setDescriptionValue(data.result);
+      } else {
+        alert('Failed to enhance SEO.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Error connecting to AI service.');
+    } finally {
+      setIsEnhancing(false);
+    }
+  };
 
   const addProduct = () => {
     setProducts([...products, { id: '', name: '', description: '', price: null, image: '' }]);
@@ -67,7 +107,7 @@ export function ListingForm({
   };
 
   return (
-    <form action={action} className="space-y-8">
+    <form ref={formRef} action={action} className="space-y-8">
 
       {/* Basic Info */}
       <div className="bg-surface-container-lowest p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/30">
@@ -130,13 +170,31 @@ export function ListingForm({
 
       {/* Description & Media */}
       <div className="bg-surface-container-lowest p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/30">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-primary text-2xl font-bold">3.</span>
-          <h2 className="font-headline-md text-2xl text-on-surface">Details</h2>
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-3">
+            <span className="text-primary text-2xl font-bold">3.</span>
+            <h2 className="font-headline-md text-2xl text-on-surface">Details</h2>
+          </div>
+          <button 
+            type="button" 
+            onClick={handleEnhanceSEO}
+            disabled={isEnhancing}
+            className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-md disabled:opacity-50"
+          >
+            {isEnhancing ? 'Enhancing...' : '✨ AI Enhance SEO'}
+          </button>
         </div>
         <div className="flex flex-col gap-2 mb-6">
           <label className="font-label-md text-sm text-on-surface-variant ml-1">Business Description</label>
-          <textarea name="description" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" rows={5} defaultValue={listing?.description} placeholder="Describe what you do, your experience, and what makes your service great..." required></textarea>
+          <textarea 
+            name="description" 
+            className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" 
+            rows={8} 
+            value={descriptionValue} 
+            onChange={(e) => setDescriptionValue(e.target.value)}
+            placeholder="Describe what you do, your experience, and what makes your service great..." 
+            required 
+          />
         </div>
         <Input label="Cover Image URL (Temporary)" name="image" type="url" fullWidth defaultValue={listing?.image || ''} placeholder="https://..." />
       </div>

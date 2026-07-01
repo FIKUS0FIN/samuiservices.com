@@ -101,7 +101,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
         const url = `/api/search?q=${encodeURIComponent(searchQuery)}${island !== 'all' ? `&island=${island}` : ''}`;
         const res = await fetch(url);
         if (res.ok) {
-          const data = await res.json();
+          const data = await res.json() as { results: SearchResult[] };
           setSuggestions(data.results);
           setIsDropdownVisible(true);
         }

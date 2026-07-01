@@ -16,7 +16,7 @@ export default function AdminClaimsPage() {
       const res = await fetch('/api/admin/claims');
       if (res.ok) {
         const data = await res.json();
-        setClaims(data);
+        setClaims(data as any[]);
       }
     } catch (e) {
       console.error('Failed to fetch claims', e);

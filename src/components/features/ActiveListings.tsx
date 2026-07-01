@@ -5,10 +5,11 @@ import { Listing, Category, Island } from '@prisma/client';
 
 type ListingWithRelations = Listing & { category: Category | null; island: Island | null };
 
-export function ActiveListings({ listings }: { listings: ListingWithRelations[] }) {
+export function ActiveListings({ listings, totalCount }: { listings: ListingWithRelations[], totalCount?: number }) {
+  const displayCount = totalCount !== undefined ? totalCount : listings.length;
   return (
     <div>
-      <h2 className="text-headline-sm font-bold text-on-surface mb-6">Active Listings ({listings.length})</h2>
+      <h2 className="text-headline-sm font-bold text-on-surface mb-6">Active Listings ({displayCount})</h2>
 
       {listings.length === 0 ? (
         <Card className="p-12 text-center bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card">
