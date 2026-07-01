@@ -23,7 +23,7 @@ export default async function InboxPage() {
         select: { name: true, image: true }
       },
       listing: {
-        select: { id: true, name: true, island: true }
+        select: { id: true, name: true, slug: true, island: true }
       }
     },
     orderBy: { createdAt: 'desc' }
@@ -37,7 +37,7 @@ export default async function InboxPage() {
         select: { name: true, image: true }
       },
       listing: {
-        select: { id: true, name: true, island: true }
+        select: { id: true, name: true, slug: true, island: true }
       }
     },
     orderBy: { createdAt: 'desc' }

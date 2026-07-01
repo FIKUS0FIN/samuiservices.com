@@ -41,7 +41,7 @@ export function SavedFavorites({ favorites, totalCount }: { favorites: FavoriteW
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                <Link href={`/${listing.island?.slug || 'all'}/${listing.id}`}>
+                <Link href={`/listing/${listing.slug}`}>
                   <Button variant="secondary" className="px-4 py-2 text-sm bg-surface-container hover:bg-surface-container-highest border-none text-on-surface font-medium">View Public</Button>
                 </Link>
               </div>

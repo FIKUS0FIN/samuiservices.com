@@ -16,6 +16,7 @@ export type MessageWithDetails = {
   listing?: {
     id: string;
     name: string;
+    slug: string;
     island: { slug: string; name: string }
   } | null;
 };
@@ -67,8 +68,8 @@ export function MessageCard({
           </div>
         </div>
         {message.listing && (
-          <Link href={`/${message.listing.island?.slug || 'all'}/${message.listing.id}`} className="text-label-md text-primary font-medium hover:underline">
-            Re: {message.listing.name}
+          <Link href={`/listing/${message.listing.slug}`} className="text-label-md text-primary font-medium hover:underline">
+            View Listing
           </Link>
         )}
       </div>
