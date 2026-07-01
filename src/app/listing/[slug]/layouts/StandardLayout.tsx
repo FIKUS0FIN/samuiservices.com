@@ -7,6 +7,8 @@ import { ReviewWidget } from '@/components/features/ReviewWidget';
 import { parseDescriptionAndReviews } from '@/lib/parseDescription';
 import ProductGrid from '../components/ProductGrid';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // Utility for safe JSON parse
 const safeParse = (str: string | null | undefined, fallback: any = []) => {
@@ -103,8 +105,13 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
                   </span>
                 )}
               </div>
-              <h1 className="font-display text-4xl md:text-6xl text-white mb-2 drop-shadow-lg font-bold" itemProp="name">
+              <h1 className="font-display text-4xl md:text-6xl text-white mb-2 drop-shadow-lg font-bold flex items-center gap-3" itemProp="name">
                 {business.name}
+                {business.isClaimed && (
+                  <span className="inline-flex items-center justify-center bg-secondary text-on-secondary rounded-full p-1.5 shadow-md" title="Verified Business">
+                    <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+                  </span>
+                )}
               </h1>
               
               {/* Trust Indicators */}
@@ -152,9 +159,11 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
           {/* About */}
           <section className="flex flex-col gap-4" id="about">
             <h2 className="text-2xl font-bold text-on-surface">About {business.name}</h2>
-            <p className="text-lg text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface p-6 rounded-2xl border border-outline-variant shadow-sm" itemProp="description">
-              {parsedDescription}
-            </p>
+            <div className="prose prose-lg max-w-none text-on-surface-variant leading-relaxed bg-surface p-6 rounded-2xl border border-outline-variant shadow-sm prose-headings:text-on-surface prose-a:text-primary hover:prose-a:text-primary-hover prose-strong:text-on-surface" itemProp="description">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {parsedDescription}
+              </ReactMarkdown>
+            </div>
           </section>
 
           {/* Top Scraped Reviews Widget */}

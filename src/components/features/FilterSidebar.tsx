@@ -55,7 +55,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
   );
 
   const handleCategoryChange = (slug: string, checked: boolean) => {
-    const action = checked ? 'add' : 'remove';
+    const action = checked ? 'set' : 'remove';
     router.push('?' + createQueryString('category', slug, action), { scroll: false });
   };
 
