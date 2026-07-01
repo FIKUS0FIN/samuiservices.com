@@ -23,12 +23,14 @@ export function NavLinks() {
              <ChevronDown className="w-4 h-4" />
            </Link>
            {dropdownOpen && (
-             <div className="absolute top-full left-0 mt-4 w-48 bg-surface border border-outline-muted rounded-md shadow-lg py-2 z-50">
+               <div className="absolute top-full left-0 mt-4 w-48 bg-surface border border-outline-muted rounded-md shadow-lg py-2 z-50">
+                <Link href="/samui/beaches" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Beaches</Link>
                 <Link href="/samui/markets" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Markets</Link>
                 <Link href="/samui/airport" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Airport</Link>
                 <Link href="/samui/weather" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Weather</Link>
                 <Link href="/samui/malls" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Malls</Link>
                 <Link href="/samui/transportation" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Transportation</Link>
+                <Link href="/samui/rentals" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Rentals</Link>
                 <Link href="/samui/hospitals" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Hospitals</Link>
                 <Link href="/samui/piers" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Piers</Link>
                 <Link href="/samui/post-offices" className="block px-4 py-2 hover:bg-surface-hover text-text-main hover:text-primary transition-colors">Post Offices</Link>
