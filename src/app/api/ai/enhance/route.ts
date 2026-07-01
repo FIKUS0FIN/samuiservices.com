@@ -50,8 +50,8 @@ Your task is to rewrite the business description based on these guidelines:
 Output ONLY the rewritten Markdown description. Do not include any other conversational text or pleasantries.
 `;
 
-    // Run the Cloudflare Llama 3 model
-    const response = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+    // Run the Cloudflare Llama 3.1 model
+    const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
       messages: [
         { role: 'system', content: 'You are an SEO writing assistant.' },
         { role: 'user', content: prompt }
