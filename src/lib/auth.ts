@@ -7,12 +7,11 @@ import type { PrismaClient } from "@prisma/client"
 let _prismaClient: PrismaClient | null = null;
 
 function initPrismaClient(): PrismaClient {
-  if (_prismaClient) return _prismaClient;
-
   // Render, Vercel, or local Next.js production builds won't have CF_PAGES
   if (process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_TEST_MODE === "true" || process.env.RENDER === "true" || !process.env.CF_PAGES) {
+    if (_prismaClient) return _prismaClient;
     // Hide native modules from bundlers by using eval to prevent Cloudflare WebAssembly/Native errors
-        const req = eval('require');
+    const req = eval('require');
     const { PrismaLibSql } = req("@prisma/adapter-libsql");
     const { PrismaClient: LocalClient } = req("@prisma/client");
     
@@ -22,17 +21,24 @@ function initPrismaClient(): PrismaClient {
       authToken: process.env.TURSO_AUTH_TOKEN
     });
     _prismaClient = new LocalClient({ adapter, log: ["query"] });
+    return _prismaClient!;
   } else {
-                    const { getCloudflareContext } = require("@opennextjs/cloudflare");
+    const { getCloudflareContext } = require("@opennextjs/cloudflare");
     const { env } = getCloudflareContext();
     if (!env || !env.DB) throw new Error("Cloudflare DB binding not found");
-        const { PrismaD1 } = require("@prisma/adapter-d1");
+    
+    // Cache the Prisma client on the request-specific env object to avoid creating
+    // a new instance on every Proxy property access, but strictly prevent cross-request sharing
+    if (env.__prismaClient) return env.__prismaClient;
+    
+    const { PrismaD1 } = require("@prisma/adapter-d1");
     // Use the Edge client to prevent WASM compilation errors on Cloudflare
-        const { PrismaClient: EdgeClient } = require("@prisma/client/edge");
+    const { PrismaClient: EdgeClient } = require("@prisma/client/edge");
     const adapter = new PrismaD1(env.DB);
-    _prismaClient = new EdgeClient({ adapter, log: ["query"] });
+    
+    env.__prismaClient = new EdgeClient({ adapter, log: ["query"] });
+    return env.__prismaClient;
   }
-  return _prismaClient!;
 }
 
 export const prisma = new Proxy({} as PrismaClient, {
