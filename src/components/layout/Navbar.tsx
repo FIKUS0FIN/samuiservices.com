@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { Button } from '@/components/ui/Button';
 import { LogoutButton } from '@/components/features/LogoutButton';
+import { NavLinks } from './NavLinks';
 
 export async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -16,11 +17,7 @@ export async function Navbar() {
             Samui Services
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 font-body text-body-md font-medium">
-            <Link href="/samui" className="text-text-main hover:text-primary transition-colors">Koh Samui</Link>
-            <Link href="/phangan" className="text-text-main hover:text-primary transition-colors">Koh Phangan</Link>
-            <Link href="/tao" className="text-text-main hover:text-primary transition-colors">Koh Tao</Link>
-          </div>
+          <NavLinks />
         </div>
 
         <div className="flex gap-4 items-center">
