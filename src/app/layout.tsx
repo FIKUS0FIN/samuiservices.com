@@ -24,6 +24,7 @@ export const metadata: Metadata = {
 };
 
 import Script from 'next/script';
+import { Providers } from '@/components/providers/Providers';
 
 export default function RootLayout({
   children,
@@ -65,11 +66,13 @@ export default function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        <Navbar />
-        <main className="flex-1 w-full">
-          {children}
-        </main>
-        <Footer />
+        <Providers>
+          <Navbar />
+          <main className="flex-1 w-full">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
