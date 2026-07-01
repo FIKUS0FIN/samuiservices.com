@@ -6,7 +6,7 @@ export async function getBusinessesByIsland(
   query?: string, 
   currentUserId?: string,
   page: number = 1,
-  limit: number = 10
+  limit: number = 50
 ) {
   const whereClause: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
   
@@ -130,9 +130,35 @@ export async function getBusinessBySlug(slug: string) {
         include: {
           user: {
             select: {
+              id: true,
               name: true,
               image: true,
             }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      },
+      questions: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            }
+          },
+          answers: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                  role: true,
+                }
+              }
+            },
+            orderBy: { createdAt: 'asc' }
           }
         },
         orderBy: { createdAt: 'desc' }

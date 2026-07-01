@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ScrapedReview } from '@/lib/parseDescription';
 
 export function ReviewWidget({ reviews }: { reviews: ScrapedReview[] }) {

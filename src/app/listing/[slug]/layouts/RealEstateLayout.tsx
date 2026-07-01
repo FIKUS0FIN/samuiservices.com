@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
 import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import Link from 'next/link';
 
 export default function RealEstateLayout({ business }: { business: any }) {
   return (
@@ -121,7 +122,15 @@ export default function RealEstateLayout({ business }: { business: any }) {
                           )}
                         </div>
                         <div className="flex-1">
-                          <div className="font-bold font-body-lg">{review.user?.name || 'Anonymous User'}</div>
+                          <div className="font-bold font-body-lg">
+                            {review.user?.id ? (
+                              <Link href={`/user/${review.user.id}`} className="hover:text-primary transition-colors hover:underline">
+                                {review.user.name || 'Anonymous User'}
+                              </Link>
+                            ) : (
+                              review.user?.name || 'Anonymous User'
+                            )}
+                          </div>
                           <div className="text-sm text-on-surface-variant">
                             {new Date(review.createdAt).toLocaleDateString()}
                           </div>

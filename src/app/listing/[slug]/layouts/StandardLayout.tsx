@@ -262,7 +262,15 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
                           {(review.user?.name || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div className="flex-1" itemProp="author" itemScope itemType="https://schema.org/Person">
-                          <div className="font-bold text-on-surface" itemProp="name">{review.user?.name || 'Anonymous User'}</div>
+                          <div className="font-bold text-on-surface" itemProp="name">
+                            {review.user?.id ? (
+                              <Link href={`/user/${review.user.id}`} className="hover:text-primary transition-colors hover:underline">
+                                {review.user.name || 'Anonymous User'}
+                              </Link>
+                            ) : (
+                              review.user?.name || 'Anonymous User'
+                            )}
+                          </div>
                           <div className="text-xs text-on-surface-variant">
                             <meta itemProp="datePublished" content={new Date(review.createdAt).toISOString()} />
                             {new Date(review.createdAt).toLocaleDateString()}

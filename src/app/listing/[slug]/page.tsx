@@ -64,6 +64,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+import { QAWidget } from '@/components/features/QAWidget';
+
 export default async function BusinessDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const business = await getBusinessBySlug(slug);
@@ -234,13 +236,16 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
   }
 
   return (
-    <div className="bg-surface min-h-screen">
+    <div className="bg-surface min-h-screen pb-20">
       {/* Inject all JSON-LD schemas into the head for Google and AI agents */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
       />
       <LayoutComponent business={business} faqs={faqs} />
+      
+      {/* Global Q&A Widget injected below all layouts */}
+      <QAWidget listingId={business.id} initialQuestions={(business as any).questions || []} />
     </div>
   );
 }
