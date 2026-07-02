@@ -1,9 +1,21 @@
 'use server';
 
-import { prisma } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
+import { authOptions, prisma } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 
 export async function askQuestion(listingId: string, userId: string, text: string) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user?.id) {
+    throw new Error('Unauthorized');
+  }
+
+  // Prevent IDOR: Ensure the user is asking the question as themselves
+  if (session.user.id !== userId) {
+    throw new Error('Unauthorized');
+  }
+
   if (!text || text.trim() === '') {
     throw new Error('Question text is required');
   }
@@ -12,7 +24,7 @@ export async function askQuestion(listingId: string, userId: string, text: strin
     data: {
       text,
       listingId,
-      userId,
+      userId: session.user.id,
     }
   });
 
@@ -25,6 +37,17 @@ export async function askQuestion(listingId: string, userId: string, text: strin
 }
 
 export async function answerQuestion(questionId: string, userId: string, text: string) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user?.id) {
+    throw new Error('Unauthorized');
+  }
+
+  // Prevent IDOR: Ensure the user is answering as themselves
+  if (session.user.id !== userId) {
+    throw new Error('Unauthorized');
+  }
+
   if (!text || text.trim() === '') {
     throw new Error('Answer text is required');
   }
@@ -33,7 +56,7 @@ export async function answerQuestion(questionId: string, userId: string, text: s
     data: {
       text,
       questionId,
-      userId,
+      userId: session.user.id,
     }
   });
 

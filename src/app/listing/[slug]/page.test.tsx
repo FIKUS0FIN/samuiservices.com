@@ -12,6 +12,10 @@ vi.mock('@/components/features/MessageForm', () => ({
   MessageForm: () => <div data-testid="message-form"></div>,
 }))
 
+vi.mock('@/components/features/QAWidget', () => ({
+  QAWidget: () => <div data-testid="qa-widget"></div>,
+}))
+
 describe('BusinessDetail JSON-LD XSS', () => {
   it('escapes malicious characters in JSON-LD', async () => {
     vi.mocked(db.getBusinessBySlug).mockResolvedValue({
