@@ -63,7 +63,8 @@ Respond ONLY with a valid JSON object or array as requested. Do not wrap it in m
       messages: [
         { role: 'system', content: 'You are a strict data formatting AI. You only output valid, parsable JSON.' },
         { role: 'user', content: prompt }
-      ]
+      ],
+      max_tokens: 1500
     });
 
     let resultText = (response as any).response || response;
@@ -73,10 +74,9 @@ Respond ONLY with a valid JSON object or array as requested. Do not wrap it in m
     }
     
     resultText = resultText.trim();
-    if (resultText.startsWith('```json')) {
-      resultText = resultText.replace(/^```json/, '').replace(/```$/, '').trim();
-    } else if (resultText.startsWith('```')) {
-      resultText = resultText.replace(/^```/, '').replace(/```$/, '').trim();
+    const jsonMatch = resultText.match(/(\{|\[)[\s\S]*(\}|\])/);
+    if (jsonMatch) {
+      resultText = jsonMatch[0];
     }
 
     let parsedJson;

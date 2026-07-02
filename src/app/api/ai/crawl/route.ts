@@ -147,7 +147,8 @@ Example output format:
       messages: [
         { role: 'system', content: 'You are a strict data extraction AI. You only output valid, parsable JSON.' },
         { role: 'user', content: prompt }
-      ]
+      ],
+      max_tokens: 3000
     });
 
     let resultText = (response as any).response || response;
@@ -156,12 +157,11 @@ Example output format:
        resultText = JSON.stringify(resultText);
     }
     
-    // Clean up potential markdown wrappers
+    // Clean up potential markdown wrappers or conversational text
     resultText = resultText.trim();
-    if (resultText.startsWith('```json')) {
-      resultText = resultText.replace(/^```json/, '').replace(/```$/, '').trim();
-    } else if (resultText.startsWith('```')) {
-      resultText = resultText.replace(/^```/, '').replace(/```$/, '').trim();
+    const jsonMatch = resultText.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      resultText = jsonMatch[0];
     }
 
     let parsedJson;

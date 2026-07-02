@@ -56,7 +56,8 @@ Output ONLY the rewritten Markdown description. Do not include any other convers
       messages: [
         { role: 'system', content: 'You are an SEO writing assistant and business analyst.' },
         { role: 'user', content: prompt }
-      ]
+      ],
+      max_tokens: 2000
     });
 
     // @ts-ignore - The types for Ai response can be tricky, but it usually returns { response: string }
