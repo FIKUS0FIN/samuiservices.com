@@ -51,7 +51,12 @@ export function ListingForm({
   const [products, setProducts] = useState(listing?.products || []);
   const formRef = useRef<HTMLFormElement>(null);
   const [isEnhancing, setIsEnhancing] = useState(false);
+  const [isCrawling, setIsCrawling] = useState(false);
   const [descriptionValue, setDescriptionValue] = useState(listing?.description || '');
+  const [websiteValue, setWebsiteValue] = useState(listing?.website || '');
+  const [crawlUrlsValue, setCrawlUrlsValue] = useState(listing?.website || '');
+  const [hoursValue, setHoursValue] = useState(listing?.hours || '');
+  const [imageValue, setImageValue] = useState(listing?.image || '');
 
   const handleEnhanceSEO = async () => {
     if (!formRef.current) return;
@@ -87,6 +92,82 @@ export function ListingForm({
       alert('Error connecting to AI service.');
     } finally {
       setIsEnhancing(false);
+    }
+  };
+
+  const handleCrawlWebsite = async () => {
+    const urls = crawlUrlsValue.split('\n').map(u => u.trim()).filter(u => u);
+    if (urls.length === 0) {
+      alert("Please enter at least one website URL to crawl.");
+      return;
+    }
+    if (urls.length > 5) {
+      alert("Please enter a maximum of 5 URLs.");
+      return;
+    }
+
+    setIsCrawling(true);
+    try {
+      // 1. Crawl the website and extract structured data
+      const crawlRes = await fetch('/api/ai/crawl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls })
+      });
+      
+      if (!crawlRes.ok) {
+        alert('Failed to crawl website.');
+        setIsCrawling(false);
+        return;
+      }
+      
+      const { result } = await crawlRes.json() as { result: Record<string, unknown> };
+      
+      // Update basic fields
+      if (typeof result.description === 'string') setDescriptionValue(result.description);
+      if (typeof result.hours === 'string') setHoursValue(result.hours);
+      
+      let finalImages: string[] = Array.isArray(result.images) ? (result.images as string[]) : [];
+
+      // 2. Auto-upload images if any found
+      if (finalImages.length > 0) {
+        try {
+          const uploadRes = await fetch('/api/upload-external-images', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageUrls: finalImages })
+          });
+          if (uploadRes.ok) {
+            const uploadData = await uploadRes.json() as { result: string[] };
+            finalImages = uploadData.result || finalImages;
+          }
+        } catch (e) {
+          console.error("Image upload failed", e);
+        }
+      }
+
+      // Populate cover image if available
+      if (finalImages.length > 0) {
+        setImageValue(finalImages[0]);
+      }
+
+      // Combine AI extracted products with existing products
+      if (Array.isArray(result.products)) {
+        const newProducts = result.products.map((p: Record<string, unknown>, i: number) => ({
+          id: '',
+          name: (p.name as string) || '',
+          description: (p.description as string) || '',
+          price: (p.price as number) || null,
+          image: (p.image as string) || (finalImages[i + 1] || '') // Try to assign an image if available
+        }));
+        setProducts([...products, ...newProducts]);
+      }
+
+    } catch (e) {
+      console.error(e);
+      alert('Error connecting to crawling service.');
+    } finally {
+      setIsCrawling(false);
     }
   };
 
@@ -158,11 +239,48 @@ export function ListingForm({
             </select>
           </div>
           <Input label="Phone Number" name="phone" type="tel" defaultValue={listing?.phone || ''} placeholder="+66 XX XXX XXXX" />
+          <div className="flex flex-col gap-2 md:col-span-2">
+            <div className="flex justify-between items-center">
+              <label className="font-label-md text-sm text-on-surface-variant ml-1">URLs to Crawl & AI Auto-Fill (Up to 5, one per line)</label>
+              <button 
+                type="button" 
+                onClick={handleCrawlWebsite}
+                disabled={isCrawling}
+                className="text-xs font-bold text-primary hover:underline flex items-center gap-1 disabled:opacity-50"
+              >
+                {isCrawling ? 'Crawling...' : '🕸️ Auto-Fill from Websites'}
+              </button>
+            </div>
+            <textarea 
+              value={crawlUrlsValue} 
+              onChange={(e) => setCrawlUrlsValue(e.target.value)}
+              placeholder="https://example.com&#10;https://example.com/about" 
+              rows={3}
+              className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full resize-none"
+            />
+          </div>
           <div className="md:col-span-2">
             <Input label="Full Address" name="address" type="text" fullWidth defaultValue={listing?.address || ''} placeholder="123 Beach Rd, Koh Samui..." />
           </div>
-          <Input label="Website" name="website" type="url" defaultValue={listing?.website || ''} placeholder="https://" />
-          <Input label="Business Hours" name="hours" type="text" defaultValue={listing?.hours || ''} placeholder="e.g. Mon-Fri 9AM-5PM" />
+          <Input 
+            label="Primary Website"
+            name="website" 
+            type="url" 
+            value={websiteValue} 
+            onChange={(e) => setWebsiteValue(e.target.value)}
+            placeholder="https://" 
+          />
+          <div className="flex flex-col gap-2">
+            <label className="font-label-md text-sm text-on-surface-variant ml-1">Business Hours</label>
+            <input 
+              name="hours" 
+              type="text" 
+              value={hoursValue}
+              onChange={(e) => setHoursValue(e.target.value)}
+              placeholder="e.g. Mon-Fri 9AM-5PM" 
+              className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
+            />
+          </div>
           <Input label="Latitude (Map Pin)" name="lat" type="number" step="any" defaultValue={listing?.lat ?? ''} placeholder="e.g. 9.5120" />
           <Input label="Longitude (Map Pin)" name="lng" type="number" step="any" defaultValue={listing?.lng ?? ''} placeholder="e.g. 100.0136" />
         </div>
@@ -196,7 +314,17 @@ export function ListingForm({
             required 
           />
         </div>
-        <Input label="Cover Image URL (Temporary)" name="image" type="url" fullWidth defaultValue={listing?.image || ''} placeholder="https://..." />
+        <div className="flex flex-col gap-2 mb-6">
+          <label className="font-label-md text-sm text-on-surface-variant ml-1">Cover Image URL</label>
+          <input 
+            name="image" 
+            type="url" 
+            value={imageValue}
+            onChange={(e) => setImageValue(e.target.value)}
+            placeholder="https://..." 
+            className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
+          />
+        </div>
       </div>
 
       {/* Products */}
