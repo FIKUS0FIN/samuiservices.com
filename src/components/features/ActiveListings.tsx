@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -8,17 +9,50 @@ import { Listing, Category, Island } from '@prisma/client';
 
 type ListingWithRelations = Listing & { category: Category | null; island: Island | null };
 
-export function ActiveListings({ listings, totalCount }: { listings: ListingWithRelations[], totalCount?: number }) {
-  const [searchQuery, setSearchQuery] = useState('');
+export function ActiveListings({ 
+  listings, 
+  totalCount,
+  userTotalCount,
+  initialSearch = ''
+}: { 
+  listings: ListingWithRelations[], 
+  totalCount?: number,
+  userTotalCount?: number,
+  initialSearch?: string
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   
   const displayCount = totalCount !== undefined ? totalCount : listings.length;
-  const showSearch = displayCount > 10;
+  const baseCountForSearch = userTotalCount !== undefined ? userTotalCount : displayCount;
+  const showSearch = baseCountForSearch > 10;
 
-  const filteredListings = showSearch && searchQuery.trim() !== ''
-    ? listings.filter(listing => 
-        listing.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : listings;
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const current = new URLSearchParams(Array.from(searchParams.entries()));
+      if (searchQuery.trim() !== '') {
+        current.set('search', searchQuery);
+        current.set('listingPage', '1');
+      } else {
+        current.delete('search');
+      }
+      
+      const searchStr = current.toString();
+      const query = searchStr ? `?${searchStr}` : '';
+      
+      // Update only if it changed to avoid infinite loop
+      if (`?${searchParams.toString()}` !== query && (searchStr !== '' || searchParams.toString() !== '')) {
+        router.push(`${pathname}${query}`);
+      }
+    }, 300);
+
+    return () => clearTimeout(handler);
+  }, [searchQuery, pathname, router, searchParams]);
+
+  const filteredListings = listings;
 
   return (
     <div>

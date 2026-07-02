@@ -13,10 +13,11 @@ export const metadata = {
   title: 'Dashboard | Samui Services',
 };
 
-export default async function Dashboard(props: { searchParams?: Promise<{ listingPage?: string, favPage?: string }> }) {
+export default async function Dashboard(props: { searchParams?: Promise<{ listingPage?: string, favPage?: string, search?: string }> }) {
   const searchParams = await props.searchParams;
   const listingPage = searchParams?.listingPage ? parseInt(searchParams.listingPage, 10) : 1;
   const favPage = searchParams?.favPage ? parseInt(searchParams.favPage, 10) : 1;
+  const search = searchParams?.search || '';
   const limit = 10;
   const session = await getServerSession(authOptions);
 
@@ -24,13 +25,22 @@ export default async function Dashboard(props: { searchParams?: Promise<{ listin
     redirect('/api/auth/signin');
   }
 
-  const [listings, totalListings] = await Promise.all([
+  const [listings, totalListings, userTotalListingsCount] = await Promise.all([
     prisma.listing.findMany({
-      where: { userId: session.user.id },
+      where: { 
+        userId: session.user.id,
+        ...(search ? { name: { contains: search } } : {})
+      },
       include: { category: true, island: true },
       orderBy: { createdAt: 'desc' },
       skip: (listingPage - 1) * limit,
       take: limit
+    }),
+    prisma.listing.count({ 
+      where: { 
+        userId: session.user.id,
+        ...(search ? { name: { contains: search } } : {})
+      } 
     }),
     prisma.listing.count({ where: { userId: session.user.id } })
   ]);
@@ -76,7 +86,7 @@ export default async function Dashboard(props: { searchParams?: Promise<{ listin
           {/* Main Content */}
           <div className="flex flex-col gap-12">
             <div>
-              <ActiveListings listings={listings} totalCount={totalListings} />
+              <ActiveListings listings={listings} totalCount={totalListings} userTotalCount={userTotalListingsCount} initialSearch={search} />
               <Pagination totalPages={totalListingPages} currentPage={listingPage} pageParamName="listingPage" />
             </div>
             <div>
