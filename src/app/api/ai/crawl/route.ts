@@ -114,7 +114,14 @@ Extract the following information:
 1. "description": Write an engaging, SEO-optimized business description based on the text. 
 2. "products": An array of products or services offered. Each object should have: "name" (string), "description" (string, short), "price" (number or null), "image" (string or null).
 3. "hours": A string representing their opening and closing hours, if found.
-4. "discounts": Any discounts, promotions, or special offers mentioned (string or null).
+4. "socialLinks": An object containing social media URLs, e.g. {"facebook": "...", "instagram": "..."}.
+5. "faqs": An array of frequently asked questions found. Each object should have: {"question": "...", "answer": "..."}.
+6. "specialOffers": An array of current discounts or promotions. Each object should have: {"title": "...", "description": "...", "validUntil": "...", "ctaLink": "..."}.
+7. "menu": An array representing a menu/pricing table. Each object: {"category": "...", "items": [{"name": "...", "price": "...", "description": "..."}]}.
+8. "videoUrls": An array of strings containing any YouTube/Vimeo links found.
+9. "bookingUrl": A string containing a link to book or reserve directly.
+10. "trustBadges": An array of strings representing any credentials, e.g. ["PADI Certified", "Eco-Friendly"].
+11. "amenities": An array of strings representing available facilities, e.g. ["Free Wifi", "Parking"].
 
 Respond ONLY with a valid JSON object. Do not wrap it in markdown code blocks like \`\`\`json. The response should start with { and end with }.
 
@@ -125,7 +132,14 @@ Example output format:
     { "name": "Service A", "description": "...", "price": 100, "image": null }
   ],
   "hours": "Mon-Fri 9AM-5PM",
-  "discounts": "10% off online bookings"
+  "socialLinks": { "facebook": "https://facebook.com/..." },
+  "faqs": [ { "question": "Do you offer hotel pickup?", "answer": "Yes..." } ],
+  "specialOffers": [ { "title": "10% Off", "description": "Book online for 10% off", "validUntil": null, "ctaLink": null } ],
+  "menu": [ { "category": "Diving", "items": [{ "name": "Open Water", "price": "15000", "description": "3 days" }] } ],
+  "videoUrls": [],
+  "bookingUrl": "https://...",
+  "trustBadges": ["Verified"],
+  "amenities": ["Wifi"]
 }
 `;
 

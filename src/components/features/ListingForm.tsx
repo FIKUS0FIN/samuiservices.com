@@ -29,6 +29,14 @@ interface ListingData {
   lng?: number | null;
   description?: string;
   image?: string | null;
+  socialLinks?: string | null;
+  faqs?: string | null;
+  specialOffers?: string | null;
+  menu?: string | null;
+  videoUrls?: string | null;
+  bookingUrl?: string | null;
+  trustBadges?: string | null;
+  amenities?: string | null;
 }
 
 interface ListingFormProps {
@@ -57,6 +65,41 @@ export function ListingForm({
   const [crawlUrlsValue, setCrawlUrlsValue] = useState(listing?.website || '');
   const [hoursValue, setHoursValue] = useState(listing?.hours || '');
   const [imageValue, setImageValue] = useState(listing?.image || '');
+
+  // Widget States
+  const [socialLinksValue, setSocialLinksValue] = useState(listing?.socialLinks || '');
+  const [faqsValue, setFaqsValue] = useState(listing?.faqs || '');
+  const [specialOffersValue, setSpecialOffersValue] = useState(listing?.specialOffers || '');
+  const [menuValue, setMenuValue] = useState(listing?.menu || '');
+  const [videoUrlsValue, setVideoUrlsValue] = useState(listing?.videoUrls || '');
+  const [bookingUrlValue, setBookingUrlValue] = useState(listing?.bookingUrl || '');
+  const [trustBadgesValue, setTrustBadgesValue] = useState(listing?.trustBadges || '');
+  const [amenitiesValue, setAmenitiesValue] = useState(listing?.amenities || '');
+  const [enhancingWidget, setEnhancingWidget] = useState<string | null>(null);
+
+  const handleEnhanceWidget = async (widgetType: string, text: string, setter: (val: string) => void) => {
+    if (!text) return;
+    setEnhancingWidget(widgetType);
+    try {
+      const res = await fetch('/api/ai/enhance-widget', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ widgetType, text })
+      });
+      if (res.ok) {
+        const data = await res.json() as { result: any };
+        setter(JSON.stringify(data.result, null, 2));
+      } else {
+        alert('Failed to enhance widget.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Error connecting to AI service.');
+    } finally {
+      setEnhancingWidget(null);
+    }
+  };
+
 
   const handleEnhanceSEO = async () => {
     if (!formRef.current) return;
@@ -126,6 +169,16 @@ export function ListingForm({
       // Update basic fields
       if (typeof result.description === 'string') setDescriptionValue(result.description);
       if (typeof result.hours === 'string') setHoursValue(result.hours);
+      
+      // Update widget fields
+      if (result.socialLinks) setSocialLinksValue(JSON.stringify(result.socialLinks, null, 2));
+      if (result.faqs) setFaqsValue(JSON.stringify(result.faqs, null, 2));
+      if (result.specialOffers) setSpecialOffersValue(JSON.stringify(result.specialOffers, null, 2));
+      if (result.menu) setMenuValue(JSON.stringify(result.menu, null, 2));
+      if (result.videoUrls) setVideoUrlsValue(JSON.stringify(result.videoUrls, null, 2));
+      if (result.bookingUrl) setBookingUrlValue(result.bookingUrl as string);
+      if (result.trustBadges) setTrustBadgesValue(JSON.stringify(result.trustBadges, null, 2));
+      if (result.amenities) setAmenitiesValue(JSON.stringify(result.amenities, null, 2));
       
       let finalImages: string[] = Array.isArray(result.images) ? (result.images as string[]) : [];
 
@@ -353,6 +406,67 @@ export function ListingForm({
         ))}
 
         <button type="button" onClick={addProduct} className="text-primary font-label-md font-bold hover:underline">+ Add Product</button>
+      </div>
+
+      {/* Widgets */}
+      <div className="bg-surface-container-lowest p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/30">
+        <div className="flex items-center gap-3 mb-6">
+           <span className="text-primary text-2xl font-bold">5.</span>
+           <h2 className="font-headline-md text-2xl text-on-surface">Widgets & Extras</h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6">
+          
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <label className="font-label-md text-sm text-on-surface-variant ml-1">Social Links (JSON)</label>
+              <button type="button" onClick={() => handleEnhanceWidget('socialLinks', socialLinksValue, setSocialLinksValue)} disabled={enhancingWidget === 'socialLinks'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Format</button>
+            </div>
+            <textarea name="socialLinks" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={3} value={socialLinksValue} onChange={(e) => setSocialLinksValue(e.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <label className="font-label-md text-sm text-on-surface-variant ml-1">FAQs (JSON Array)</label>
+              <button type="button" onClick={() => handleEnhanceWidget('faqs', faqsValue, setFaqsValue)} disabled={enhancingWidget === 'faqs'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Enhance</button>
+            </div>
+            <textarea name="faqs" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={4} value={faqsValue} onChange={(e) => setFaqsValue(e.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <label className="font-label-md text-sm text-on-surface-variant ml-1">Special Offers (JSON Array)</label>
+              <button type="button" onClick={() => handleEnhanceWidget('specialOffers', specialOffersValue, setSpecialOffersValue)} disabled={enhancingWidget === 'specialOffers'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Enhance</button>
+            </div>
+            <textarea name="specialOffers" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={4} value={specialOffersValue} onChange={(e) => setSpecialOffersValue(e.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <label className="font-label-md text-sm text-on-surface-variant ml-1">Menu / Pricing (JSON Array)</label>
+              <button type="button" onClick={() => handleEnhanceWidget('menu', menuValue, setMenuValue)} disabled={enhancingWidget === 'menu'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Enhance</button>
+            </div>
+            <textarea name="menu" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={5} value={menuValue} onChange={(e) => setMenuValue(e.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="font-label-md text-sm text-on-surface-variant ml-1">Video URLs (JSON Array of strings)</label>
+            <textarea name="videoUrls" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={videoUrlsValue} onChange={(e) => setVideoUrlsValue(e.target.value)} />
+          </div>
+          
+          <Input label="Booking URL" name="bookingUrl" type="url" fullWidth value={bookingUrlValue} onChange={(e) => setBookingUrlValue(e.target.value)} placeholder="https://" />
+
+          <div className="flex flex-col gap-2">
+            <label className="font-label-md text-sm text-on-surface-variant ml-1">Trust Badges (JSON Array of strings)</label>
+            <textarea name="trustBadges" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={trustBadgesValue} onChange={(e) => setTrustBadgesValue(e.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="font-label-md text-sm text-on-surface-variant ml-1">Amenities (JSON Array of strings)</label>
+            <textarea name="amenities" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={amenitiesValue} onChange={(e) => setAmenitiesValue(e.target.value)} />
+          </div>
+
+        </div>
       </div>
 
       <div className="flex justify-end gap-4 mt-6">

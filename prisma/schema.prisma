@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -83,10 +83,10 @@ model Island {
 }
 
 model Listing {
-  slug          String  @unique @default(cuid())
-  layout        String  @default("standard")
+  slug          String    @unique @default(cuid())
+  layout        String    @default("standard")
   products      Product[]
-  id            String  @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String
   description   String
   image         String?
@@ -94,17 +94,27 @@ model Listing {
   address       String?
   lat           Float?
   lng           Float?
-  averageRating Float   @default(0)
-  reviewCount   Int     @default(0)
-  isPremium     Boolean @default(false)
-  isClaimed     Boolean @default(true)
-  googlePlaceId String? @unique
+  averageRating Float     @default(0)
+  reviewCount   Int       @default(0)
+  isPremium     Boolean   @default(false)
+  isClaimed     Boolean   @default(true)
+  googlePlaceId String?   @unique
   website       String?
   hours         String?
   galleryImages String? // Serialized JSON array of strings
   services      String? // Serialized JSON array of strings
   priceLevel    String?
   mapLink       String?
+
+  // Widget Data Fields (Stored as Serialized JSON)
+  socialLinks   String?
+  faqs          String?
+  specialOffers String?
+  menu          String?
+  videoUrls     String?
+  bookingUrl    String?
+  trustBadges   String?
+  amenities     String?
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
