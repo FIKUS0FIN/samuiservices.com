@@ -37,6 +37,7 @@ interface ListingData {
   bookingUrl?: string | null;
   trustBadges?: string | null;
   amenities?: string | null;
+  externalReviews?: string | null;
 }
 
 interface ListingFormProps {
@@ -75,6 +76,7 @@ export function ListingForm({
   const [bookingUrlValue, setBookingUrlValue] = useState(listing?.bookingUrl || '');
   const [trustBadgesValue, setTrustBadgesValue] = useState(listing?.trustBadges || '');
   const [amenitiesValue, setAmenitiesValue] = useState(listing?.amenities || '');
+  const [externalReviewsValue, setExternalReviewsValue] = useState(listing?.externalReviews || '');
   const [enhancingWidget, setEnhancingWidget] = useState<string | null>(null);
 
   const handleEnhanceWidget = async (widgetType: string, text: string, setter: (val: string) => void) => {
@@ -179,6 +181,7 @@ export function ListingForm({
       if (result.bookingUrl) setBookingUrlValue(result.bookingUrl as string);
       if (result.trustBadges) setTrustBadgesValue(JSON.stringify(result.trustBadges, null, 2));
       if (result.amenities) setAmenitiesValue(JSON.stringify(result.amenities, null, 2));
+      if (result.externalReviews) setExternalReviewsValue(JSON.stringify(result.externalReviews, null, 2));
       
       let finalImages: string[] = Array.isArray(result.images) ? (result.images as string[]) : [];
 
@@ -464,6 +467,14 @@ export function ListingForm({
           <div className="flex flex-col gap-2">
             <label className="font-label-md text-sm text-on-surface-variant ml-1">Amenities (JSON Array of strings)</label>
             <textarea name="amenities" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={amenitiesValue} onChange={(e) => setAmenitiesValue(e.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <label className="font-label-md text-sm text-on-surface-variant ml-1">External Reviews (JSON Array of Embed URLs / Place IDs)</label>
+              <button type="button" onClick={() => handleEnhanceWidget('externalReviews', externalReviewsValue, setExternalReviewsValue)} disabled={enhancingWidget === 'externalReviews'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Format</button>
+            </div>
+            <textarea name="externalReviews" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={3} value={externalReviewsValue} onChange={(e) => setExternalReviewsValue(e.target.value)} />
           </div>
 
         </div>

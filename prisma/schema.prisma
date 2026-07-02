@@ -107,14 +107,15 @@ model Listing {
   mapLink       String?
 
   // Widget Data Fields (Stored as Serialized JSON)
-  socialLinks   String?
-  faqs          String?
-  specialOffers String?
-  menu          String?
-  videoUrls     String?
-  bookingUrl    String?
-  trustBadges   String?
-  amenities     String?
+  socialLinks     String?
+  faqs            String?
+  specialOffers   String?
+  menu            String?
+  videoUrls       String?
+  bookingUrl      String?
+  trustBadges     String?
+  amenities       String?
+  externalReviews String? // For Google/TripAdvisor embeds 
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])

@@ -122,6 +122,7 @@ Extract the following information:
 9. "bookingUrl": A string containing a link to book or reserve directly.
 10. "trustBadges": An array of strings representing any credentials, e.g. ["PADI Certified", "Eco-Friendly"].
 11. "amenities": An array of strings representing available facilities, e.g. ["Free Wifi", "Parking"].
+12. "externalReviews": An array of URLs pointing to their Google Maps, TripAdvisor, or Yelp review pages.
 
 Respond ONLY with a valid JSON object. Do not wrap it in markdown code blocks like \`\`\`json. The response should start with { and end with }.
 
@@ -139,7 +140,8 @@ Example output format:
   "videoUrls": [],
   "bookingUrl": "https://...",
   "trustBadges": ["Verified"],
-  "amenities": ["Wifi"]
+  "amenities": ["Wifi"],
+  "externalReviews": ["https://g.page/r/.../review"]
 }
 `;
 
