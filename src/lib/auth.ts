@@ -24,20 +24,21 @@ function initPrismaClient(): PrismaClient {
     return _prismaClient!;
   } else {
     const { getCloudflareContext } = require("@opennextjs/cloudflare");
-    const { env } = getCloudflareContext();
+    const context = getCloudflareContext();
+    const { env, ctx } = context;
     if (!env || !env.DB) throw new Error("Cloudflare DB binding not found");
     
-    // Cache the Prisma client on the request-specific env object to avoid creating
+    // Cache the Prisma client on the request-specific ctx object to avoid creating
     // a new instance on every Proxy property access, but strictly prevent cross-request sharing
-    if (env.__prismaClient) return env.__prismaClient;
+    if (ctx.__prismaClient) return ctx.__prismaClient;
     
     const { PrismaD1 } = require("@prisma/adapter-d1");
     // Use the Edge client to prevent WASM compilation errors on Cloudflare
     const { PrismaClient: EdgeClient } = require("@prisma/client/edge");
     const adapter = new PrismaD1(env.DB);
     
-    env.__prismaClient = new EdgeClient({ adapter, log: ["query"] });
-    return env.__prismaClient;
+    ctx.__prismaClient = new EdgeClient({ adapter, log: ["query"] });
+    return ctx.__prismaClient;
   }
 }
 
