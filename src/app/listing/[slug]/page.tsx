@@ -117,6 +117,11 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
           name: product.name,
           description: product.description,
           image: product.image,
+          offers: {
+            '@type': 'Offer',
+            price: product.price || 0,
+            priceCurrency: 'THB'
+          }
         },
         price: product.price,
         priceCurrency: 'THB',
@@ -210,8 +215,22 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
     mainEntity: faqs
   } : null;
 
+  // 4. ProfilePage Schema
+  const profilePageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    dateCreated: business.createdAt.toISOString(),
+    dateModified: business.updatedAt.toISOString(),
+    mainEntity: {
+      '@type': 'Organization',
+      name: business.name,
+      image: allImages.length > 0 ? allImages[0] : undefined,
+      description: business.description
+    }
+  };
+
   // Combine JSON-LD schemas
-  const schemas: any[] = [localBusinessSchema, breadcrumbSchema];
+  const schemas: any[] = [localBusinessSchema, breadcrumbSchema, profilePageSchema];
   if (faqSchema) schemas.push(faqSchema);
 
   // Route to the appropriate layout
