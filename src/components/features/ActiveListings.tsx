@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -6,10 +9,33 @@ import { Listing, Category, Island } from '@prisma/client';
 type ListingWithRelations = Listing & { category: Category | null; island: Island | null };
 
 export function ActiveListings({ listings, totalCount }: { listings: ListingWithRelations[], totalCount?: number }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  
   const displayCount = totalCount !== undefined ? totalCount : listings.length;
+  const showSearch = displayCount > 10;
+
+  const filteredListings = showSearch && searchQuery.trim() !== ''
+    ? listings.filter(listing => 
+        listing.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : listings;
+
   return (
     <div>
-      <h2 className="text-headline-sm font-bold text-on-surface mb-6">Active Listings ({displayCount})</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+        <h2 className="text-headline-sm font-bold text-on-surface m-0">Active Listings ({displayCount})</h2>
+        {showSearch && (
+          <div className="w-full sm:w-64">
+            <input
+              type="text"
+              placeholder="Search listings..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 bg-surface-container rounded-md border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary text-on-surface"
+            />
+          </div>
+        )}
+      </div>
 
       {listings.length === 0 ? (
         <Card className="p-12 text-center bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card">
@@ -18,8 +44,12 @@ export function ActiveListings({ listings, totalCount }: { listings: ListingWith
             <Button variant="primary">Create Your First Listing</Button>
           </Link>
         </Card>
+      ) : filteredListings.length === 0 ? (
+        <Card className="p-12 text-center bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card">
+          <p className="text-on-surface-variant text-body-lg">No listings found matching "{searchQuery}".</p>
+        </Card>
       ) : (
-        listings.map(listing => (
+        filteredListings.map(listing => (
           <Card key={listing.id} className="flex flex-col md:flex-row justify-between md:items-center p-6 mb-4 bg-surface-container-lowest border border-outline-variant shadow-level-1 rounded-card transition-shadow hover:shadow-level-2 gap-4">
             <div className="flex gap-4 items-center">
               <div className="w-20 h-16 bg-surface-container-highest rounded-md overflow-hidden flex-shrink-0">
