@@ -24,8 +24,8 @@ export async function POST(req: Request) {
     const combinedTexts: string[] = [];
     const allImageUrls = new Set<string>();
 
-    // Fetch and parse all URLs in parallel
-    const fetchPromises = urls.map(async (url) => {
+    // Fetch and parse all URLs sequentially to avoid Cloudflare Workers I/O context loss
+    for (const url of urls) {
       let fetchUrl = url;
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
         fetchUrl = `https://${url}`;
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
           }
         });
 
-        if (!fetchResponse.ok) return;
+        if (!fetchResponse.ok) continue;
 
         const html = await fetchResponse.text();
         const $ = cheerio.load(html);
@@ -67,9 +67,7 @@ export async function POST(req: Request) {
       } catch (e) {
         console.error(`Error crawling ${url}:`, e);
       }
-    });
-
-    await Promise.all(fetchPromises);
+    }
 
     if (combinedTexts.length === 0) {
       return NextResponse.json({ error: 'Failed to fetch content from any provided URLs.' }, { status: 400 });

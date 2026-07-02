@@ -1,0 +1,9 @@
+ALTER TABLE Listing ADD COLUMN socialLinks TEXT;
+ALTER TABLE Listing ADD COLUMN faqs TEXT;
+ALTER TABLE Listing ADD COLUMN specialOffers TEXT;
+ALTER TABLE Listing ADD COLUMN menu TEXT;
+ALTER TABLE Listing ADD COLUMN videoUrls TEXT;
+ALTER TABLE Listing ADD COLUMN bookingUrl TEXT;
+ALTER TABLE Listing ADD COLUMN trustBadges TEXT;
+ALTER TABLE Listing ADD COLUMN amenities TEXT;
+ALTER TABLE Listing ADD COLUMN externalReviews TEXT;
