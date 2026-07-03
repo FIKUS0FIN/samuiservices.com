@@ -10,7 +10,6 @@ export function Input({
   label, 
   error, 
   fullWidth = false, 
-  style = {},
   className = '',
   id,
   'aria-describedby': ariaDescribedBy,
@@ -19,13 +18,15 @@ export function Input({
   const generatedId = useId();
   const inputId = id || generatedId;
   const errorId = `${inputId}-error`;
-  const baseStyle = fullWidth ? { width: '100%', ...style } : style;
 
   return (
     <div className={`flex flex-col gap-2 ${fullWidth ? 'w-full' : 'w-full md:w-auto'}`}>
       {label && (
         <label htmlFor={inputId} className="font-label-md text-sm text-on-surface-variant ml-1">
           {label}
+          {props.required && (
+            <span className="text-error ml-1" aria-hidden="true">*</span>
+          )}
         </label>
       )}
       <input 
