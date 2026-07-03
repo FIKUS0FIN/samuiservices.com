@@ -30,6 +30,8 @@ describe('BusinessDetail JSON-LD XSS', () => {
       address: '123 Test St',
       description: '</script><script>alert(1)</script>',
       isClaimed: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     } as unknown as any)
 
     // Render the async component

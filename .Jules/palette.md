@@ -1,3 +1,6 @@
 ## 2024-06-27 - [Improve Star Rating Component Accessibility]
 **Learning:** Icon-only rating components (like stars) without descriptive ARIA labels fail to convey their purpose and value to screen readers, leaving users unable to confidently interact with or select a rating. Adding a semantic group role to the parent container is also crucial for context.
 **Action:** When implementing interactive rating or icon-only components, always wrap them in a semantic container (`role="group"` with an `aria-label`) and ensure individual buttons have clear, descriptive text (`aria-label`) and state indication (`aria-pressed`).
+## 2024-07-02 - [Add Visual Indicators for Required Form Fields]
+**Learning:** While the 'required' attribute on an input field correctly conveys its mandatory status to screen readers, sighted users often rely on visual cues (like an asterisk) next to the label to quickly identify required fields before attempting to submit the form.
+**Action:** When creating reusable form input components, automatically render a visual indicator (e.g. '*') next to the label when the 'required' prop is present. Use 'aria-hidden="true"' on the indicator so screen readers don't read it redundantly.
