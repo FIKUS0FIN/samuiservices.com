@@ -3,6 +3,9 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import * as cheerio from 'cheerio';
+import { safeFetch } from '@/lib/security';
+
+
 
 export async function POST(req: Request) {
   try {
@@ -31,8 +34,10 @@ export async function POST(req: Request) {
         fetchUrl = `https://${url}`;
       }
 
+
+
       try {
-        const fetchResponse = await fetch(fetchUrl, {
+        const fetchResponse = await safeFetch(fetchUrl, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
           }
@@ -61,11 +66,11 @@ export async function POST(req: Request) {
               if (!src.startsWith('data:')) {
                 allImageUrls.add(src);
               }
-            } catch (e) { }
+            } catch (_e) { }
           }
         });
-      } catch (e) {
-        console.error(`Error crawling ${url}:`, e);
+      } catch (_e) {
+        console.error(`Error crawling ${url}:`, _e);
       }
     }
 
@@ -151,7 +156,7 @@ Example output format:
       max_tokens: 3000
     });
 
-    let resultText = (response as any).response || response;
+    let resultText = (response as { response?: string }).response || response as string;
     
     if (typeof resultText !== 'string') {
        resultText = JSON.stringify(resultText);
@@ -167,7 +172,7 @@ Example output format:
     let parsedJson;
     try {
       parsedJson = JSON.parse(resultText);
-    } catch (e) {
+    } catch (_e) {
       console.error("Failed to parse LLM output as JSON:", resultText);
       return NextResponse.json({ error: 'Failed to extract structured data from the website.' }, { status: 500 });
     }

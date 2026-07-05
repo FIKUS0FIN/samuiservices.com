@@ -3,6 +3,9 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crypto from 'crypto';
+import { safeFetch } from '@/lib/security';
+
+
 
 export async function POST(req: Request) {
   try {
@@ -47,8 +50,10 @@ export async function POST(req: Request) {
     const uploadedUrls: string[] = [];
 
     for (const url of imageUrls) {
+
+
       try {
-        const response = await fetch(url);
+        const response = await safeFetch(url);
         if (!response.ok) continue;
 
         const arrayBuffer = await response.arrayBuffer();
@@ -71,8 +76,8 @@ export async function POST(req: Request) {
         const finalUrl = s3PublicUrl ? `${s3PublicUrl}/${fileKey}` : `${s3Endpoint}/${s3Bucket}/${fileKey}`;
         uploadedUrls.push(finalUrl);
 
-      } catch (err) {
-        console.error(`Failed to upload image ${url}`, err);
+      } catch (_err) {
+        console.error(`Failed to upload image ${url}`, _err);
         // Fallback to original
         uploadedUrls.push(url);
       }
