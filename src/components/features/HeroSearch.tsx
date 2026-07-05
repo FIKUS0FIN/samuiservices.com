@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, MapPin } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 
 export function HeroSearch() {
   const [query, setQuery] = useState('');
@@ -26,8 +25,9 @@ export function HeroSearch() {
       style={{ animationDelay: '0.2s' }}
     >
       <div className="flex-1 relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-outline w-5 h-5" />
+        <Search aria-hidden="true" className="absolute left-3 top-1/2 -translate-y-1/2 text-outline w-5 h-5" />
         <input 
+          aria-label="Search for services"
           type="text" 
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -37,7 +37,7 @@ export function HeroSearch() {
       </div>
       
       <div className="relative w-full md:w-64">
-        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-outline w-5 h-5" />
+        <MapPin aria-hidden="true" className="absolute left-3 top-1/2 -translate-y-1/2 text-outline w-5 h-5" />
         <select
           aria-label="Select location"
           value={location}
