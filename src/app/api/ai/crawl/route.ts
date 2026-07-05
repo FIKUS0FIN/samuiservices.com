@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import * as cheerio from 'cheerio';
+import dns from 'dns/promises';
 
 export async function POST(req: Request) {
   try {
@@ -29,6 +30,30 @@ export async function POST(req: Request) {
       let fetchUrl = url;
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
         fetchUrl = `https://${url}`;
+      }
+
+      // 🛡️ Sentinel: Prevent Server-Side Request Forgery (SSRF)
+      try {
+        const parsedUrl = new URL(fetchUrl);
+        const hostname = parsedUrl.hostname;
+
+        // Check domain endings
+        if (/^(localhost|127\.|192\.168\.|10\.|169\.254\.|::1|fd00:|fe80:)/.test(hostname) || hostname.endsWith('.local') || hostname.endsWith('.internal')) {
+          console.warn(`Blocked SSRF attempt for URL: ${fetchUrl}`);
+          continue;
+        }
+
+        // 🛡️ Sentinel: Prevent DNS Rebinding & Octal IP SSRF
+        // Resolve IP and check if it's private/loopback
+        const lookupResult = await dns.lookup(hostname);
+        const resolvedIp = lookupResult.address;
+
+        if (/^(127\.|192\.168\.|10\.|169\.254\.|::1|fd00:|fe80:)/.test(resolvedIp)) {
+           console.warn(`Blocked SSRF (DNS Rebinding/Private IP) attempt for URL: ${fetchUrl}`);
+           continue;
+        }
+      } catch (e) {
+        continue; // Invalid URL
       }
 
       try {

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crypto from 'crypto';
+import dns from 'dns/promises';
 
 export async function POST(req: Request) {
   try {
@@ -47,6 +48,30 @@ export async function POST(req: Request) {
     const uploadedUrls: string[] = [];
 
     for (const url of imageUrls) {
+      // 🛡️ Sentinel: Prevent Server-Side Request Forgery (SSRF)
+      try {
+        const parsedUrl = new URL(url);
+        const hostname = parsedUrl.hostname;
+
+        // Check domain endings
+        if (/^(localhost|127\.|192\.168\.|10\.|169\.254\.|::1|fd00:|fe80:)/.test(hostname) || hostname.endsWith('.local') || hostname.endsWith('.internal')) {
+          console.warn(`Blocked SSRF attempt for URL: ${url}`);
+          continue;
+        }
+
+        // 🛡️ Sentinel: Prevent DNS Rebinding & Octal IP SSRF
+        // Resolve IP and check if it's private/loopback
+        const lookupResult = await dns.lookup(hostname);
+        const resolvedIp = lookupResult.address;
+
+        if (/^(127\.|192\.168\.|10\.|169\.254\.|::1|fd00:|fe80:)/.test(resolvedIp)) {
+           console.warn(`Blocked SSRF (DNS Rebinding/Private IP) attempt for URL: ${url}`);
+           continue;
+        }
+      } catch (e) {
+        continue; // Invalid URL
+      }
+
       try {
         const response = await fetch(url);
         if (!response.ok) continue;
