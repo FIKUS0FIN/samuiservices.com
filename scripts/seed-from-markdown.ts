@@ -87,6 +87,8 @@ async function main() {
           galleryImages: images,
           phone: data.phone || null,
           address: data.address || null,
+          lat: data.lat ? parseFloat(data.lat) : null,
+          lng: data.lng ? parseFloat(data.lng) : null,
           averageRating: data.rating ? parseFloat(data.rating) : 0,
           reviewCount: data.reviewsCount ? parseInt(data.reviewsCount) : 0,
           isPremium: false,

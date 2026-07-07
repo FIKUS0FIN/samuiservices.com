@@ -83,6 +83,8 @@ export function ListingForm({
   const [phoneValue, setPhoneValue] = useState(listing?.phone || '');
   const [addressValue, setAddressValue] = useState(listing?.address || '');
   const [mapLinkValue, setMapLinkValue] = useState(listing?.mapLink || '');
+  const [latValue, setLatValue] = useState(listing?.lat?.toString() || '');
+  const [lngValue, setLngValue] = useState(listing?.lng?.toString() || '');
   const [keywordsValue, setKeywordsValue] = useState(getKeywordsString(listing?.services));
   const [descriptionValue, setDescriptionValue] = useState(listing?.description || '');
   const [websiteValue, setWebsiteValue] = useState(listing?.website || '');
@@ -113,7 +115,7 @@ export function ListingForm({
         body: JSON.stringify({ widgetType, text })
       });
       if (res.ok) {
-        const data = await res.json() as { result: any };
+        const data = await res.json() as { result: unknown };
         setter(JSON.stringify(data.result, null, 2));
       } else {
         alert('Failed to enhance widget.');
@@ -164,6 +166,25 @@ export function ListingForm({
     }
   };
 
+  const handleMapLinkChange = (val: string) => {
+    setMapLinkValue(val);
+    if (val) {
+      // 1. Match @9.4639891,100.0425956
+      const atMatch = val.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+      if (atMatch) {
+        setLatValue(atMatch[1]);
+        setLngValue(atMatch[2]);
+        return;
+      }
+      // 2. Match q=9.4639891,100.0425956 or ll=9.4639891,100.0425956
+      const qMatch = val.match(/[?&](q|ll|query)=(-?\d+\.\d+),(-?\d+\.\d+)/);
+      if (qMatch) {
+        setLatValue(qMatch[2]);
+        setLngValue(qMatch[3]);
+      }
+    }
+  };
+
   const handleCrawlWebsite = async () => {
     const urls = crawlUrlsValue.split('\n').map(u => u.trim()).filter(u => u);
     if (mapLinkValue && !urls.includes(mapLinkValue)) {
@@ -200,7 +221,12 @@ export function ListingForm({
       if (typeof result.phone === 'string') setPhoneValue(result.phone);
       if (typeof result.address === 'string') setAddressValue(result.address);
       if (typeof result.website === 'string') setWebsiteValue(result.website);
-      if (typeof result.mapLink === 'string') setMapLinkValue(result.mapLink);
+      if (typeof result.mapLink === 'string') {
+        setMapLinkValue(result.mapLink);
+        handleMapLinkChange(result.mapLink);
+      }
+      if (typeof result.lat === 'number' || typeof result.lat === 'string') setLatValue(result.lat.toString());
+      if (typeof result.lng === 'number' || typeof result.lng === 'string') setLngValue(result.lng.toString());
       if (Array.isArray(result.keywords)) setKeywordsValue(result.keywords.join(', '));
       if (typeof result.description === 'string') setDescriptionValue(result.description);
       if (typeof result.hours === 'string') setHoursValue(result.hours);
@@ -314,7 +340,7 @@ export function ListingForm({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <Input label="Google Maps Link" name="mapLink" type="url" value={mapLinkValue} onChange={(e) => setMapLinkValue(e.target.value)} placeholder="https://maps.google.com/?cid=..." />
+          <Input label="Google Maps Link" name="mapLink" type="url" value={mapLinkValue} onChange={(e) => handleMapLinkChange(e.target.value)} placeholder="https://maps.google.com/?cid=..." />
           <Input label="Core Keywords (comma separated)" name="keywords" type="text" value={keywordsValue} onChange={(e) => setKeywordsValue(e.target.value)} placeholder="e.g. plumbing, leak repair, emergency" />
         </div>
       </div>
@@ -378,8 +404,8 @@ export function ListingForm({
               className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
             />
           </div>
-          <Input label="Latitude (Map Pin)" name="lat" type="number" step="any" defaultValue={listing?.lat ?? ''} placeholder="e.g. 9.5120" />
-          <Input label="Longitude (Map Pin)" name="lng" type="number" step="any" defaultValue={listing?.lng ?? ''} placeholder="e.g. 100.0136" />
+          <Input label="Latitude (Map Pin)" name="lat" type="number" step="any" value={latValue} onChange={(e) => setLatValue(e.target.value)} placeholder="e.g. 9.5120" />
+          <Input label="Longitude (Map Pin)" name="lng" type="number" step="any" value={lngValue} onChange={(e) => setLngValue(e.target.value)} placeholder="e.g. 100.0136" />
         </div>
       </div>
 

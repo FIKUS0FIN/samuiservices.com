@@ -8,6 +8,8 @@
 Bang Por
 View More
 ## Google Maps Data
+**Latitude:** 9.577233
+**Longitude:** 99.948281
 **Address:** 26/4 Moo 6, ตำบล แม่น้ำ Maenam, สุราษฎร์ธานี 84330, Thailand
 **Phone:** 077 602 096
 **Website:** https://www.healthoasisresort.com/

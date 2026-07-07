@@ -46,6 +46,8 @@ async function parseMarkdown(filePath) {
   const websiteMatch = content.match(/\*\*Website:\*\* (.*)$/m);
   const mapLinkMatch = content.match(/\*\*Google Maps Link:\*\* (.*)$/m);
   const descMatch = content.match(/\*\*Description:\*\* (.*)$/m);
+  const latMatch = content.match(/\*\*Latitude:\*\* (.*)$/m);
+  const lngMatch = content.match(/\*\*Longitude:\*\* (.*)$/m);
   
   const images = [...content.matchAll(/!\[.*?\]\((.*?)\)/g)].map(m => m[1]);
 
@@ -89,6 +91,8 @@ async function parseMarkdown(filePath) {
     website: websiteMatch ? websiteMatch[1].trim() : '',
     mapLink: mapLinkMatch ? mapLinkMatch[1].trim() : '',
     description: descMatch ? descMatch[1].trim() : '',
+    lat: latMatch ? parseFloat(latMatch[1]) : null,
+    lng: lngMatch ? parseFloat(lngMatch[1]) : null,
     hours: hours,
     topReviews: topReviews,
     originalImages: images,
@@ -141,19 +145,49 @@ async function generateSiteSeed() {
 
       // 3. Handle Images
       const newImages = [];
-      for (const imgRelPath of data.originalImages) {
-        // e.g. "images/Business_name.jpg" or "https://..."
-        if (!imgRelPath.startsWith('http')) {
-           const srcPath = path.join(dirPath, imgRelPath);
-           if (fs.existsSync(srcPath)) {
-             const ext = path.extname(srcPath);
-             const newImgName = `${slug}-${newImages.length + 1}${ext}`;
-             const destPath = path.join(SEED_IMAGE_DIR, newImgName);
-             await fsPromises.copyFile(srcPath, destPath);
-             newImages.push(`/images/businesses/${newImgName}`);
-           }
-        } else {
-           newImages.push(imgRelPath);
+      let existingImages = [];
+      const destFilePath = path.join(SEED_CONTENT_DIR, `${slug}.md`);
+      if (fs.existsSync(destFilePath)) {
+        try {
+          const destContent = fs.readFileSync(destFilePath, 'utf-8');
+          const lines = destContent.split(/\r?\n/);
+          const imgIndex = lines.findIndex(line => line.trim().startsWith('images:'));
+          if (imgIndex !== -1) {
+            for (let idx = imgIndex + 1; idx < lines.length; idx++) {
+              const line = lines[idx].trim();
+              if (line.startsWith('-') && !line.startsWith('---')) {
+                existingImages.push(line.replace(/^-\s*["']?|["']?$/g, '').trim());
+              } else {
+                break;
+              }
+            }
+          }
+        } catch (e) {
+          console.error("Error reading existing images for", slug, e);
+        }
+      }
+
+      if (existingImages.length > 0) {
+        newImages.push(...existingImages.map(img => {
+          if (img.startsWith('http')) return img;
+          const cleanPath = img.startsWith('/') ? img : `/${img}`;
+          return `https://pub-3433478e81804444ae052b8316ad0d83.r2.dev${cleanPath}`;
+        }));
+      } else {
+        for (const imgRelPath of data.originalImages) {
+          // e.g. "images/Business_name.jpg" or "https://..."
+          if (!imgRelPath.startsWith('http')) {
+             const srcPath = path.join(dirPath, imgRelPath);
+             if (fs.existsSync(srcPath)) {
+               const ext = path.extname(srcPath);
+               const newImgName = `${slug}-${newImages.length + 1}${ext}`;
+               const destPath = path.join(SEED_IMAGE_DIR, newImgName);
+               await fsPromises.copyFile(srcPath, destPath);
+               newImages.push(`https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/businesses/${newImgName}`);
+             }
+          } else {
+             newImages.push(imgRelPath);
+          }
         }
       }
 
@@ -170,6 +204,8 @@ async function generateSiteSeed() {
       if (data.phone) frontmatter += `phone: "${escapeYaml(data.phone)}"\n`;
       if (data.website) frontmatter += `website: "${escapeYaml(data.website)}"\n`;
       if (data.mapLink) frontmatter += `mapLink: "${escapeYaml(data.mapLink)}"\n`;
+      if (data.lat) frontmatter += `lat: ${data.lat}\n`;
+      if (data.lng) frontmatter += `lng: ${data.lng}\n`;
       if (data.rating) frontmatter += `rating: ${data.rating}\n`;
       if (data.reviewsCount) frontmatter += `reviewsCount: ${data.reviewsCount}\n`;
       if (data.price) frontmatter += `price: "${escapeYaml(data.price)}"\n`;

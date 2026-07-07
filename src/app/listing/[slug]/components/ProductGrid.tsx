@@ -54,7 +54,7 @@ export default function ProductGrid({ products }: { products: any[] }) {
                 {product.price > 0 ? (
                   <div style={{ display: 'flex', alignItems: 'center', color: 'var(--primary-color)', fontWeight: 'bold' }}>
                     <Tag size={16} style={{ marginRight: '0.25rem' }} />
-                    <span>${product.price.toFixed(2)}</span>
+                    <span>฿{product.price.toLocaleString()}</span>
                   </div>
                 ) : (
                   <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-muted)' }}>

@@ -37,7 +37,7 @@ async function findPlaceId(businessName) {
 }
 
 async function getPlaceDetails(placeId) {
-  const fields = 'name,rating,formatted_phone_number,formatted_address,opening_hours,website,photos,reviews,url,price_level,types,user_ratings_total,editorial_summary';
+  const fields = 'name,rating,formatted_phone_number,formatted_address,opening_hours,website,photos,reviews,url,price_level,types,user_ratings_total,editorial_summary,geometry';
   const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=${fields}&key=${API_KEY}`;
   
   const response = await fetch(url);
@@ -73,6 +73,11 @@ async function processFile(filePath) {
   const place = data.result;
   
   let googleSection = `\n## Google Maps Data\n`;
+  
+  if (place.geometry && place.geometry.location) {
+    googleSection += `**Latitude:** ${place.geometry.location.lat}\n`;
+    googleSection += `**Longitude:** ${place.geometry.location.lng}\n`;
+  }
   
   if (place.editorial_summary && place.editorial_summary.overview) {
     googleSection += `**Description:** ${place.editorial_summary.overview}\n\n`;

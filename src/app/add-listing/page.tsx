@@ -68,8 +68,23 @@ export default async function AddListing() {
       i++;
     }
 
-    const lat = formData.get('lat') ? parseFloat(formData.get('lat') as string) : null;
-    const lng = formData.get('lng') ? parseFloat(formData.get('lng') as string) : null;
+    let lat = formData.get('lat') ? parseFloat(formData.get('lat') as string) : null;
+    let lng = formData.get('lng') ? parseFloat(formData.get('lng') as string) : null;
+
+    if (lat === null || lng === null) {
+      const mapLinkVal = mapLink || '';
+      const atMatch = mapLinkVal.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+      if (atMatch) {
+        if (lat === null) lat = parseFloat(atMatch[1]);
+        if (lng === null) lng = parseFloat(atMatch[2]);
+      } else {
+        const qMatch = mapLinkVal.match(/[?&](q|ll|query)=(-?\d+\.\d+),(-?\d+\.\d+)/);
+        if (qMatch) {
+          if (lat === null) lat = parseFloat(qMatch[2]);
+          if (lng === null) lng = parseFloat(qMatch[3]);
+        }
+      }
+    }
 
     if (!name || !categoryId || !islandId || !description || !slug || !layout) {
       throw new Error("Missing required fields");

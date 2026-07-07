@@ -15,6 +15,37 @@ if (!match) {
 
 const businesses = eval(match[1]);
 
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || 'AIzaSyC1ETrImW9Q_lOxGsHwPqoDCoWfmqJM8SU';
+
+async function fetchGooglePlaceData(businessName: string) {
+  try {
+    const query = encodeURIComponent(`${businessName} Koh Samui`);
+    const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${query}&inputtype=textquery&fields=place_id&key=${GOOGLE_API_KEY}`;
+    const findRes = await fetch(findUrl);
+    const findData = await findRes.json() as any;
+    
+    if (findData.status === 'OK' && findData.candidates?.length > 0) {
+      const placeId = findData.candidates[0].place_id;
+      const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=rating,user_ratings_total,geometry&key=${GOOGLE_API_KEY}`;
+      const detailsRes = await fetch(detailsUrl);
+      const detailsData = await detailsRes.json() as any;
+      
+      if (detailsData.status === 'OK' && detailsData.result) {
+        const result = detailsData.result;
+        return {
+          rating: result.rating || 0,
+          reviewsCount: result.user_ratings_total || 0,
+          lat: result.geometry?.location?.lat || null,
+          lng: result.geometry?.location?.lng || null
+        };
+      }
+    }
+  } catch (e) {
+    console.error(`Error fetching Google Places stats for ${businessName}:`, e);
+  }
+  return null;
+}
+
 async function run() {
   console.log(`Starting scrape for ${businesses.length} businesses...`);
   const browser = await chromium.launch({ headless: true });
@@ -42,8 +73,19 @@ async function run() {
 
       business.services = categoryFallbackMap[business.category?.toLowerCase()] || ['Local Service', 'Koh Samui', 'Thailand'];
 
+      // Fetch Google Place reviews count, rating and coordinates
+      const googleData = await fetchGooglePlaceData(business.name);
+      if (googleData) {
+        business.averageRating = googleData.rating;
+        business.reviewCount = googleData.reviewsCount;
+        if (googleData.lat && googleData.lng) {
+          business.lat = googleData.lat;
+          business.lng = googleData.lng;
+        }
+      }
+
       if (!business.website || business.website === 'Error' || business.website.includes('404 Error') || business.website.includes('Access Denied')) {
-        console.log(`Skipping ${business.name} (No valid website)`);
+        console.log(`Skipping ${business.name} website crawl (No valid website, Google Place data updated: ${googleData ? 'Yes' : 'No'})`);
         return;
       }
       

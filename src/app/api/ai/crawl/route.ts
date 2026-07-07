@@ -38,7 +38,7 @@ async function fetchGooglePlaceData(mapsUrl: string, apiKey: string) {
     if (!placeId) return null;
 
     // 3. Fetch Place Details
-    const fields = 'name,rating,formatted_phone_number,formatted_address,opening_hours,website,photos,reviews,url,price_level,types,user_ratings_total,editorial_summary';
+    const fields = 'name,rating,formatted_phone_number,formatted_address,opening_hours,website,photos,reviews,url,price_level,types,user_ratings_total,editorial_summary,geometry';
     const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=${fields}&key=${apiKey}`;
     const res = await fetch(detailsUrl);
     const data = await res.json() as any;
@@ -325,6 +325,11 @@ Example output format:
         reviewCount: googlePlaceResult.user_ratings_total || 0,
         reviews: googleReviews
       };
+
+      if (googlePlaceResult.geometry?.location) {
+        parsedJson.lat = googlePlaceResult.geometry.location.lat;
+        parsedJson.lng = googlePlaceResult.geometry.location.lng;
+      }
     }
 
     return NextResponse.json({ result: parsedJson });

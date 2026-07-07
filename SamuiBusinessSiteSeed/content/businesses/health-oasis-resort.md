@@ -9,6 +9,8 @@ address: "26/4 Moo 6, ตำบล แม่น้ำ Maenam, สุราษฎ
 phone: "077 602 096"
 website: "https://www.healthoasisresort.com/"
 mapLink: "https://maps.google.com/?cid=3387265984902459974"
+lat: 9.577233
+lng: 99.948281
 rating: 4.3
 hours:
   - "Monday: 8:00 AM – 9:00 PM"

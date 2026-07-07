@@ -261,6 +261,56 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
       }
     });
   }
+  if (business.website) {
+    faqs.push({
+      '@type': 'Question',
+      name: `Does ${business.name} have an official website?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `Yes, you can visit the official website for ${business.name} at ${business.website} for more details, services, and online inquiries.`
+      }
+    });
+  }
+  if (services.length > 0) {
+    faqs.push({
+      '@type': 'Question',
+      name: `What services and specialties does ${business.name} offer?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `${business.name} specializes in: ${services.join(', ')}.`
+      }
+    });
+  }
+  if (business.averageRating > 0) {
+    faqs.push({
+      '@type': 'Question',
+      name: `What is the customer rating of ${business.name}?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `${business.name} has an average rating of ${business.averageRating.toFixed(1)} out of 5 stars based on customer reviews.`
+      }
+    });
+  }
+  if (faqs.length < 3) {
+    faqs.push({
+      '@type': 'Question',
+      name: `What category of business is ${business.name}?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `${business.name} is classified under the ${business.category.name} category in Koh Samui.`
+      }
+    });
+  }
+  if (faqs.length < 4) {
+    faqs.push({
+      '@type': 'Question',
+      name: `Is ${business.name} located in Koh Samui?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `Yes, ${business.name} is located on the island of Koh Samui, in Surat Thani province, Thailand.`
+      }
+    });
+  }
 
   const faqSchema = faqs.length > 0 ? {
     '@context': 'https://schema.org',
@@ -320,6 +370,28 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
       ))}
       <LayoutComponent business={business} faqs={faqs} />
       
+      {/* Render FAQs visually for all non-Standard layouts */}
+      {LayoutComponent !== StandardLayout && faqs.length > 0 && (
+        <div className="max-w-4xl mx-auto w-full px-4 md:px-6">
+          <section className="flex flex-col gap-4 mt-8" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" className="text-2xl font-bold text-on-surface">Frequently Asked Questions</h2>
+            <div className="flex flex-col gap-4">
+              {faqs.map((faq, idx) => (
+                <details key={idx} className="bg-surface p-5 rounded-2xl border border-outline-variant group cursor-pointer transition-all">
+                  <summary className="font-bold text-lg text-on-surface outline-none list-none flex justify-between items-center select-none">
+                    {faq.name}
+                    <span className="text-primary group-open:rotate-45 transition-transform text-2xl leading-none">+</span>
+                  </summary>
+                  <p className="mt-4 text-on-surface-variant leading-relaxed border-t border-outline-variant/30 pt-4">
+                    {faq.acceptedAnswer.text}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
+
       {/* Global Q&A Widget injected below all layouts */}
       <QAWidget listingId={business.id} initialQuestions={(business as any).questions || []} />
 
