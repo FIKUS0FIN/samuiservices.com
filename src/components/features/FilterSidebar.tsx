@@ -63,6 +63,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
   const [suggestions, setSuggestions] = useState<SearchResult[]>([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobileCollapseOpen, setIsMobileCollapseOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Accordion state
@@ -186,60 +187,72 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
         )}
       </div>
 
-      <div className="mb-6 flex justify-between items-center">
-        <h3 className="text-title-lg font-bold text-on-surface m-0">Categories</h3>
-        {currentCategories.length > 0 && (
-          <button 
-            onClick={() => {
-              const params = new URLSearchParams(searchParams.toString());
-              params.delete('category');
-              router.push('?' + params.toString(), { scroll: false });
-            }}
-            className="text-body-sm text-primary hover:underline border-none bg-transparent cursor-pointer p-0"
-          >
-            Clear all
-          </button>
-        )}
-      </div>
+      {/* Mobile Toggle Button */}
+      <button 
+        onClick={() => setIsMobileCollapseOpen(!isMobileCollapseOpen)}
+        className="w-full lg:hidden flex justify-between items-center py-3.5 px-4 border border-outline-variant rounded-xl bg-surface-container-low font-bold text-on-surface mb-6 cursor-pointer hover:bg-surface-container-medium transition-colors"
+      >
+        <span className="text-sm">Filter by Category {currentCategories.length > 0 ? `(${currentCategories.length} active)` : ''}</span>
+        {isMobileCollapseOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+      </button>
 
-      <div className="flex flex-col gap-6">
-        {categories.filter(cat => cat.parentId === null).map(parent => (
-          <div key={parent.id} className="w-full border-b border-outline-variant pb-4 last:border-0 last:pb-0">
-            <button
-              onClick={() => toggleSection(parent.slug)}
-              className="flex justify-between items-center w-full bg-transparent border-none p-0 cursor-pointer text-left hover:opacity-80 transition-opacity"
+      {/* Collapsible Content */}
+      <div className={isMobileCollapseOpen ? 'block' : 'hidden lg:block'}>
+        <div className="mb-6 flex justify-between items-center">
+          <h3 className="text-title-lg font-bold text-on-surface m-0">Categories</h3>
+          {currentCategories.length > 0 && (
+            <button 
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.delete('category');
+                router.push('?' + params.toString(), { scroll: false });
+              }}
+              className="text-body-sm text-primary hover:underline border-none bg-transparent cursor-pointer p-0"
             >
-              <h4 className="text-label-lg font-bold uppercase tracking-wide text-on-surface m-0">{parent.name}</h4>
-              {openSections[parent.slug] !== false ? <ChevronUp size={18} className="text-on-surface-variant" /> : <ChevronDown size={18} className="text-on-surface-variant" />}
+              Clear all
             </button>
+          )}
+        </div>
 
-            {openSections[parent.slug] !== false && (
-              <div className="flex flex-col gap-3 mt-4">
-                {parent.children.map(child => {
-                  const isChecked = currentCategories.includes(child.slug);
-                  return (
-                    <label key={child.id} className="flex items-center gap-3 cursor-pointer group">
-                      <div className="relative flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={(e) => handleCategoryChange(child.slug, e.target.checked)}
-                          className="peer appearance-none w-5 h-5 border-2 border-outline rounded-sm checked:bg-primary checked:border-primary transition-colors cursor-pointer"
-                        />
-                        <svg className="absolute w-3 h-3 text-on-primary left-1 top-1 opacity-0 peer-checked:opacity-100 pointer-events-none" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M1 5L4.5 8.5L13 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </div>
-                      <span className={`text-body-md transition-colors ${isChecked ? 'text-on-surface font-semibold' : 'text-on-surface-variant group-hover:text-on-surface'}`}>
-                        {child.name}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        ))}
+        <div className="flex flex-col gap-6">
+          {categories.filter(cat => cat.parentId === null).map(parent => (
+            <div key={parent.id} className="w-full border-b border-outline-variant pb-4 last:border-0 last:pb-0">
+              <button
+                onClick={() => toggleSection(parent.slug)}
+                className="flex justify-between items-center w-full bg-transparent border-none p-0 cursor-pointer text-left hover:opacity-80 transition-opacity"
+              >
+                <h4 className="text-label-lg font-bold uppercase tracking-wide text-on-surface m-0">{parent.name}</h4>
+                {openSections[parent.slug] !== false ? <ChevronUp size={18} className="text-on-surface-variant" /> : <ChevronDown size={18} className="text-on-surface-variant" />}
+              </button>
+
+              {openSections[parent.slug] !== false && (
+                <div className="flex flex-col gap-3 mt-4">
+                  {parent.children.map(child => {
+                    const isChecked = currentCategories.includes(child.slug);
+                    return (
+                      <label key={child.id} className="flex items-center gap-3 cursor-pointer group">
+                        <div className="relative flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={(e) => handleCategoryChange(child.slug, e.target.checked)}
+                            className="peer appearance-none w-5 h-5 border-2 border-outline rounded-sm checked:bg-primary checked:border-primary transition-colors cursor-pointer"
+                          />
+                          <svg className="absolute w-3 h-3 text-on-primary left-1 top-1 opacity-0 peer-checked:opacity-100 pointer-events-none" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 5L4.5 8.5L13 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                        <span className={`text-body-md transition-colors ${isChecked ? 'text-on-surface font-semibold' : 'text-on-surface-variant group-hover:text-on-surface'}`}>
+                          {child.name}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </aside>
   );

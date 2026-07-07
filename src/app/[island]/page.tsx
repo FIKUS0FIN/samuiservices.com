@@ -66,9 +66,9 @@ export default async function IslandDirectory({
   }
 
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-81px)] overflow-hidden">
+    <div className="flex flex-col lg:flex-row lg:h-[calc(100vh-81px)] lg:overflow-hidden">
       {/* Sidebar Filters */}
-      <div className="w-full lg:w-80 flex-shrink-0 overflow-y-auto border-b lg:border-b-0 lg:border-r border-outline-variant p-6 bg-surface-container-lowest z-10">
+      <div className="w-full lg:w-80 flex-shrink-0 lg:overflow-y-auto border-b lg:border-b-0 lg:border-r border-outline-variant p-6 bg-surface-container-lowest z-10">
         <h2 className="text-display-sm font-bold mb-2 text-on-surface">{islandName} Services</h2>
         <p className="text-on-surface-variant text-body-md mb-8">Browse local businesses and top-rated services.</p>
         <FilterSidebar categories={categories} />

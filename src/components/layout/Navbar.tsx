@@ -5,22 +5,25 @@ import { authOptions } from '@/lib/auth';
 import { Button } from '@/components/ui/Button';
 import { LogoutButton } from '@/components/features/LogoutButton';
 import { NavLinks } from './NavLinks';
+import { MobileMenu } from './MobileMenu';
 
 export async function Navbar() {
   const session = await getServerSession(authOptions);
 
   return (
     <nav className="bg-surface/80 backdrop-blur-[12px] border-b border-outline-muted sticky top-0 z-[100]">
-      <div className="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
+      <div className="container mx-auto px-6 py-4 flex flex-row justify-between items-center">
+        {/* Brand logo and desktop navigation */}
         <div className="flex items-center gap-8">
-          <Link href="/" className="font-heading font-bold text-headline-sm text-primary">
+          <Link href="/" className="font-heading font-bold text-headline-sm text-primary no-underline">
             Samui Services
           </Link>
 
           <NavLinks />
         </div>
 
-        <div className="flex gap-4 items-center">
+        {/* Desktop actions (Hidden on Mobile) */}
+        <div className="hidden md:flex gap-4 items-center">
           {session ? (
             <>
               <Link href="/dashboard">
@@ -40,7 +43,11 @@ export async function Navbar() {
             <Button variant="primary" className="!px-4 !py-2 !text-sm">Add Business</Button>
           </Link>
         </div>
+
+        {/* Mobile menu drawer (Hidden on Desktop) */}
+        <MobileMenu session={session} />
       </div>
     </nav>
   );
 }
+

@@ -263,6 +263,9 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
               <div className="flex flex-col gap-6 mt-8">
                 {(() => {
                   const allReviews = getUnifiedReviews(business);
+                  const consolidated = getConsolidatedRating(business);
+                  const googleCount = consolidated.googleCount;
+
                   if (allReviews.length === 0) {
                     return (
                       <div className="text-on-surface-variant italic p-4 text-center">
@@ -270,46 +273,81 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
                       </div>
                     );
                   }
-                  return allReviews.map((review: any) => (
-                    <div key={review.id} className="p-5 border border-outline-variant rounded-xl bg-surface-container-lowest" itemProp="review" itemScope itemType="https://schema.org/Review">
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold overflow-hidden">
-                            {review.authorImage ? (
-                              <img src={review.authorImage} alt={review.authorName} className="w-full h-full object-cover" />
-                            ) : (
-                              (review.authorName || 'U').charAt(0).toUpperCase()
-                            )}
-                          </div>
-                          <div className="flex-1" itemProp="author" itemScope itemType="https://schema.org/Person">
-                            <div className="font-bold text-on-surface flex items-center gap-2" itemProp="name">
-                              {review.source === 'Site' && review.userId ? (
-                                <Link href={`/user/${review.userId}`} className="hover:text-primary transition-colors hover:underline">
-                                  {review.authorName}
-                                </Link>
-                              ) : (
-                                review.authorName
-                              )}
-                              {review.source === 'Google' && (
-                                <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-blue-200">
-                                  <span className="text-[10px]">🌐</span> Google Review
-                                </span>
-                              )}
+                  return (
+                    <>
+                      <div className="flex flex-col gap-6">
+                        {allReviews.map((review: any) => (
+                          <div 
+                            key={review.id} 
+                            className={`p-5 border rounded-2xl transition-all hover:shadow-md bg-surface-container-lowest ${
+                              review.source === 'Google' 
+                                ? 'border-blue-100 border-l-4 border-l-blue-500 pl-4 bg-gradient-to-r from-blue-50/20 to-transparent' 
+                                : 'border-outline-variant'
+                            }`}
+                            itemProp="review" 
+                            itemScope 
+                            itemType="https://schema.org/Review"
+                          >
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
+                              <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold overflow-hidden border border-outline-variant/30">
+                                  {review.authorImage ? (
+                                    <img src={review.authorImage} alt={review.authorName} className="w-full h-full object-cover" />
+                                  ) : (
+                                    (review.authorName || 'U').charAt(0).toUpperCase()
+                                  )}
+                                </div>
+                                <div className="flex-1" itemProp="author" itemScope itemType="https://schema.org/Person">
+                                  <div className="font-bold text-on-surface flex flex-wrap items-center gap-2" itemProp="name">
+                                    {review.source === 'Site' && review.userId ? (
+                                      <Link href={`/user/${review.userId}`} className="hover:text-primary transition-colors hover:underline">
+                                        {review.authorName}
+                                      </Link>
+                                    ) : (
+                                      review.authorName
+                                    )}
+                                    {review.source === 'Google' && (
+                                      <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-blue-200">
+                                        <span className="text-[10px]">🌐</span> Google Review
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="text-xs text-on-surface-variant flex items-center gap-2">
+                                    <span>{review.createdAt}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <div className="text-amber-500 font-bold tracking-widest" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                                  {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-xs text-on-surface-variant">
-                              {review.createdAt}
-                            </div>
+                            <p className="m-0 leading-relaxed text-on-surface-variant italic font-light pl-1" itemProp="reviewBody">
+                              "{review.comment}"
+                            </p>
                           </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <div className="text-amber-500 font-bold tracking-widest" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
-                            {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                          </div>
-                        </div>
+                        ))}
                       </div>
-                      <p className="m-0 leading-relaxed text-on-surface-variant" itemProp="reviewBody">{review.comment}</p>
-                    </div>
-                  ));
+                      
+                      {googleCount > 0 && business.mapLink && (
+                        <div className="mt-8 pt-6 border-t border-outline-variant/40 flex justify-center">
+                          <a 
+                            href={business.mapLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-3 px-6 py-3.5 bg-surface-container-low border border-outline-variant hover:bg-surface-container-medium hover:border-primary/30 text-primary hover:text-primary font-semibold rounded-2xl shadow-sm transition-all text-sm group"
+                          >
+                            <svg className="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.555 0-6.445-2.89-6.445-6.445s2.89-6.445 6.445-6.445c1.614 0 3.084.593 4.225 1.574l3.19-3.19C19.29 2.015 15.938 1 12.24 1 5.922 1 12.24s4.922 11.24 11.24 11.24c6.643 0 11.24-4.667 11.24-11.24 0-.75-.084-1.477-.24-2.215H12.24z"/>
+                            </svg>
+                            <span>Read all {googleCount} Google reviews</span>
+                            <span className="group-hover:translate-x-1.5 transition-transform">→</span>
+                          </a>
+                        </div>
+                      )}
+                    </>
+                  );
                 })()}
               </div>
             </Card>
@@ -371,25 +409,6 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
             )}
           </div>
         </aside>
-      </div>
-
-      {/* Sticky Mobile Action Bar (Conversion Optimized) */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 flex items-center gap-3">
-        {business.phone && (
-          <a href={`tel:${business.phone}`} className="flex-1 bg-primary text-on-primary text-center py-3.5 rounded-xl font-bold shadow-md flex justify-center items-center gap-2">
-            <span>📞</span> Call
-          </a>
-        )}
-        {business.mapLink && (
-          <a href={business.mapLink} target="_blank" rel="noreferrer" className="flex-1 bg-secondary-container text-on-secondary-container text-center py-3.5 rounded-xl font-bold shadow-md flex justify-center items-center gap-2">
-            <span>📍</span> Map
-          </a>
-        )}
-        {business.website && (
-          <a href={business.website} target="_blank" rel="noreferrer" className="w-14 h-14 bg-surface-container flex items-center justify-center rounded-xl border border-outline-variant">
-            🌐
-          </a>
-        )}
       </div>
       
     </article>

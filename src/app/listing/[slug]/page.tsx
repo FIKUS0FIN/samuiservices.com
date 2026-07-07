@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 import { QAWidget } from '@/components/features/QAWidget';
+import { MobileActionBar } from '@/components/features/MobileActionBar';
 
 export default async function BusinessDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -318,6 +319,9 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
       
       {/* Global Q&A Widget injected below all layouts */}
       <QAWidget listingId={business.id} initialQuestions={(business as any).questions || []} />
+
+      {/* Global mobile quick-action bar for call, map, and website */}
+      <MobileActionBar business={business} />
     </div>
   );
 }
