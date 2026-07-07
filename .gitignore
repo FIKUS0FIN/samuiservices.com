@@ -59,3 +59,7 @@ tail.log
 # Ignore local images since they are hosted on Cloudflare R2
 SamuiBusinesCatalog/**/images/
 SamuiBusinessSiteSeed/public/images/businesses/
+
+# Playwright
+/playwright-report/
+/test-results/
