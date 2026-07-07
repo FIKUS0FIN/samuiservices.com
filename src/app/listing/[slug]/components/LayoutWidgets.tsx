@@ -53,8 +53,8 @@ export function DescriptionSection({
   const { description: parsedDescription, reviews: scrapedReviews } = parseDescriptionAndReviews(
     descriptionRaw, 
     businessName, 
-    categoryName, 
-    islandName
+    categoryName || '', 
+    islandName || ''
   );
 
   const textClass = theme === 'sports'
