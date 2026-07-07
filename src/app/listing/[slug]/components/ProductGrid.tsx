@@ -62,18 +62,21 @@ export default function ProductGrid({ products }: { products: any[] }) {
                   </span>
                 )}
                 
-                <button style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--bg-color)',
-                  color: 'var(--text-muted)',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}>
+                <button 
+                  aria-label={`View details for ${product.name}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--bg-color)',
+                    color: 'var(--text-muted)',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
                   <ArrowRight size={16} />
                 </button>
               </div>
