@@ -8,17 +8,46 @@ import dns from 'dns/promises';
 async function fetchGooglePlaceData(mapsUrl: string, apiKey: string) {
   try {
     let placeId: string | null = null;
-    
+    const fields = 'name,rating,formatted_phone_number,formatted_address,opening_hours,website,photos,reviews,url,price_level,types,user_ratings_total,editorial_summary,geometry';
+
     // 1. Check if CID is in the URL
     const cidMatch = mapsUrl.match(/[?&]cid=(\d+)/);
+    let cidToQuery: string | null = null;
+    
     if (cidMatch) {
-      const cid = cidMatch[1];
-      const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=cid:${cid}&inputtype=textquery&fields=place_id&key=${apiKey}`;
-      const res = await fetch(findUrl);
-      const data = await res.json() as any;
-      if (data.status === 'OK' && data.candidates?.length > 0) {
-        placeId = data.candidates[0].place_id;
+      cidToQuery = cidMatch[1];
+    } else {
+      // Check for hex CID in data block (e.g. 0x3054f1454157a911:0x116bb7ef0ae7339d)
+      const hexCidMatch = mapsUrl.match(/0x[0-9a-fA-F]+:0x([0-9a-fA-F]+)/);
+      if (hexCidMatch) {
+        try {
+          cidToQuery = BigInt("0x" + hexCidMatch[1]).toString();
+        } catch (e) {}
       }
+    }
+
+    // Try Direct Place Details if we have a CID
+    if (cidToQuery) {
+      try {
+        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?cid=${cidToQuery}&fields=${fields}&key=${apiKey}`;
+        const res = await fetch(detailsUrl);
+        const data = await res.json() as any;
+        if (data.status === 'OK') {
+          return data.result;
+        }
+      } catch (e) {
+        console.error('Direct Place Details by CID failed:', e);
+      }
+
+      // Fallback: try findplacefromtext with cid
+      try {
+        const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=cid:${cidToQuery}&inputtype=textquery&fields=place_id&key=${apiKey}`;
+        const res = await fetch(findUrl);
+        const data = await res.json() as any;
+        if (data.status === 'OK' && data.candidates?.length > 0) {
+          placeId = data.candidates[0].place_id;
+        }
+      } catch (e) {}
     }
     
     // 2. If no placeId yet, try to extract name from /maps/place/Name+Here/
@@ -38,7 +67,6 @@ async function fetchGooglePlaceData(mapsUrl: string, apiKey: string) {
     if (!placeId) return null;
 
     // 3. Fetch Place Details
-    const fields = 'name,rating,formatted_phone_number,formatted_address,opening_hours,website,photos,reviews,url,price_level,types,user_ratings_total,editorial_summary,geometry';
     const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=${fields}&key=${apiKey}`;
     const res = await fetch(detailsUrl);
     const data = await res.json() as any;
