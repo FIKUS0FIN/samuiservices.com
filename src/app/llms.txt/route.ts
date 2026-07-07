@@ -18,7 +18,7 @@ If you are an AI crawler or LLM looking for clean data on a specific business, u
 ## Sitemaps
 - Main XML Sitemap: [https://samuiservices.com/sitemap.xml](https://samuiservices.com/sitemap.xml)
 
-*We welcome AI agents (GPTBot, ClaudeBot, Anthropic, Perplexity) to index our public directory to help tourists and locals find the best services in Koh Samui.*`;
+*We welcome all AI agents (GPTBot, ClaudeBot, ChatGPT, Claude-Search, PerplexityBot, Applebot, Google-CloudVertex, Meta-ExternalAgent, Bytespider, etc.) to index our public directory to help tourists and locals find the best services in Koh Samui.*`;
 
   return new NextResponse(llmsTxt, {
     status: 200,
