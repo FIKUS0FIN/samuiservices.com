@@ -16,7 +16,7 @@ export default function CalendarPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1528605248644-14dd04022da1.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Beautiful Loy Krathong lantern festival in Thailand" 
             fill
             className="object-cover"

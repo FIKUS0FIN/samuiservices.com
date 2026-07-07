@@ -15,7 +15,7 @@ export default function PiersPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1559136555-9303baea8ebd.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="High speed ferry sailing on turquoise water" 
             fill
             className="object-cover"
@@ -51,7 +51,7 @@ export default function PiersPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1507525428034-b723cf961d3e.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Nathon Pier sunset"
                   fill
                   className="object-cover"
@@ -82,7 +82,7 @@ export default function PiersPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1559136555-9303baea8ebd.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Maenam Pralarn Pier"
                   fill
                   className="object-cover"
@@ -113,7 +113,7 @@ export default function PiersPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1436491865332-7a61a109cc05.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Bangrak Pier"
                   fill
                   className="object-cover"
@@ -144,7 +144,7 @@ export default function PiersPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1549317661-bd32c8ce0db2.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Lipa Noi Raja Ferry Pier"
                   fill
                   className="object-cover"

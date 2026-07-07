@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'samuiservices.onrender.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'pub-3433478e81804444ae052b8316ad0d83.r2.dev',
+      },
     ],
   },
 };

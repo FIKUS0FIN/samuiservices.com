@@ -15,7 +15,7 @@ export default function AirportPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1436491865332-7a61a109cc05.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Airplane preparing for landing on tropical island runway" 
             fill
             className="object-cover"
@@ -70,7 +70,7 @@ export default function AirportPage() {
           <div className="flex flex-col lg:flex-row gap-10 items-center bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 p-4 lg:p-0">
             <div className="w-full lg:w-1/2 h-64 lg:h-full min-h-[420px] relative rounded-2xl lg:rounded-none overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1556388158-158ea5ccacbd.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Tropical open air airport waiting lounge"
                 fill
                 className="object-cover"

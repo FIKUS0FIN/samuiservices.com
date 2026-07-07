@@ -15,7 +15,7 @@ export default function MallsPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1519501025264-65ba15a82390.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Modern open-air shopping mall corridor with palm trees" 
             fill
             className="object-cover"
@@ -45,7 +45,7 @@ export default function MallsPage() {
           <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col lg:flex-row hover:shadow-md transition-all duration-300">
             <div className="w-full lg:w-1/2 h-64 lg:h-auto min-h-[350px] relative">
               <Image 
-                src="https://images.unsplash.com/photo-1560243563-062bff001d68?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1560750588-73207b1ef5b8.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Central Samui shopping complex exterior"
                 fill
                 className="object-cover"
@@ -103,7 +103,7 @@ export default function MallsPage() {
           <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col lg:flex-row-reverse hover:shadow-md transition-all duration-300">
             <div className="w-full lg:w-1/2 h-64 lg:h-auto min-h-[350px] relative">
               <Image 
-                src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1555396273-367ea4eb4db5.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Wharf Samui beachfront style retail"
                 fill
                 className="object-cover"

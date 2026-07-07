@@ -15,7 +15,7 @@ export default function MarketsPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1533900298318-6b8da08a523e.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Vibrant Thai night market with colorful street food stalls" 
             fill
             className="object-cover"
@@ -51,7 +51,7 @@ export default function MarketsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1549317661-bd32c8ce0db2.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Fisherman's Village Walking Street"
                   fill
                   className="object-cover"
@@ -76,7 +76,7 @@ export default function MarketsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1555396273-367ea4eb4db5.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Lamai Night Market"
                   fill
                   className="object-cover"
@@ -101,7 +101,7 @@ export default function MarketsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1565299624946-b28f40a0ae38.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Chaweng Night Market food court"
                   fill
                   className="object-cover"
@@ -126,7 +126,7 @@ export default function MarketsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1504674900247-0877df9cc836.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Maenam Walking Street Chinatown"
                   fill
                   className="object-cover"
@@ -162,7 +162,7 @@ export default function MarketsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-md transition-all duration-300">
               <div className="md:w-1/3 h-48 md:h-auto relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1488459718432-0685149d5aa8?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1506484381205-f7945653044d.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Nathon Fresh Market"
                   fill
                   className="object-cover"
@@ -185,7 +185,7 @@ export default function MarketsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-md transition-all duration-300">
               <div className="md:w-1/3 h-48 md:h-auto relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1534482421-64566f976cfa?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1534482421-64566f976cfa.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Hua Thanon Market"
                   fill
                   className="object-cover"

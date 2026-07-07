@@ -15,7 +15,7 @@ export default function BeachesPage() {
       <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1558981806-ec527fa84c39.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Aerial view of a pristine Koh Samui beach" 
             fill
             className="object-cover"
@@ -59,7 +59,7 @@ export default function BeachesPage() {
           <div className="group flex flex-col lg:flex-row bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-surface-container-high">
             <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1568772585407-9361f9bf3a87.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Vibrant Chaweng Beach" 
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -99,7 +99,7 @@ export default function BeachesPage() {
           <div className="group flex flex-col lg:flex-row-reverse bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-surface-container-high">
             <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1510414842594-a61c69b5ae57.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Scenic Lamai Beach" 
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -139,7 +139,7 @@ export default function BeachesPage() {
           <div className="group flex flex-col lg:flex-row bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-surface-container-high">
             <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1549317661-bd32c8ce0db2.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Bophut Fisherman's Village" 
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -179,7 +179,7 @@ export default function BeachesPage() {
           <div className="group flex flex-col lg:flex-row-reverse bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-surface-container-high">
             <div className="lg:w-2/5 h-64 lg:h-auto relative overflow-hidden">
               <Image 
-                src="https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1596484552834-6a58f850e0a1.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Peaceful Maenam Beach" 
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"

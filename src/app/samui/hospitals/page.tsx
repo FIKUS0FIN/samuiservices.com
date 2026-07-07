@@ -15,7 +15,7 @@ export default function HospitalsPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1586773860418-d3b3da9671fd?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1519494026892-80bbd2d6fd0d.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Modern clinic counter with friendly professional environment" 
             fill
             className="object-cover"
@@ -51,7 +51,7 @@ export default function HospitalsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1512678018388-c4daf5230ffb?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1629909613654-28e377c37b09.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Bangkok Hospital Samui"
                   fill
                   className="object-cover"
@@ -79,7 +79,7 @@ export default function HospitalsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1586773860418-d3b3da9671fd?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1629909613654-28e377c37b09.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Samui International Hospital"
                   fill
                   className="object-cover"
@@ -107,7 +107,7 @@ export default function HospitalsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1519494026892-80bbd2d6fd0d.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Thai International Hospital"
                   fill
                   className="object-cover"
@@ -132,7 +132,7 @@ export default function HospitalsPage() {
             <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
               <div className="h-48 relative">
                 <Image 
-                  src="https://images.unsplash.com/photo-1586773860418-d3b3da9671fd?auto=format&fit=crop&q=80&w=800"
+                  src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1629909613654-28e377c37b09.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Bandon International Hospital"
                   fill
                   className="object-cover"
@@ -166,7 +166,7 @@ export default function HospitalsPage() {
           <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col lg:flex-row hover:shadow-md transition-all duration-300">
             <div className="w-full lg:w-1/3 h-64 lg:h-auto min-h-[250px] relative">
               <Image 
-                src="https://images.unsplash.com/photo-1538108176447-280586497def?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1519494026892-80bbd2d6fd0d.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Koh Samui Hospital Nathon"
                 fill
                 className="object-cover"

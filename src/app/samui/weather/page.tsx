@@ -15,7 +15,7 @@ export default function WeatherPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1507525428034-b723cf961d3e.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Tropical palms against a sunny blue sky on Koh Samui" 
             fill
             className="object-cover"
@@ -43,7 +43,7 @@ export default function WeatherPage() {
           <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col lg:flex-row hover:shadow-md transition-all duration-300">
             <div className="w-full lg:w-1/2 h-64 lg:h-auto min-h-[350px] relative">
               <Image 
-                src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1510414842594-a61c69b5ae57.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Gulf of Thailand coastal view"
                 fill
                 className="object-cover"

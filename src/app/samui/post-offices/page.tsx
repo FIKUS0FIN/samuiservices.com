@@ -15,7 +15,7 @@ export default function PostOfficesPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1556742044-3c52d6e88c62.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Hand placing a postcard inside a traditional red mailbox" 
             fill
             className="object-cover"

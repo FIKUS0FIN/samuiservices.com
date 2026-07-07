@@ -15,7 +15,7 @@ export default function RentalsPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1558981806-ec527fa84c39.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Riding a scooter along the scenic Koh Samui coastline" 
             fill
             className="object-cover"
@@ -45,7 +45,7 @@ export default function RentalsPage() {
           <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
             <div className="h-48 relative">
               <Image 
-                src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1568772585407-9361f9bf3a87.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Scooter parked on tropical island beach"
                 fill
                 className="object-cover"
@@ -90,7 +90,7 @@ export default function RentalsPage() {
           <div className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/50 flex flex-col hover:shadow-md transition-all duration-300">
             <div className="h-48 relative">
               <Image 
-                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
+                src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1549317661-bd32c8ce0db2.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Car driving along tropical cliff side road"
                 fill
                 className="object-cover"

@@ -16,7 +16,7 @@ export default function TransportationPage() {
       <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&q=80&w=2000"
+            src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1506929562872-bb421503ef21.jpg?auto=format&fit=crop&q=80&w=2000"
             alt="Scenic view of a boat sailing on turquoise water" 
             fill
             className="object-cover"
