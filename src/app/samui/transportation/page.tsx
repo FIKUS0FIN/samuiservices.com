@@ -20,8 +20,7 @@ export default function TransportationPage() {
             alt="Scenic view of a boat sailing on turquoise water" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-3xl">

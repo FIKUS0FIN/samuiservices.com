@@ -19,8 +19,7 @@ export default function RentalsPage() {
             alt="Riding a scooter along the scenic Koh Samui coastline" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-3xl">
@@ -48,8 +47,7 @@ export default function RentalsPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1568772585407-9361f9bf3a87.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Scooter parked on tropical island beach"
                 fill
-                className="object-cover"
-              />
+                className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-sm px-4 py-2 rounded-xl flex items-center gap-2 font-bold text-text-main shadow-sm text-sm">
                 <Bike className="w-4 h-4 text-primary" /> Scooters & Motorbikes
               </div>
@@ -93,8 +91,7 @@ export default function RentalsPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1549317661-bd32c8ce0db2.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Car driving along tropical cliff side road"
                 fill
-                className="object-cover"
-              />
+                className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-sm px-4 py-2 rounded-xl flex items-center gap-2 font-bold text-text-main shadow-sm text-sm">
                 <Car className="w-4 h-4 text-primary" /> Cars & SUVs
               </div>

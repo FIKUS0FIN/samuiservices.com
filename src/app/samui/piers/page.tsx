@@ -19,8 +19,7 @@ export default function PiersPage() {
             alt="High speed ferry sailing on turquoise water" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-3xl">
@@ -54,8 +53,7 @@ export default function PiersPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1507525428034-b723cf961d3e.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Nathon Pier sunset"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
                 <div className="absolute top-4 right-4 bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                   West Coast (Main Port)
                 </div>
@@ -85,8 +83,7 @@ export default function PiersPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1559136555-9303baea8ebd.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Maenam Pralarn Pier"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
                 <div className="absolute top-4 right-4 bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                   North Coast (Fast Transit)
                 </div>
@@ -116,8 +113,7 @@ export default function PiersPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1436491865332-7a61a109cc05.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Bangrak Pier"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
                 <div className="absolute top-4 right-4 bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                   North-East (Airport Close)
                 </div>
@@ -147,8 +143,7 @@ export default function PiersPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1549317661-bd32c8ce0db2.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Lipa Noi Raja Ferry Pier"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
                 <div className="absolute top-4 right-4 bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                   West Coast (Vehicle Ferry)
                 </div>

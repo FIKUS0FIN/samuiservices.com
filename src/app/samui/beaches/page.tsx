@@ -19,8 +19,7 @@ export default function BeachesPage() {
             alt="Aerial view of a pristine Koh Samui beach" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-2xl">
@@ -62,8 +61,7 @@ export default function BeachesPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1568772585407-9361f9bf3a87.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Vibrant Chaweng Beach" 
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+                className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="flex-1 p-8 flex flex-col justify-between">
               <div>
@@ -102,8 +100,7 @@ export default function BeachesPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1510414842594-a61c69b5ae57.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Scenic Lamai Beach" 
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+                className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="flex-1 p-8 flex flex-col justify-between text-right lg:text-left">
               <div>
@@ -142,8 +139,7 @@ export default function BeachesPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1549317661-bd32c8ce0db2.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Bophut Fisherman's Village" 
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+                className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="flex-1 p-8 flex flex-col justify-between">
               <div>
@@ -182,8 +178,7 @@ export default function BeachesPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1596484552834-6a58f850e0a1.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Peaceful Maenam Beach" 
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+                className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="flex-1 p-8 flex flex-col justify-between text-right lg:text-left">
               <div>

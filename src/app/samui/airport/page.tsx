@@ -19,8 +19,7 @@ export default function AirportPage() {
             alt="Airplane preparing for landing on tropical island runway" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-3xl">
@@ -73,8 +72,7 @@ export default function AirportPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1556388158-158ea5ccacbd.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Tropical open air airport waiting lounge"
                 fill
-                className="object-cover"
-              />
+                className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="w-full lg:w-1/2 lg:py-12 lg:pr-12 lg:pl-4">
               <h2 className="text-2xl lg:text-3xl font-bold text-text-main mb-4">Samui Park Avenue</h2>

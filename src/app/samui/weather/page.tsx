@@ -19,8 +19,7 @@ export default function WeatherPage() {
             alt="Tropical palms against a sunny blue sky on Koh Samui" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-3xl">
@@ -46,8 +45,7 @@ export default function WeatherPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1510414842594-a61c69b5ae57.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Gulf of Thailand coastal view"
                 fill
-                className="object-cover"
-              />
+                className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-4 text-primary">

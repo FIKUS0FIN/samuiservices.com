@@ -99,6 +99,7 @@ export async function POST(req: Request) {
           Key: fileKey,
           Body: buffer,
           ContentType: contentType,
+          CacheControl: 'public, max-age=31536000, immutable',
         }));
 
         const finalUrl = s3PublicUrl ? `${s3PublicUrl}/${fileKey}` : `${s3Endpoint}/${s3Bucket}/${fileKey}`;

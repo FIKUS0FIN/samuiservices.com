@@ -19,8 +19,7 @@ export default function MarketsPage() {
             alt="Vibrant Thai night market with colorful street food stalls" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-3xl">
@@ -54,8 +53,7 @@ export default function MarketsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1549317661-bd32c8ce0db2.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Fisherman's Village Walking Street"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               </div>
               <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
@@ -79,8 +77,7 @@ export default function MarketsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1555396273-367ea4eb4db5.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Lamai Night Market"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               </div>
               <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
@@ -104,8 +101,7 @@ export default function MarketsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1565299624946-b28f40a0ae38.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Chaweng Night Market food court"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               </div>
               <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
@@ -129,8 +125,7 @@ export default function MarketsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1504674900247-0877df9cc836.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Maenam Walking Street Chinatown"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               </div>
               <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
@@ -165,8 +160,7 @@ export default function MarketsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1506484381205-f7945653044d.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Nathon Fresh Market"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               </div>
               <div className="flex-1 p-6 flex flex-col justify-between">
                 <div>
@@ -188,8 +182,7 @@ export default function MarketsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1534482421-64566f976cfa.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Hua Thanon Market"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               </div>
               <div className="flex-1 p-6 flex flex-col justify-between">
                 <div>

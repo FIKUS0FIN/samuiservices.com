@@ -19,8 +19,7 @@ export default function MallsPage() {
             alt="Modern open-air shopping mall corridor with palm trees" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-3xl">
@@ -48,8 +47,7 @@ export default function MallsPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1560750588-73207b1ef5b8.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Central Samui shopping complex exterior"
                 fill
-                className="object-cover"
-              />
+                className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="w-full lg:w-1/2 p-8 lg:p-10 flex flex-col justify-between">
               <div>
@@ -106,8 +104,7 @@ export default function MallsPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1555396273-367ea4eb4db5.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Wharf Samui beachfront style retail"
                 fill
-                className="object-cover"
-              />
+                className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="w-full lg:w-1/2 p-8 lg:p-10 flex flex-col justify-between">
               <div>

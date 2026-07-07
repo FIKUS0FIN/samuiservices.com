@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -87,20 +88,20 @@ module.exports = {
         'section': '80px', // legacy
       },
       fontFamily: {
-        "body-sm": ["Inter", "sans-serif"],
-        "headline-lg": ["Montserrat", "sans-serif"],
-        "body-md": ["Inter", "sans-serif"],
-        "label-md": ["Inter", "sans-serif"],
-        "label-sm": ["Inter", "sans-serif"],
-        "headline-sm": ["Montserrat", "sans-serif"],
-        "display": ["Montserrat", "sans-serif"],
-        "headline-md": ["Montserrat", "sans-serif"],
-        "headline-lg-mobile": ["Montserrat", "sans-serif"],
-        "body-lg": ["Inter", "sans-serif"],
+        "body-sm": ["var(--font-inter)", "sans-serif"],
+        "headline-lg": ["var(--font-montserrat)", "sans-serif"],
+        "body-md": ["var(--font-inter)", "sans-serif"],
+        "label-md": ["var(--font-inter)", "sans-serif"],
+        "label-sm": ["var(--font-inter)", "sans-serif"],
+        "headline-sm": ["var(--font-montserrat)", "sans-serif"],
+        "display": ["var(--font-montserrat)", "sans-serif"],
+        "headline-md": ["var(--font-montserrat)", "sans-serif"],
+        "headline-lg-mobile": ["var(--font-montserrat)", "sans-serif"],
+        "body-lg": ["var(--font-inter)", "sans-serif"],
         
         // Legacy
-        heading: ["Montserrat", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        heading: ["var(--font-montserrat)", "sans-serif"],
+        body: ["var(--font-inter)", "sans-serif"],
       },
       fontSize: {
         "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],

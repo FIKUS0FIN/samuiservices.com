@@ -25,6 +25,21 @@ export const metadata: Metadata = {
 
 import Script from 'next/script';
 import { Providers } from '@/components/providers/Providers';
+import { Inter, Montserrat } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
 
 export default function RootLayout({
   children,
@@ -32,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
       <head>
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`

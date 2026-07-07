@@ -46,6 +46,7 @@ async function uploadImageToR2(url) {
       Key: key,
       Body: buffer,
       ContentType: 'image/jpeg',
+      CacheControl: 'public, max-age=31536000, immutable',
     }));
     
     const finalUrl = `${PUBLIC_URL}/${key}`;

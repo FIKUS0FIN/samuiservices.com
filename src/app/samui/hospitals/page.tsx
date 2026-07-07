@@ -19,8 +19,7 @@ export default function HospitalsPage() {
             alt="Modern clinic counter with friendly professional environment" 
             fill
             className="object-cover"
-            priority
-          />
+            priority sizes="(max-width: 768px) 100vw, 1200px"/>
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 text-center px-margin-mobile max-w-3xl">
@@ -54,8 +53,7 @@ export default function HospitalsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1629909613654-28e377c37b09.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Bangkok Hospital Samui"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
                 <div className="absolute top-4 right-4 bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                   Premium Care (JCI Accredited)
                 </div>
@@ -82,8 +80,7 @@ export default function HospitalsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1629909613654-28e377c37b09.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Samui International Hospital"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
                 <div className="absolute top-4 right-4 bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                   Tourist & Expat Favorite
                 </div>
@@ -110,8 +107,7 @@ export default function HospitalsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1519494026892-80bbd2d6fd0d.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Thai International Hospital"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               </div>
               <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
@@ -135,8 +131,7 @@ export default function HospitalsPage() {
                   src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1629909613654-28e377c37b09.jpg?auto=format&fit=crop&q=80&w=800"
                   alt="Bandon International Hospital"
                   fill
-                  className="object-cover"
-                />
+                  className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
               </div>
               <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
@@ -169,8 +164,7 @@ export default function HospitalsPage() {
                 src="https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/images/explore/photo-1519494026892-80bbd2d6fd0d.jpg?auto=format&fit=crop&q=80&w=800"
                 alt="Koh Samui Hospital Nathon"
                 fill
-                className="object-cover"
-              />
+                className="object-cover" sizes="(max-width: 768px) 100vw, 400px"/>
             </div>
             <div className="w-full lg:w-2/3 p-8 lg:p-10 flex flex-col justify-between">
               <div>
