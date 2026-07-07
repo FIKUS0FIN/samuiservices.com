@@ -47,4 +47,122 @@ describe('BusinessDetail JSON-LD XSS', () => {
     // Check that it contains the escaped unicode
     expect(content).toContain('\\u003c/script\\u003e\\u003cscript\\u003ealert(1)\\u003c/script\\u003e')
   })
+
+  it('correctly builds JSON-LD schemas with nested product details, return policy, brand, and shipping details', async () => {
+    const mockReviews = [
+      {
+        id: 'rev1',
+        rating: 5,
+        comment: 'Great service!',
+        createdAt: new Date('2026-07-01'),
+        user: { name: 'Alice' }
+      }
+    ];
+    const mockProducts = [
+      {
+        id: 'prod1',
+        name: 'Sofa Cleaning',
+        description: 'Deep cleaning of home sofa',
+        price: 1500,
+        image: null, // Test fallback image logic
+      }
+    ];
+
+    vi.mocked(db.getBusinessBySlug).mockResolvedValue({
+      id: '1',
+      name: 'Test Business',
+      category: { name: 'Cleaning Services' },
+      island: { name: 'Samui' },
+      averageRating: 4.5,
+      reviewCount: 1,
+      image: 'business-main.jpg',
+      phone: '123456789',
+      address: '123 Test St',
+      description: 'Reliable cleaning services',
+      isClaimed: true,
+      products: mockProducts,
+      reviews: mockReviews,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as unknown as any)
+
+    const Component = await BusinessDetail({ params: Promise.resolve({ slug: 'test-business' }) })
+    const { container } = render(Component)
+
+    const scripts = container.querySelectorAll('script[type="application/ld+json"]')
+    expect(scripts.length).toBeGreaterThan(0)
+
+    let localBusinessSchema: any = null
+    scripts.forEach((script) => {
+      const parsed = JSON.parse(script.innerHTML)
+      if (parsed['@type'] === 'LocalBusiness') {
+        localBusinessSchema = parsed
+      }
+    })
+
+    expect(localBusinessSchema).not.toBeNull()
+    expect(localBusinessSchema.hasOfferCatalog).toBeDefined()
+    expect(localBusinessSchema.hasOfferCatalog.itemListElement).toHaveLength(1)
+
+    const item = localBusinessSchema.hasOfferCatalog.itemListElement[0]
+    expect(item['@type']).toBe('Offer')
+    expect(item.price).toBe(1500)
+    expect(item.priceCurrency).toBe('THB')
+    expect(item.availability).toBe('https://schema.org/InStock')
+
+    const product = item.itemOffered
+    expect(product['@type']).toBe('Product')
+    expect(product.name).toBe('Sofa Cleaning')
+    expect(product.description).toBe('Deep cleaning of home sofa')
+    expect(product.image).toBe('business-main.jpg') // Fallback from null to business image
+
+    expect(product.brand).toEqual({
+      '@type': 'Brand',
+      name: 'Test Business'
+    })
+
+    expect(product.offers).toBeDefined()
+    expect(product.offers.availability).toBe('https://schema.org/InStock')
+    expect(product.offers.priceValidUntil).toBe('2027-12-31')
+    expect(product.offers.shippingDetails).toEqual({
+      '@type': 'OfferShippingDetails',
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        value: '0',
+        currency: 'THB'
+      },
+      shippingDestination: {
+        '@type': 'DefinedRegion',
+        addressCountry: 'TH'
+      }
+    })
+    expect(product.offers.hasMerchantReturnPolicy).toEqual({
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: 'TH',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted'
+    })
+
+    expect(product.aggregateRating).toEqual({
+      '@type': 'AggregateRating',
+      ratingValue: 4.5,
+      reviewCount: 1
+    })
+
+    expect(product.review).toHaveLength(1)
+    expect(product.review[0]).toEqual({
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: 'Alice'
+      },
+      datePublished: '2026-07-01',
+      reviewBody: 'Great service!',
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: 5,
+        bestRating: 5,
+        worstRating: 1
+      }
+    })
+  })
 })

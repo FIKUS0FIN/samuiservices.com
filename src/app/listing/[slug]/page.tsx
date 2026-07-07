@@ -110,23 +110,73 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
     hasOfferCatalog: business.products && business.products.length > 0 ? {
       '@type': 'OfferCatalog',
       name: 'Products & Services',
-      itemListElement: business.products.map((product: any, index: number) => ({
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Product',
-          name: product.name,
-          description: product.description,
-          image: product.image,
-          offers: {
-            '@type': 'Offer',
-            price: product.price || 0,
-            priceCurrency: 'THB'
+      itemListElement: business.products.map((product: any, index: number) => {
+        const productImg = product.image || allImages[0] || `${baseUrl}/apple-touch-icon.png`;
+        const productOffers = {
+          '@type': 'Offer',
+          price: product.price || 0,
+          priceCurrency: 'THB',
+          availability: 'https://schema.org/InStock',
+          url: `${baseUrl}/listing/${slug}`,
+          priceValidUntil: '2027-12-31',
+          shippingDetails: {
+            '@type': 'OfferShippingDetails',
+            shippingRate: {
+              '@type': 'MonetaryAmount',
+              value: '0',
+              currency: 'THB'
+            },
+            shippingDestination: {
+              '@type': 'DefinedRegion',
+              addressCountry: 'TH'
+            }
+          },
+          hasMerchantReturnPolicy: {
+            '@type': 'MerchantReturnPolicy',
+            applicableCountry: 'TH',
+            returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted'
           }
-        },
-        price: product.price,
-        priceCurrency: 'THB',
-        position: index + 1
-      }))
+        };
+
+        return {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Product',
+            name: product.name,
+            description: product.description || undefined,
+            image: productImg,
+            offers: productOffers,
+            brand: {
+              '@type': 'Brand',
+              name: business.name
+            },
+            aggregateRating: business.averageRating > 0 ? {
+              '@type': 'AggregateRating',
+              ratingValue: business.averageRating,
+              reviewCount: business.reviewCount > 0 ? business.reviewCount : 1
+            } : undefined,
+            review: business.reviews && business.reviews.length > 0 ? business.reviews.map((r: any) => ({
+              '@type': 'Review',
+              author: {
+                '@type': 'Person',
+                name: r.user?.name || 'Anonymous'
+              },
+              datePublished: r.createdAt instanceof Date ? r.createdAt.toISOString().split('T')[0] : new Date(r.createdAt).toISOString().split('T')[0],
+              reviewBody: r.comment,
+              reviewRating: {
+                '@type': 'Rating',
+                ratingValue: r.rating,
+                bestRating: 5,
+                worstRating: 1
+              }
+            })) : undefined,
+          },
+          price: product.price || 0,
+          priceCurrency: 'THB',
+          availability: 'https://schema.org/InStock',
+          position: index + 1
+        };
+      })
     } : undefined,
     review: business.reviews && business.reviews.length > 0 ? business.reviews.map((r: any) => ({
       '@type': 'Review',
@@ -257,10 +307,13 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
   return (
     <div className="bg-surface min-h-screen pb-20">
       {/* Inject all JSON-LD schemas into the head for Google and AI agents */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
-      />
+      {schemas.map((schema, index) => (
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026') }}
+        />
+      ))}
       <LayoutComponent business={business} faqs={faqs} />
       
       {/* Global Q&A Widget injected below all layouts */}
