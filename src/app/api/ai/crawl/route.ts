@@ -73,6 +73,7 @@ export async function POST(req: Request) {
 
     const combinedTexts: string[] = [];
     const allImageUrls = new Set<string>();
+    let googlePlaceResult: any = null;
 
     // Fetch and parse all URLs sequentially to avoid Cloudflare Workers I/O context loss
     for (const url of urls) {
@@ -99,6 +100,7 @@ export async function POST(req: Request) {
         // Fetch data from Google Place Details API
         const placeData = await fetchGooglePlaceData(fetchUrl, apiKey);
         if (placeData) {
+          googlePlaceResult = placeData;
           let placeText = `Google Maps Place Details:\n`;
           if (placeData.name) placeText += `Name: ${placeData.name}\n`;
           if (placeData.formatted_address) placeText += `Address: ${placeData.formatted_address}\n`;
@@ -307,6 +309,23 @@ Example output format:
 
     // Add images to the response (we'll let the user pick or we'll upload them)
     parsedJson.images = imageUrls.slice(0, 20); // Limit to top 20 found images
+
+    if (googlePlaceResult) {
+      const googleReviews = googlePlaceResult.reviews?.map((r: any) => ({
+        author: r.author_name,
+        avatar: r.profile_photo_url || null,
+        rating: r.rating,
+        text: r.text,
+        time: r.relative_time_description || (r.time ? new Date(r.time * 1000).toLocaleDateString() : 'Google Review'),
+        source: 'Google'
+      })) || [];
+
+      parsedJson.externalReviews = {
+        rating: googlePlaceResult.rating || 0,
+        reviewCount: googlePlaceResult.user_ratings_total || 0,
+        reviews: googleReviews
+      };
+    }
 
     return NextResponse.json({ result: parsedJson });
 

@@ -66,6 +66,15 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
       ? JSON.stringify(keywordsRaw.split(',').map(s => s.trim()).filter(s => s))
       : null;
     const galleryImages = formData.get('galleryImages') as string || null;
+    const socialLinks = formData.get('socialLinks') as string || null;
+    const faqs = formData.get('faqs') as string || null;
+    const specialOffers = formData.get('specialOffers') as string || null;
+    const menu = formData.get('menu') as string || null;
+    const videoUrls = formData.get('videoUrls') as string || null;
+    const bookingUrl = formData.get('bookingUrl') as string || null;
+    const trustBadges = formData.get('trustBadges') as string || null;
+    const amenities = formData.get('amenities') as string || null;
+    const externalReviews = formData.get('externalReviews') as string || null;
 
     // Extract products
     const products: { id: string; name: string; price: number | null; description: string | null; image: string | null }[] = [];
@@ -87,6 +96,30 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
     if (!name || !categoryId || !islandId || !description || !slug || !layout) {
       throw new Error("Missing required fields");
     }
+
+    // Consolidated rating calculation
+    let googleRating = 0;
+    let googleCount = 0;
+    if (externalReviews) {
+      try {
+        const parsed = JSON.parse(externalReviews);
+        if (parsed && typeof parsed === 'object') {
+          googleRating = parseFloat(parsed.rating) || 0;
+          googleCount = parseInt(parsed.reviewCount) || 0;
+        }
+      } catch (e) {
+        console.error("Error parsing Google Reviews:", e);
+      }
+    }
+
+    const localReviews = await prisma.review.findMany({ where: { listingId: id } });
+    const localCount = localReviews.length;
+    const localRatingSum = localReviews.reduce((sum, r) => sum + r.rating, 0);
+
+    const totalCount = googleCount + localCount;
+    const averageRating = totalCount > 0 
+      ? (googleRating * googleCount + localRatingSum) / totalCount 
+      : 0;
 
     // Handle products update by deleting old and creating new (simplified for this example)
     await prisma.product.deleteMany({ where: { listingId: id } });
@@ -118,6 +151,17 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
         galleryImages,
         description,
         image,
+        averageRating,
+        reviewCount: totalCount,
+        socialLinks,
+        faqs,
+        specialOffers,
+        menu,
+        videoUrls,
+        bookingUrl,
+        trustBadges,
+        amenities,
+        externalReviews,
       }
     });
 

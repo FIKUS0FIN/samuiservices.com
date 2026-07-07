@@ -5,6 +5,7 @@ import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
 import { ReviewWidget } from '@/components/features/ReviewWidget';
 import { parseDescriptionAndReviews } from '@/lib/parseDescription';
+import { getUnifiedReviews, getConsolidatedRating } from '@/lib/rating';
 import ProductGrid from '../components/ProductGrid';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
@@ -116,15 +117,21 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
               
               {/* Trust Indicators */}
               <div className="flex flex-wrap items-center gap-4 text-white">
-                {business.averageRating > 0 && (
-                  <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-md" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
-                    <meta itemProp="ratingValue" content={business.averageRating.toString()} />
-                    <meta itemProp="reviewCount" content={business.reviewCount.toString()} />
-                    <span className="text-amber-400 text-lg">★</span>
-                    <span className="font-bold">{business.averageRating}</span>
-                    <span className="text-white/80 text-sm">({business.reviewCount} reviews)</span>
-                  </div>
-                )}
+                {(() => {
+                  const consolidated = getConsolidatedRating(business);
+                  if (consolidated.reviewCount === 0) return null;
+                  return (
+                    <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-md" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
+                      <meta itemProp="ratingValue" content={consolidated.rating.toString()} />
+                      <meta itemProp="reviewCount" content={consolidated.reviewCount.toString()} />
+                      <span className="text-amber-400 text-lg">★</span>
+                      <span className="font-bold text-white">{consolidated.rating.toFixed(1)}</span>
+                      <span className="text-white/80 text-sm">
+                        ({consolidated.reviewCount} reviews {consolidated.googleCount > 0 || consolidated.localCount > 0 ? `• ${consolidated.googleCount} Google, ${consolidated.localCount} Site` : ''})
+                      </span>
+                    </div>
+                  );
+                })()}
                 {business.address && (
                   <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-md text-sm" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
                     <span>📍</span> 
@@ -254,41 +261,56 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
             <Card className="p-6 md:p-8 rounded-2xl shadow-sm border-outline-variant">
               <ReviewForm listingId={business.id} />
               <div className="flex flex-col gap-6 mt-8">
-                {business.reviews && business.reviews.length > 0 ? (
-                  business.reviews.map((review: any) => (
+                {(() => {
+                  const allReviews = getUnifiedReviews(business);
+                  if (allReviews.length === 0) {
+                    return (
+                      <div className="text-on-surface-variant italic p-4 text-center">
+                        No reviews yet. Be the first to share your experience!
+                      </div>
+                    );
+                  }
+                  return allReviews.map((review: any) => (
                     <div key={review.id} className="p-5 border border-outline-variant rounded-xl bg-surface-container-lowest" itemProp="review" itemScope itemType="https://schema.org/Review">
-                      <div className="flex items-center gap-4 mb-3">
-                        <div className="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold">
-                          {(review.user?.name || 'U').charAt(0).toUpperCase()}
-                        </div>
-                        <div className="flex-1" itemProp="author" itemScope itemType="https://schema.org/Person">
-                          <div className="font-bold text-on-surface" itemProp="name">
-                            {review.user?.id ? (
-                              <Link href={`/user/${review.user.id}`} className="hover:text-primary transition-colors hover:underline">
-                                {review.user.name || 'Anonymous User'}
-                              </Link>
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold overflow-hidden">
+                            {review.authorImage ? (
+                              <img src={review.authorImage} alt={review.authorName} className="w-full h-full object-cover" />
                             ) : (
-                              review.user?.name || 'Anonymous User'
+                              (review.authorName || 'U').charAt(0).toUpperCase()
                             )}
                           </div>
-                          <div className="text-xs text-on-surface-variant">
-                            <meta itemProp="datePublished" content={new Date(review.createdAt).toISOString()} />
-                            {new Date(review.createdAt).toLocaleDateString()}
+                          <div className="flex-1" itemProp="author" itemScope itemType="https://schema.org/Person">
+                            <div className="font-bold text-on-surface flex items-center gap-2" itemProp="name">
+                              {review.source === 'Site' && review.userId ? (
+                                <Link href={`/user/${review.userId}`} className="hover:text-primary transition-colors hover:underline">
+                                  {review.authorName}
+                                </Link>
+                              ) : (
+                                review.authorName
+                              )}
+                              {review.source === 'Google' && (
+                                <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-blue-200">
+                                  <span className="text-[10px]">🌐</span> Google Review
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs text-on-surface-variant">
+                              {review.createdAt}
+                            </div>
                           </div>
                         </div>
-                        <div className="text-amber-500 font-bold tracking-widest" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
-                          <meta itemProp="ratingValue" content={review.rating.toString()} />
-                          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                        <div className="flex items-center gap-3">
+                          <div className="text-amber-500 font-bold tracking-widest" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                            {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                          </div>
                         </div>
                       </div>
                       <p className="m-0 leading-relaxed text-on-surface-variant" itemProp="reviewBody">{review.comment}</p>
                     </div>
-                  ))
-                ) : (
-                  <div className="text-on-surface-variant italic p-4 text-center">
-                    No reviews yet. Be the first to share your experience!
-                  </div>
-                )}
+                  ));
+                })()}
               </div>
             </Card>
           </section>

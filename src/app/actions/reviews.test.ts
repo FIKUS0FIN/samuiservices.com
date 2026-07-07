@@ -23,6 +23,7 @@ vi.mock('@/lib/auth', () => ({
     },
     listing: {
       update: vi.fn(),
+      findUnique: vi.fn(),
     }
   },
 }));
@@ -86,10 +87,12 @@ describe('reviews actions', () => {
     it('creates review and updates listing stats successfully', async () => {
       vi.mocked(getServerSession).mockResolvedValue({ user: { id: 'user-123' } } as unknown as any);
       vi.mocked(prisma.review.findFirst).mockResolvedValue(null);
+      vi.mocked(prisma.listing.findUnique).mockResolvedValue({ id: 'listing-123', externalReviews: null } as any);
       vi.mocked(prisma.review.create).mockResolvedValue({ id: 'new-review' } as unknown as any);
       vi.mocked(prisma.review.aggregate).mockResolvedValue({
         _avg: { rating: 4.5 },
-        _count: { rating: 2 }
+        _count: { rating: 2 },
+        _sum: { rating: 9 }
       } as unknown as any);
 
       const formData = new FormData();
@@ -111,7 +114,8 @@ describe('reviews actions', () => {
       expect(prisma.review.aggregate).toHaveBeenCalledWith({
         where: { listingId: 'listing-123' },
         _avg: { rating: true },
-        _count: { rating: true }
+        _count: { rating: true },
+        _sum: { rating: true }
       });
 
       expect(prisma.listing.update).toHaveBeenCalledWith({

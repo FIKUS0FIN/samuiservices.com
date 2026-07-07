@@ -42,18 +42,46 @@ export async function submitReview(formData: FormData) {
       }
     });
 
-    // 3. Update the listing's average rating and review count
+    // 3. Update the listing's average rating and review count by consolidating Google Maps and local reviews
+    const listing = await prisma.listing.findUnique({
+      where: { id: listingId },
+      select: { externalReviews: true }
+    });
+
+    let googleRating = 0;
+    let googleCount = 0;
+    if (listing?.externalReviews) {
+      try {
+        const parsed = JSON.parse(listing.externalReviews);
+        if (parsed && typeof parsed === 'object') {
+          googleRating = parseFloat(parsed.rating) || 0;
+          googleCount = parseInt(parsed.reviewCount) || 0;
+        }
+      } catch (e) {
+        console.error("Error parsing Google Reviews in submitReview:", e);
+      }
+    }
+
     const aggregate = await prisma.review.aggregate({
       where: { listingId },
       _avg: { rating: true },
-      _count: { rating: true }
+      _count: { rating: true },
+      _sum: { rating: true }
     });
+
+    const localCount = aggregate._count.rating || 0;
+    const localRatingSum = aggregate._sum.rating || 0;
+
+    const totalCount = googleCount + localCount;
+    const averageRating = totalCount > 0 
+      ? (googleRating * googleCount + localRatingSum) / totalCount 
+      : 0;
 
     await prisma.listing.update({
       where: { id: listingId },
       data: {
-        averageRating: aggregate._avg.rating || 0,
-        reviewCount: aggregate._count.rating || 0,
+        averageRating,
+        reviewCount: totalCount,
       }
     });
 
