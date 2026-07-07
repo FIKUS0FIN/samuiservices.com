@@ -200,18 +200,33 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
           availability: 'https://schema.org/InStock',
           url: `${baseUrl}/listing/${slug}`,
           priceValidUntil: '2027-12-31',
-          shippingDetails: {
-            '@type': 'OfferShippingDetails',
-            shippingRate: {
-              '@type': 'MonetaryAmount',
-              value: '0',
-              currency: 'THB'
+            shippingDetails: {
+              '@type': 'OfferShippingDetails',
+              shippingRate: {
+                '@type': 'MonetaryAmount',
+                value: '0',
+                currency: 'THB'
+              },
+              shippingDestination: {
+                '@type': 'DefinedRegion',
+                addressCountry: 'TH'
+              },
+              deliveryTime: {
+                '@type': 'ShippingDeliveryTime',
+                handlingTime: {
+                  '@type': 'QuantitativeValue',
+                  minValue: 0,
+                  maxValue: 1,
+                  unitCode: 'DAY'
+                },
+                transitTime: {
+                  '@type': 'QuantitativeValue',
+                  minValue: 1,
+                  maxValue: 3,
+                  unitCode: 'DAY'
+                }
+              }
             },
-            shippingDestination: {
-              '@type': 'DefinedRegion',
-              addressCountry: 'TH'
-            }
-          },
           hasMerchantReturnPolicy: {
             '@type': 'MerchantReturnPolicy',
             applicableCountry: 'TH',

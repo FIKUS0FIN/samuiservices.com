@@ -134,6 +134,21 @@ describe('BusinessDetail JSON-LD XSS', () => {
       shippingDestination: {
         '@type': 'DefinedRegion',
         addressCountry: 'TH'
+      },
+      deliveryTime: {
+        '@type': 'ShippingDeliveryTime',
+        handlingTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 0,
+          maxValue: 1,
+          unitCode: 'DAY'
+        },
+        transitTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 1,
+          maxValue: 3,
+          unitCode: 'DAY'
+        }
       }
     })
     expect(product.offers.hasMerchantReturnPolicy).toEqual({
