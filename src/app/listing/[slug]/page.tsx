@@ -77,6 +77,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
 
   const galleryImages = safeParse(business.galleryImages, []);
   const hours = safeParse(business.hours, []);
+  const services = safeParse(business.services, []);
   const allImages = business.image ? [business.image, ...galleryImages] : galleryImages;
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://samuiservices.com';
@@ -108,6 +109,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
     } : undefined,
     priceRange: business.priceLevel || '$$',
     description: business.description,
+    keywords: services.length > 0 ? services.join(', ') : undefined,
     hasOfferCatalog: business.products && business.products.length > 0 ? {
       '@type': 'OfferCatalog',
       name: 'Products & Services',
@@ -276,7 +278,8 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
       '@type': 'Organization',
       name: business.name,
       image: allImages.length > 0 ? allImages[0] : undefined,
-      description: business.description
+      description: business.description,
+      keywords: services.length > 0 ? services.join(', ') : undefined
     }
   };
 

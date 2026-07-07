@@ -25,6 +25,23 @@ async function run() {
     const batch = businesses.slice(i, i + batchSize);
     
     await Promise.all(batch.map(async (business: any) => {
+      // Initialize with category-based fallback keywords
+      const categoryFallbackMap: Record<string, string[]> = {
+        hotel: ['Resort', 'Accommodation', 'Hotel', 'Rooms', 'Stay'],
+        resort: ['Resort', 'Accommodation', 'Suites', 'Beachfront', 'Villas'],
+        villa: ['Villas', 'Luxury Villa', 'Private Pool', 'Holiday Rental'],
+        restaurant: ['Dining', 'Restaurant', 'Cuisine', 'Food', 'Menu'],
+        cafe: ['Cafe', 'Coffee', 'Desserts', 'Breakfast', 'Beverages'],
+        spa: ['Spa', 'Massage', 'Wellness', 'Relaxation', 'Therapy'],
+        bar: ['Bar', 'Cocktails', 'Nightlife', 'Drinks', 'Music'],
+        club: ['Beach Club', 'Entertainment', 'Events', 'Cocktails'],
+        construction: ['Construction', 'Repair', 'Building', 'Contractor', 'Renovation'],
+        rental: ['Car Rental', 'Scooter Rental', 'Motorbike', 'Vehicles', 'Transport'],
+        tour: ['Tours', 'Excursions', 'Sightseeing', 'Guided Tour', 'Adventures']
+      };
+
+      business.services = categoryFallbackMap[business.category?.toLowerCase()] || ['Local Service', 'Koh Samui', 'Thailand'];
+
       if (!business.website || business.website === 'Error' || business.website.includes('404 Error') || business.website.includes('Access Denied')) {
         console.log(`Skipping ${business.name} (No valid website)`);
         return;
@@ -71,6 +88,90 @@ async function run() {
             description: 'Experience our premium ' + s.toLowerCase()
           }));
         });
+
+        // Extract and clean core keywords
+        const keywords = await page.evaluate(() => {
+          const metaKeywords = document.querySelector('meta[name="keywords"]')?.getAttribute('content');
+          if (metaKeywords) {
+            return metaKeywords
+              .split(',')
+              .map(k => k.trim())
+              .filter(k => k.length > 2 && k.length < 25)
+              .slice(0, 6);
+          }
+
+          const headings = Array.from(document.querySelectorAll('h1, h2, h3'))
+            .map(h => (h as HTMLElement).innerText.trim())
+            .filter(t => t.length > 3 && t.length < 30);
+
+          const title = document.title || '';
+          const candidates = [
+            ...title.split(/[|\-–•]/).map(t => t.trim()),
+            ...headings
+          ].filter(t => t.length > 3 && t.length < 25 && !t.toLowerCase().includes('home') && !t.toLowerCase().includes('contact') && !t.toLowerCase().includes('about'));
+
+          return [...new Set(candidates)].slice(0, 5);
+        });
+
+        const formattedKeywords = keywords
+          .map((k: string) => 
+            k.split(' ')
+             .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+             .join(' ')
+          )
+          .filter((k: string) => k);
+
+        // Extract phone number from tel links or text content
+        const extractedPhone = await page.evaluate(() => {
+          const telLink = document.querySelector('a[href^="tel:"]');
+          if (telLink) {
+            const href = telLink.getAttribute('href') || '';
+            return href.replace('tel:', '').trim();
+          }
+          const phoneRegex = /(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
+          const match = document.body.innerText.match(phoneRegex);
+          return match ? match[0].trim() : null;
+        });
+
+        // Extract description from meta tags or OpenGraph
+        const extractedDescription = await page.evaluate(() => {
+          return document.querySelector('meta[name="description"]')?.getAttribute('content') ||
+                 document.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
+                 document.querySelector('meta[name="twitter:description"]')?.getAttribute('content') ||
+                 null;
+        });
+
+        // Extract image from og:image or high-res elements
+        const extractedImage = await page.evaluate(() => {
+          return document.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
+                 document.querySelector('meta[name="twitter:image"]')?.getAttribute('content') ||
+                 null;
+        });
+
+        // Update website with final URL after redirects
+        const finalUrl = page.url();
+        if (finalUrl && finalUrl.startsWith('http')) {
+          business.website = finalUrl;
+        }
+
+        // Fill in / override phone
+        if (extractedPhone) {
+          business.phone = extractedPhone;
+        }
+
+        // Fill in / override description
+        if (extractedDescription && extractedDescription.length > 20) {
+          business.description = extractedDescription;
+        }
+
+        // Fill in / override image
+        if (extractedImage && extractedImage.startsWith('http')) {
+          business.image = extractedImage;
+        }
+
+        if (formattedKeywords.length > 0) {
+          business.services = formattedKeywords;
+        }
 
         business.extracted = {
           emails: emails.slice(0, 2),

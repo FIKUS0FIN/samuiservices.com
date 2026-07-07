@@ -195,6 +195,7 @@ export async function seedDatabase() {
             categoryId: dbCategory.id,
             islandId: samui.id,
             userId: currentUser.id,
+            services: (b as any).services ? JSON.stringify((b as any).services) : null,
             products: {
               create: productsData
             }
