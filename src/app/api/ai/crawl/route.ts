@@ -346,7 +346,52 @@ Example output format:
     // Add images to the response (we'll let the user pick or we'll upload them)
     parsedJson.images = imageUrls.slice(0, 20); // Limit to top 20 found images
 
+    // 1. If we don't have googlePlaceResult yet, but the LLM extracted a mapLink, try to resolve it
+    if (!googlePlaceResult && parsedJson.mapLink) {
+      const resolved = await fetchGooglePlaceData(parsedJson.mapLink, apiKey);
+      if (resolved) {
+        googlePlaceResult = resolved;
+      }
+    }
+
+    // 2. If we STILL don't have googlePlaceResult, try to search for the business by name
+    if (!googlePlaceResult && parsedJson.name && apiKey) {
+      try {
+        const cleanName = parsedJson.name.trim();
+        // Construct location bias using Koh Samui default
+        const biasQuery = '&locationbias=point:9.53,100.00';
+        const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(cleanName)}&inputtype=textquery&fields=place_id${biasQuery}&key=${apiKey}`;
+        const res = await fetch(findUrl);
+        const data = await res.json() as any;
+        if (data.status === 'OK' && data.candidates?.length > 0) {
+          const resolved = await fetchGooglePlaceData(`https://maps.googleapis.com/maps/place/?place_id=${data.candidates[0].place_id}`, apiKey);
+          if (resolved) {
+            googlePlaceResult = resolved;
+          }
+        }
+      } catch (e) {
+        console.error('Failed to search fallback place by name:', e);
+      }
+    }
+
+    // 3. If we resolved googlePlaceResult, enrich the JSON with official, verified details
     if (googlePlaceResult) {
+      parsedJson.phone = googlePlaceResult.formatted_phone_number || parsedJson.phone;
+      parsedJson.address = googlePlaceResult.formatted_address || parsedJson.address;
+      parsedJson.website = googlePlaceResult.website || parsedJson.website;
+      parsedJson.googlePlaceId = googlePlaceResult.place_id || parsedJson.googlePlaceId;
+
+      // Extract CID from the official Place URL to build standard maps link
+      let mapsUrl = googlePlaceResult.url;
+      if (mapsUrl) {
+        const cidMatch = mapsUrl.match(/[?&]cid=(\d+)/);
+        if (cidMatch) {
+          parsedJson.mapLink = `https://www.google.com/maps?cid=${cidMatch[1]}`;
+        } else {
+          parsedJson.mapLink = mapsUrl;
+        }
+      }
+
       const googleReviews = googlePlaceResult.reviews?.map((r: any) => ({
         author: r.author_name,
         avatar: r.profile_photo_url || null,
@@ -365,6 +410,20 @@ Example output format:
       if (googlePlaceResult.geometry?.location) {
         parsedJson.lat = googlePlaceResult.geometry.location.lat;
         parsedJson.lng = googlePlaceResult.geometry.location.lng;
+      }
+    } else if (parsedJson.mapLink) {
+      // If we couldn't resolve Google Place, but we have some mapLink, clean it if it contains a CID
+      const cidMatch = parsedJson.mapLink.match(/[?&]cid=(\d+)/);
+      if (cidMatch) {
+        parsedJson.mapLink = `https://www.google.com/maps?cid=${cidMatch[1]}`;
+      } else {
+        const hexCidMatch = parsedJson.mapLink.match(/0x[0-9a-fA-F]+:0x([0-9a-fA-F]+)/);
+        if (hexCidMatch) {
+          try {
+            const cid = BigInt("0x" + hexCidMatch[1]).toString();
+            parsedJson.mapLink = `https://www.google.com/maps?cid=${cid}`;
+          } catch (e) {}
+        }
       }
     }
 
