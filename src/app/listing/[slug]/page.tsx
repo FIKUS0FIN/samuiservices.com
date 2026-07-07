@@ -309,7 +309,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
   }
 
   return (
-    <div className="bg-surface min-h-screen pb-20">
+    <div className="bg-surface min-h-screen pb-28 lg:pb-12">
       {/* Inject all JSON-LD schemas into the head for Google and AI agents */}
       {schemas.map((schema, index) => (
         <script
