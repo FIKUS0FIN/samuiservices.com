@@ -136,13 +136,29 @@ export function getMapEmbedUrl(
   if (mapLink) {
     const trimmed = mapLink.trim();
     
-    // 1. Check for CID
+    // 1. Check for CID in query params
     const cidMatch = trimmed.match(/[?&]cid=(\d+)/);
     if (cidMatch) {
       return `https://maps.google.com/maps?cid=${cidMatch[1]}&output=embed`;
     }
     
-    // 2. If it's a full Google Maps URL (but not a shortened app link)
+    // 2. Check for hex CID in data block (e.g. 0x3054f1454157a911:0x116bb7ef0ae7339d)
+    const hexCidMatch = trimmed.match(/0x[0-9a-fA-F]+:0x([0-9a-fA-F]+)/);
+    if (hexCidMatch) {
+      try {
+        const cid = BigInt("0x" + hexCidMatch[1]).toString();
+        return `https://maps.google.com/maps?cid=${cid}&output=embed`;
+      } catch (e) {}
+    }
+    
+    // 3. Check for place name in /maps/place/
+    const placeMatch = trimmed.match(/\/maps\/place\/([^/]+)/);
+    if (placeMatch) {
+      const query = decodeURIComponent(placeMatch[1].replace(/\+/g, ' '));
+      return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+    }
+    
+    // 4. Fallback for other standard maps URLs
     if ((trimmed.includes('google.com/maps') || trimmed.includes('maps.google.com')) && 
         !trimmed.includes('maps.app.goo.gl') && !trimmed.includes('goo.gl/maps')) {
       let url = trimmed;
