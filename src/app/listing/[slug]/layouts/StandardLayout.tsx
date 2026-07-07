@@ -319,12 +319,15 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
                               </div>
                               <div className="flex items-center gap-3">
                                 <div className="text-amber-500 font-bold tracking-widest" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                                  <meta itemProp="ratingValue" content={review.rating.toString()} />
+                                  <meta itemProp="bestRating" content="5" />
+                                  <meta itemProp="worstRating" content="1" />
                                   {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
                                 </div>
                               </div>
                             </div>
                             <p className="m-0 leading-relaxed text-on-surface-variant italic font-light pl-1" itemProp="reviewBody">
-                              "{review.comment}"
+                              &ldquo;{review.comment}&rdquo;
                             </p>
                           </div>
                         ))}

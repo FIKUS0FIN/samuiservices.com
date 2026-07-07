@@ -82,6 +82,50 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://samuiservices.com';
   
+  // Parse external reviews if available
+  let googleReviews: any[] = [];
+  if (business.externalReviews) {
+    try {
+      const parsed = JSON.parse(business.externalReviews);
+      if (parsed && Array.isArray(parsed.reviews)) {
+        googleReviews = parsed.reviews;
+      }
+    } catch (e) {}
+  }
+
+  const allReviewsSchema = [
+    ...(business.reviews || []).map((r: any) => ({
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: r.user?.name || 'Anonymous'
+      },
+      datePublished: r.createdAt instanceof Date ? r.createdAt.toISOString().split('T')[0] : new Date(r.createdAt).toISOString().split('T')[0],
+      reviewBody: r.comment,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: r.rating,
+        bestRating: 5,
+        worstRating: 1
+      }
+    })),
+    ...googleReviews.map((r: any) => ({
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: r.author || 'Anonymous Google User'
+      },
+      datePublished: r.time && !isNaN(Date.parse(r.time)) ? new Date(r.time).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+      reviewBody: r.text,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: r.rating,
+        bestRating: 5,
+        worstRating: 1
+      }
+    }))
+  ];
+
   // 1. LocalBusiness Schema
   const localBusinessSchema = {
     '@context': 'https://schema.org',
@@ -158,21 +202,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
               ratingValue: business.averageRating,
               reviewCount: business.reviewCount > 0 ? business.reviewCount : 1
             } : undefined,
-            review: business.reviews && business.reviews.length > 0 ? business.reviews.map((r: any) => ({
-              '@type': 'Review',
-              author: {
-                '@type': 'Person',
-                name: r.user?.name || 'Anonymous'
-              },
-              datePublished: r.createdAt instanceof Date ? r.createdAt.toISOString().split('T')[0] : new Date(r.createdAt).toISOString().split('T')[0],
-              reviewBody: r.comment,
-              reviewRating: {
-                '@type': 'Rating',
-                ratingValue: r.rating,
-                bestRating: 5,
-                worstRating: 1
-              }
-            })) : undefined,
+            review: allReviewsSchema.length > 0 ? allReviewsSchema : undefined,
           },
           price: product.price || 0,
           priceCurrency: 'THB',
@@ -181,21 +211,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
         };
       })
     } : undefined,
-    review: business.reviews && business.reviews.length > 0 ? business.reviews.map((r: any) => ({
-      '@type': 'Review',
-      author: {
-        '@type': 'Person',
-        name: r.user?.name || 'Anonymous'
-      },
-      datePublished: r.createdAt.toISOString().split('T')[0],
-      reviewBody: r.comment,
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: r.rating,
-        bestRating: 5,
-        worstRating: 1
-      }
-    })) : undefined,
+    review: allReviewsSchema.length > 0 ? allReviewsSchema : undefined,
   };
 
   // 2. BreadcrumbList Schema
