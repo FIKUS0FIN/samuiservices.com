@@ -232,14 +232,104 @@ export function ListingForm({
       if (typeof result.hours === 'string') setHoursValue(result.hours);
       
       // Update widget fields
-      if (result.socialLinks) setSocialLinksValue(JSON.stringify(result.socialLinks, null, 2));
-      if (result.faqs) setFaqsValue(JSON.stringify(result.faqs, null, 2));
-      if (result.specialOffers) setSpecialOffersValue(JSON.stringify(result.specialOffers, null, 2));
+      if (result.socialLinks && typeof result.socialLinks === 'object' && !Array.isArray(result.socialLinks)) {
+        let existingSocials: Record<string, string> = {};
+        if (socialLinksValue) {
+          try {
+            existingSocials = JSON.parse(socialLinksValue);
+          } catch (e) {}
+        }
+        const mergedSocials = { ...result.socialLinks, ...existingSocials } as Record<string, string>;
+        setSocialLinksValue(JSON.stringify(mergedSocials, null, 2));
+      } else if (result.socialLinks && !socialLinksValue) {
+        setSocialLinksValue(JSON.stringify(result.socialLinks, null, 2));
+      }
+
+      if (result.faqs && Array.isArray(result.faqs)) {
+        let existingFaqs: any[] = [];
+        if (faqsValue) {
+          try {
+            existingFaqs = JSON.parse(faqsValue);
+            if (!Array.isArray(existingFaqs)) existingFaqs = [];
+          } catch (e) {}
+        }
+        const existingQuestions = new Set(existingFaqs.map(f => (f.question || '').trim().toLowerCase()));
+        const uniqueNewFaqs = result.faqs.filter((f: any) => f && f.question && !existingQuestions.has(f.question.trim().toLowerCase()));
+        setFaqsValue(JSON.stringify([...existingFaqs, ...uniqueNewFaqs], null, 2));
+      } else if (result.faqs && !faqsValue) {
+        setFaqsValue(JSON.stringify(result.faqs, null, 2));
+      }
+
+      if (result.specialOffers && Array.isArray(result.specialOffers)) {
+        let existingOffers: any[] = [];
+        if (specialOffersValue) {
+          try {
+            existingOffers = JSON.parse(specialOffersValue);
+            if (!Array.isArray(existingOffers)) existingOffers = [];
+          } catch (e) {}
+        }
+        const existingOfferTitles = new Set(existingOffers.map(o => (o.title || '').trim().toLowerCase()));
+        const uniqueNewOffers = result.specialOffers.filter((o: any) => o && o.title && !existingOfferTitles.has(o.title.trim().toLowerCase()));
+        setSpecialOffersValue(JSON.stringify([...existingOffers, ...uniqueNewOffers], null, 2));
+      } else if (result.specialOffers && !specialOffersValue) {
+        setSpecialOffersValue(JSON.stringify(result.specialOffers, null, 2));
+      }
+
       if (result.menu) setMenuValue(JSON.stringify(result.menu, null, 2));
-      if (result.videoUrls) setVideoUrlsValue(JSON.stringify(result.videoUrls, null, 2));
+
+      if (result.videoUrls && Array.isArray(result.videoUrls)) {
+        let existingVideos: string[] = [];
+        if (videoUrlsValue) {
+          try {
+            existingVideos = JSON.parse(videoUrlsValue);
+            if (!Array.isArray(existingVideos)) existingVideos = [];
+          } catch (e) {}
+        }
+        const combinedVideos = Array.from(new Set([
+          ...existingVideos,
+          ...result.videoUrls.map((v: any) => String(v).trim())
+        ].filter(Boolean)));
+        setVideoUrlsValue(JSON.stringify(combinedVideos, null, 2));
+      } else if (result.videoUrls && !videoUrlsValue) {
+        setVideoUrlsValue(JSON.stringify(result.videoUrls, null, 2));
+      }
+
       if (result.bookingUrl) setBookingUrlValue(result.bookingUrl as string);
-      if (result.trustBadges) setTrustBadgesValue(JSON.stringify(result.trustBadges, null, 2));
-      if (result.amenities) setAmenitiesValue(JSON.stringify(result.amenities, null, 2));
+
+      if (result.trustBadges && Array.isArray(result.trustBadges)) {
+        let existingBadges: string[] = [];
+        if (trustBadgesValue) {
+          try {
+            existingBadges = JSON.parse(trustBadgesValue);
+            if (!Array.isArray(existingBadges)) existingBadges = [];
+          } catch (e) {}
+        }
+        const combinedBadges = Array.from(new Set([
+          ...existingBadges,
+          ...result.trustBadges.map((b: any) => String(b).trim())
+        ].filter(Boolean)));
+        setTrustBadgesValue(JSON.stringify(combinedBadges, null, 2));
+      } else if (result.trustBadges && !trustBadgesValue) {
+        setTrustBadgesValue(JSON.stringify(result.trustBadges, null, 2));
+      }
+
+      if (result.amenities && Array.isArray(result.amenities)) {
+        let existingAmenities: string[] = [];
+        if (amenitiesValue) {
+          try {
+            existingAmenities = JSON.parse(amenitiesValue);
+            if (!Array.isArray(existingAmenities)) existingAmenities = [];
+          } catch (e) {}
+        }
+        const combinedAmenities = Array.from(new Set([
+          ...existingAmenities,
+          ...result.amenities.map((a: any) => String(a).trim())
+        ].filter(Boolean)));
+        setAmenitiesValue(JSON.stringify(combinedAmenities, null, 2));
+      } else if (result.amenities && !amenitiesValue) {
+        setAmenitiesValue(JSON.stringify(result.amenities, null, 2));
+      }
+
       if (result.externalReviews) setExternalReviewsValue(JSON.stringify(result.externalReviews, null, 2));
       
       let finalImages: string[] = Array.isArray(result.images) ? (result.images as string[]) : [];
@@ -261,15 +351,39 @@ export function ListingForm({
         }
       }
 
-      // Populate cover image and gallery images if available
+      // Populate cover image and gallery images if available (merging and deduplicating)
       if (finalImages.length > 0) {
-        setImageValue(finalImages[0]);
-        if (finalImages.length > 1) {
-          setGalleryImagesValue(JSON.stringify(finalImages.slice(1), null, 2));
+        let existingGallery: string[] = [];
+        if (galleryImagesValue) {
+          try {
+            existingGallery = JSON.parse(galleryImagesValue);
+            if (!Array.isArray(existingGallery)) existingGallery = [];
+          } catch (e) {}
+        }
+        
+        const existingAllImages = new Set<string>();
+        if (imageValue) existingAllImages.add(imageValue);
+        existingGallery.forEach(img => existingAllImages.add(img));
+        
+        const uniqueNewImages = finalImages.filter(img => img && !existingAllImages.has(img));
+        
+        if (uniqueNewImages.length > 0) {
+          let newCover = imageValue;
+          let addedToGallery = [...existingGallery];
+          
+          if (!newCover) {
+            newCover = uniqueNewImages[0];
+            addedToGallery.push(...uniqueNewImages.slice(1));
+          } else {
+            addedToGallery.push(...uniqueNewImages);
+          }
+          
+          setImageValue(newCover);
+          setGalleryImagesValue(JSON.stringify(addedToGallery, null, 2));
         }
       }
 
-      // Combine AI extracted products with existing products
+      // Combine AI extracted products with existing products (preventing duplicates)
       if (Array.isArray(result.products)) {
         const newProducts = result.products.map((p: Record<string, unknown>, i: number) => ({
           id: '',
@@ -278,7 +392,11 @@ export function ListingForm({
           price: (p.price as number) || null,
           image: (p.image as string) || (finalImages[i + 1] || '') // Try to assign an image if available
         }));
-        setProducts([...products, ...newProducts]);
+        
+        const existingProductNames = new Set(products.map(p => p.name.trim().toLowerCase()));
+        const uniqueNewProducts = newProducts.filter(p => p.name.trim() && !existingProductNames.has(p.name.trim().toLowerCase()));
+        
+        setProducts([...products, ...uniqueNewProducts]);
       }
 
     } catch (e) {
