@@ -30,6 +30,17 @@ const safeParse = (str: string | null | undefined, fallback: any = []) => {
   }
 };
 
+const safeToISOString = (dateVal: any): string => {
+  if (!dateVal) return new Date().toISOString();
+  try {
+    const d = (typeof dateVal === 'string' || typeof dateVal === 'number') ? new Date(dateVal) : dateVal;
+    if (d instanceof Date && !isNaN(d.getTime())) {
+      return d.toISOString();
+    }
+  } catch {}
+  return new Date().toISOString();
+};
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const business = await getBusinessBySlug(slug);
@@ -108,7 +119,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
         '@type': 'Person',
         name: r.user?.name || 'Anonymous'
       },
-      datePublished: r.createdAt instanceof Date ? r.createdAt.toISOString().split('T')[0] : new Date(r.createdAt).toISOString().split('T')[0],
+      datePublished: safeToISOString(r.createdAt).split('T')[0],
       reviewBody: r.comment,
       reviewRating: {
         '@type': 'Rating',
@@ -123,7 +134,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
         '@type': 'Person',
         name: r.author || 'Anonymous'
       },
-      datePublished: new Date(business.createdAt).toISOString().split('T')[0],
+      datePublished: safeToISOString(business.createdAt).split('T')[0],
       reviewBody: r.text,
       reviewRating: {
         '@type': 'Rating',
@@ -138,7 +149,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
         '@type': 'Person',
         name: r.author || 'Anonymous Google User'
       },
-      datePublished: r.time && !isNaN(Date.parse(r.time)) ? new Date(r.time).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+      datePublished: safeToISOString(r.time).split('T')[0],
       reviewBody: r.text,
       reviewRating: {
         '@type': 'Rating',
@@ -361,8 +372,8 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
   const profilePageSchema = {
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    dateCreated: business.createdAt.toISOString(),
-    dateModified: business.updatedAt.toISOString(),
+    dateCreated: safeToISOString(business.createdAt),
+    dateModified: safeToISOString(business.updatedAt),
     mainEntity: {
       '@type': 'Organization',
       name: business.name,
