@@ -7,6 +7,7 @@ import { ReviewWidget } from '@/components/features/ReviewWidget';
 import { parseDescriptionAndReviews } from '@/lib/parseDescription';
 import { getUnifiedReviews, getConsolidatedRating } from '@/lib/rating';
 import ProductGrid from '../components/ProductGrid';
+import { getMapEmbedUrl } from '../components/LayoutWidgets';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -225,7 +226,7 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
                     height="100%"
                     frameBorder="0"
                     style={{ border: 0 }}
-                    src={`https://maps.google.com/maps?q=${business.lat && business.lng ? `${business.lat},${business.lng}` : encodeURIComponent(`${business.name} ${business.address || ''}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                    src={getMapEmbedUrl(business.mapLink, business.name, business.address, business.lat, business.lng)}
                     allowFullScreen
                     aria-hidden="false"
                     tabIndex={0}

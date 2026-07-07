@@ -2,6 +2,7 @@
 import { notFound } from 'next/navigation';
 import { getBusinessBySlug } from '@/lib/db';
 import { Metadata } from 'next';
+import { parseDescriptionAndReviews } from '@/lib/parseDescription';
 
 import StandardLayout from './layouts/StandardLayout';
 import RealEstateLayout from './layouts/RealEstateLayout';
@@ -93,6 +94,13 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
     } catch (e) {}
   }
 
+  const { reviews: parsedScrapedReviews } = parseDescriptionAndReviews(
+    business.description,
+    business.name,
+    business.category?.name,
+    business.island?.name
+  );
+
   const allReviewsSchema = [
     ...(business.reviews || []).map((r: any) => ({
       '@type': 'Review',
@@ -102,6 +110,21 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
       },
       datePublished: r.createdAt instanceof Date ? r.createdAt.toISOString().split('T')[0] : new Date(r.createdAt).toISOString().split('T')[0],
       reviewBody: r.comment,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: r.rating,
+        bestRating: 5,
+        worstRating: 1
+      }
+    })),
+    ...parsedScrapedReviews.map((r: any) => ({
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: r.author || 'Anonymous'
+      },
+      datePublished: new Date(business.createdAt).toISOString().split('T')[0],
+      reviewBody: r.text,
       reviewRating: {
         '@type': 'Rating',
         ratingValue: r.rating,
@@ -149,7 +172,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
     aggregateRating: business.averageRating > 0 ? {
       '@type': 'AggregateRating',
       ratingValue: business.averageRating,
-      reviewCount: business.reviewCount > 0 ? business.reviewCount : 1
+      reviewCount: allReviewsSchema.length > 0 ? allReviewsSchema.length : (business.reviewCount > 0 ? business.reviewCount : 1)
     } : undefined,
     priceRange: business.priceLevel || '$$',
     description: business.description,
@@ -200,7 +223,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
             aggregateRating: business.averageRating > 0 ? {
               '@type': 'AggregateRating',
               ratingValue: business.averageRating,
-              reviewCount: business.reviewCount > 0 ? business.reviewCount : 1
+              reviewCount: allReviewsSchema.length > 0 ? allReviewsSchema.length : (business.reviewCount > 0 ? business.reviewCount : 1)
             } : undefined,
             review: allReviewsSchema.length > 0 ? allReviewsSchema : undefined,
           },

@@ -126,6 +126,46 @@ export function OpeningHoursWidget({ hoursRaw, theme = 'standard' }: { hoursRaw:
   );
 }
 
+export function getMapEmbedUrl(
+  mapLink: string | null | undefined, 
+  businessName: string, 
+  address: string | null | undefined, 
+  lat: number | null | undefined, 
+  lng: number | null | undefined
+): string {
+  if (mapLink) {
+    const trimmed = mapLink.trim();
+    
+    // 1. Check for CID
+    const cidMatch = trimmed.match(/[?&]cid=(\d+)/);
+    if (cidMatch) {
+      return `https://maps.google.com/maps?cid=${cidMatch[1]}&output=embed`;
+    }
+    
+    // 2. If it's a full Google Maps URL (but not a shortened app link)
+    if ((trimmed.includes('google.com/maps') || trimmed.includes('maps.google.com')) && 
+        !trimmed.includes('maps.app.goo.gl') && !trimmed.includes('goo.gl/maps')) {
+      let url = trimmed;
+      if (url.includes('google.com/?')) {
+        url = url.replace('google.com/?', 'google.com/maps?');
+      }
+      if (!url.includes('output=embed')) {
+        url += (url.includes('?') ? '&' : '?') + 'output=embed';
+      }
+      return url;
+    }
+  }
+  
+  // Fallback: If we have an address, searching by "businessName, address" is much more accurate 
+  // than using the randomized lat/lng coordinates (which are district centers + 1.5km scatter).
+  // However, if we don't have an address, we can use the coordinates.
+  const query = address 
+    ? `${businessName}, ${address}` 
+    : (lat && lng ? `${lat},${lng}` : businessName);
+    
+  return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+}
+
 export function InteractiveMap({ 
   businessName, 
   address, 
@@ -200,7 +240,7 @@ export function InteractiveMap({
             height="100%"
             frameBorder="0"
             style={{ border: 0 }}
-            src={`https://maps.google.com/maps?q=${lat && lng ? `${lat},${lng}` : encodeURIComponent(`${businessName} ${address || ''}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+            src={getMapEmbedUrl(mapLink, businessName, address, lat, lng)}
             allowFullScreen
             aria-hidden="false"
             tabIndex={0}
