@@ -1,10 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function ConstructionLayout({ business }: { business: any }) {
+export default function ConstructionLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <>
       {/* Construction Hero - Solid and reliable */}
@@ -34,11 +41,11 @@ export default function ConstructionLayout({ business }: { business: any }) {
       <div className="bg-surface-container-highest border-y border-outline-variant py-8">
          <div className="max-w-container-max mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <div className="text-3xl font-black text-on-surface mb-1">★ {business.averageRating}</div>
+              <div className="text-3xl font-black text-on-surface mb-1">★ {business.averageRating?.toFixed(1) || '0.0'}</div>
               <div className="text-sm font-bold text-on-surface-variant uppercase tracking-wider">Average Rating</div>
             </div>
             <div>
-              <div className="text-3xl font-black text-on-surface mb-1">{business.reviewCount}</div>
+              <div className="text-3xl font-black text-on-surface mb-1">{business.reviewCount || 0}</div>
               <div className="text-sm font-bold text-on-surface-variant uppercase tracking-wider">Verified Reviews</div>
             </div>
             <div>
@@ -62,11 +69,15 @@ export default function ConstructionLayout({ business }: { business: any }) {
 
         <div className="lg:col-span-8 flex flex-col gap-16">
           
-          <div className="prose prose-lg prose-slate max-w-none">
-            <h2 className="font-display text-4xl mb-6 text-on-surface font-bold">About Our Company</h2>
-            <p className="font-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line text-xl">
-              {business.description}
-            </p>
+          <div className="prose prose-lg prose-slate max-w-none flex flex-col gap-6">
+            <h2 className="font-display text-4xl text-on-surface font-bold">About Our Company</h2>
+            <ServicesTags servicesRaw={business.services} />
+            <DescriptionSection 
+              businessName={business.name}
+              categoryName={business.category?.name}
+              islandName={business.island?.name}
+              descriptionRaw={business.description}
+            />
           </div>
 
           {/* Portfolio & Services */}
@@ -87,7 +98,7 @@ export default function ConstructionLayout({ business }: { business: any }) {
                     )}
                     <div className="p-6 relative bg-surface border-t-4 border-primary">
                       <h3 className="font-headline-md text-xl mb-2 font-bold">{item.name}</h3>
-                      <p className="text-on-surface-variant mb-4 line-clamp-3 min-h-[4.5rem]">
+                      <p className="text-on-surface-variant mb-4 line-clamp-3 min-h-[4.5rem] text-sm">
                         {item.description}
                       </p>
                       {item.price && (
@@ -102,55 +113,66 @@ export default function ConstructionLayout({ business }: { business: any }) {
             </div>
           )}
 
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+          />
+
+          {/* Reviews Section */}
           <div className="bg-surface-container-lowest border border-outline-variant p-8 shadow-sm">
-            <h2 className="font-display text-3xl mb-6 font-bold">Client Testimonials</h2>
-            <ReviewForm listingId={business.id} />
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-              {business.reviews && business.reviews.length > 0 ? (
-                business.reviews.map((review: any) => (
-                  <div key={review.id} className="p-6 bg-surface-container-low border border-outline-variant shadow-sm relative">
-                    <div className="text-4xl text-primary/20 absolute top-4 right-4 font-serif">"</div>
-                    <div className="text-primary font-bold text-lg mb-3">
-                      {'★'.repeat(review.rating)}
-                    </div>
-                    <p className="text-on-surface-variant italic mb-4 line-clamp-4">{review.comment}</p>
-                    <div className="font-bold text-sm uppercase tracking-widest">{review.user?.name || 'Client'}</div>
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-2 text-on-surface-variant">No reviews yet.</div>
-              )}
-            </div>
+            <UnifiedReviewsSection business={business} />
           </div>
         </div>
 
         {/* Contact Sidebar */}
         <div className="lg:col-span-4" id="contact">
-          <Card className="p-8 sticky top-24 border-t-8 border-t-tertiary shadow-xl">
+          <Card className="p-8 sticky top-24 border-t-8 border-t-tertiary shadow-xl z-10">
             <h3 className="font-display text-3xl font-bold mb-6">Contact Us</h3>
             
             <div className="space-y-6 mb-8">
-              <div className="flex gap-4 items-start">
-                <div className="text-tertiary mt-1">📍</div>
-                <div>
-                  <div className="font-bold text-sm text-on-surface-variant uppercase tracking-wider mb-1">Office Location</div>
-                  {business.mapLink ? (
-                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline text-tertiary transition-colors">
-                      {business.address}
-                    </a>
-                  ) : (
-                    <div className="font-medium text-lg">{business.address}</div>
-                  )}
+              {business.address && (
+                <div className="flex gap-4 items-start">
+                  <div className="text-tertiary mt-1">📍</div>
+                  <div>
+                    <div className="font-bold text-sm text-on-surface-variant uppercase tracking-wider mb-1">Office Location</div>
+                    {business.mapLink ? (
+                      <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline text-tertiary transition-colors block">
+                        {business.address}
+                      </a>
+                    ) : (
+                      <div className="font-medium text-lg">{business.address}</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-4 items-start">
-                <div className="text-tertiary mt-1">📞</div>
-                <div>
-                  <div className="font-bold text-sm text-on-surface-variant uppercase tracking-wider mb-1">Direct Line</div>
-                  <div className="font-medium text-lg">{business.phone}</div>
+              )}
+              {business.phone && (
+                <div className="flex gap-4 items-start">
+                  <div className="text-tertiary mt-1">📞</div>
+                  <div>
+                    <div className="font-bold text-sm text-on-surface-variant uppercase tracking-wider mb-1">Direct Line</div>
+                    <a href={`tel:${business.phone}`} className="font-medium text-lg hover:underline text-tertiary transition-colors block">{business.phone}</a>
+                  </div>
                 </div>
-              </div>
+              )}
+              {business.website && (
+                <div className="flex gap-4 items-start">
+                  <div className="text-tertiary mt-1">🌐</div>
+                  <div>
+                    <div className="font-bold text-sm text-on-surface-variant uppercase tracking-wider mb-1">Website</div>
+                    <a href={business.website} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline text-tertiary transition-colors block truncate max-w-[200px]">{business.website}</a>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="bg-surface-container-low p-6 rounded-lg border border-outline-variant">

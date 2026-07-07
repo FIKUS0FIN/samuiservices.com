@@ -1,10 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function TransportationLayout({ business }: { business: any }) {
+export default function TransportationLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <>
       {/* Transportation Hero Section - Fast and bold */}
@@ -23,9 +30,11 @@ export default function TransportationLayout({ business }: { business: any }) {
               Serving {business.island.name} and surrounding areas. Fast, reliable, and secure.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href={`tel:${business.phone}`} className="px-8 py-3 bg-primary text-on-primary rounded-full font-bold shadow-md hover:bg-primary/90 transition-colors">
-                Call Now
-              </a>
+              {business.phone && (
+                <a href={`tel:${business.phone}`} className="px-8 py-3 bg-primary text-on-primary rounded-full font-bold shadow-md hover:bg-primary/90 transition-colors">
+                  Call Now
+                </a>
+              )}
               <a href="#book" className="px-8 py-3 bg-secondary-container text-on-secondary-container rounded-full font-bold shadow-sm hover:bg-secondary-container/90 transition-colors">
                 Request Quote
               </a>
@@ -48,32 +57,14 @@ export default function TransportationLayout({ business }: { business: any }) {
           
           <div className="flex flex-col gap-6" id="about">
             <h2 className="font-headline-lg text-3xl text-on-surface border-b border-outline-variant pb-4">Service Details</h2>
-            <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant flex flex-col md:flex-row gap-6">
-              <div className="flex-1">
-                <p className="font-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line">
-                  {business.description}
-                </p>
-              </div>
-              <div className="bg-surface-container-low p-6 rounded-xl min-w-[250px]">
-                <h4 className="font-bold text-on-surface mb-4">Quick Info</h4>
-                <ul className="space-y-3 font-body-md text-on-surface-variant">
-                  <li className="flex gap-2">
-                    <span>📍</span>
-                    <span>
-                      Base:{" "}
-                      {business.mapLink ? (
-                        <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline text-primary transition-colors">
-                          {business.address}
-                        </a>
-                      ) : (
-                        business.address
-                      )}
-                    </span>
-                  </li>
-                  <li className="flex gap-2"><span>⭐</span> {business.averageRating} Rating ({business.reviewCount} verified)</li>
-                  <li className="flex gap-2"><span>🕒</span> {business.hours || '24/7 Available'}</li>
-                </ul>
-              </div>
+            <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant flex flex-col gap-6">
+              <ServicesTags servicesRaw={business.services} />
+              <DescriptionSection 
+                businessName={business.name}
+                categoryName={business.category?.name}
+                islandName={business.island?.name}
+                descriptionRaw={business.description}
+              />
             </div>
           </div>
 
@@ -91,7 +82,7 @@ export default function TransportationLayout({ business }: { business: any }) {
                     )}
                     <div className="p-6 flex-1 flex flex-col justify-center">
                       <h3 className="font-headline-sm text-xl mb-2">{service.name}</h3>
-                      <p className="font-body-md text-on-surface-variant mb-4 flex-1">
+                      <p className="font-body-md text-on-surface-variant mb-4 flex-1 text-sm">
                         {service.description || 'Reliable transportation service.'}
                       </p>
                       <div className="font-bold text-primary text-lg">
@@ -104,45 +95,45 @@ export default function TransportationLayout({ business }: { business: any }) {
             </div>
           )}
 
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+          />
+
           {/* Reviews Section */}
-          <Card className="p-8">
-            <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-            <ReviewForm listingId={business.id} />
-            <div className="flex flex-col gap-4 mt-8">
-              {business.reviews && business.reviews.length > 0 ? (
-                business.reviews.map((review: any) => (
-                  <div key={review.id} className="p-5 border-b border-outline-variant last:border-0 flex gap-4">
-                    <div className="w-10 h-10 bg-tertiary-container rounded-full overflow-hidden shrink-0 flex items-center justify-center text-on-tertiary-container font-bold">
-                      {review.user?.image ? (
-                        <img src={review.user.image} alt="User" className="w-full h-full object-cover" />
-                      ) : (
-                        (review.user?.name || 'U').charAt(0).toUpperCase()
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold">{review.user?.name || 'Customer'}</span>
-                        <span className="text-primary text-sm font-bold">
-                          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                        </span>
-                      </div>
-                      <p className="text-on-surface-variant">{review.comment}</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-on-surface-variant italic py-4">No reviews yet.</div>
-              )}
-            </div>
-          </Card>
+          <UnifiedReviewsSection business={business} />
         </div>
 
         {/* Sidebar Request Quote Form */}
         <div className="lg:col-span-4" id="book">
-          <div className="bg-primary-container text-on-primary-container rounded-3xl p-8 sticky top-24 shadow-lg">
+          <div className="bg-primary-container text-on-primary-container rounded-3xl p-8 sticky top-24 shadow-lg z-10">
             <h3 className="font-headline-md text-2xl mb-2">Request a Vehicle</h3>
             <p className="font-body-md mb-6 opacity-90">Send a direct message to {business.name} to arrange your transport.</p>
-            <div className="bg-surface rounded-2xl p-6 shadow-sm">
+            
+            <div className="mb-6 space-y-3 text-sm opacity-90">
+              {business.phone && (
+                <div>
+                  <strong>Phone:</strong> <a href={`tel:${business.phone}`} className="hover:underline ml-1">{business.phone}</a>
+                </div>
+              )}
+              {business.website && (
+                <div>
+                  <strong>Website:</strong> <a href={business.website} target="_blank" rel="noreferrer" className="hover:underline ml-1 truncate block max-w-full">{business.website}</a>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-surface text-on-surface rounded-2xl p-6 shadow-sm">
               <MessageForm receiverId={business.userId} listingId={business.id} />
             </div>
           </div>

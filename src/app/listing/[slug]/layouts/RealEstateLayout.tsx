@@ -1,11 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
-import Link from 'next/link';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function RealEstateLayout({ business }: { business: any }) {
+export default function RealEstateLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <>
       {/* Real Estate Hero Section - Taller with prominent contact */}
@@ -28,26 +34,35 @@ export default function RealEstateLayout({ business }: { business: any }) {
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-on-surface-variant">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-primary font-bold">★ {business.averageRating}</span>
-                  <span className="font-label-md">({business.reviewCount} reviews)</span>
+                  <span className="text-primary font-bold">★ {business.averageRating?.toFixed(1) || '0.0'}</span>
+                  <span className="font-label-md">({business.reviewCount || 0} reviews)</span>
                 </div>
-                <div className="flex items-center gap-1.5 border-l border-outline-variant pl-4">
-                  <span className="font-body-md">📍 {business.mapLink ? (
-                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline hover:text-primary transition-colors">
-                      {business.address}, {business.island.name}
-                    </a>
-                  ) : (
-                    <>{business.address}, {business.island.name}</>
-                  )}</span>
-                </div>
+                {business.address && (
+                  <div className="flex items-center gap-1.5 border-l border-outline-variant pl-4">
+                    <span className="font-body-md">📍 {business.mapLink ? (
+                      <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline hover:text-primary transition-colors">
+                        {business.address}, {business.island.name}
+                      </a>
+                    ) : (
+                      <>{business.address}, {business.island.name}</>
+                    )}</span>
+                  </div>
+                )}
               </div>
             </div>
             
-            <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-lg border border-outline-variant min-w-[320px]">
+            <div className="bg-surface-container-lowest p-6 rounded-2xl shadow-lg border border-outline-variant min-w-[320px] z-10">
               <h3 className="font-headline-sm mb-4">Contact Agent</h3>
-              <div className="font-body-lg font-bold mb-4 flex items-center gap-2">
-                <span className="text-primary">📞</span> {business.phone}
-              </div>
+              {business.phone && (
+                <a href={`tel:${business.phone}`} className="font-body-lg font-bold mb-4 flex items-center gap-2 hover:text-primary transition-colors">
+                  <span className="text-primary">📞</span> {business.phone}
+                </a>
+              )}
+              {business.website && (
+                <a href={business.website} target="_blank" rel="noreferrer" className="font-body-md font-medium mb-4 flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+                  <span className="text-primary">🌐</span> Visit Website
+                </a>
+              )}
               <MessageForm receiverId={business.userId} listingId={business.id} />
             </div>
           </div>
@@ -66,13 +81,15 @@ export default function RealEstateLayout({ business }: { business: any }) {
         {/* Main Content Area */}
         <div className="lg:col-span-12 flex flex-col gap-16">
           
-          <div className="flex flex-col md:flex-row gap-12" id="about">
-            <div className="flex-1">
-              <h2 className="font-headline-lg text-3xl text-on-surface border-b border-outline-variant pb-4 mb-6">About the Agency</h2>
-              <p className="font-body-lg text-lg text-on-surface-variant leading-relaxed whitespace-pre-line">
-                {business.description}
-              </p>
-            </div>
+          <div className="flex flex-col gap-6" id="about">
+            <h2 className="font-headline-lg text-3xl text-on-surface border-b border-outline-variant pb-4 mb-6">About the Agency</h2>
+            <ServicesTags servicesRaw={business.services} />
+            <DescriptionSection 
+              businessName={business.name}
+              categoryName={business.category?.name}
+              islandName={business.island?.name}
+              descriptionRaw={business.description}
+            />
           </div>
 
           {/* Featured Properties Showcase */}
@@ -99,9 +116,6 @@ export default function RealEstateLayout({ business }: { business: any }) {
                       <p className="font-body-md text-on-surface-variant line-clamp-2">
                         {property.description || 'View details for more information.'}
                       </p>
-                      <button className="mt-2 w-full py-2 bg-secondary/10 text-secondary hover:bg-secondary/20 rounded-lg font-label-md font-bold transition-colors">
-                        View Details
-                      </button>
                     </div>
                   </Card>
                 ))}
@@ -109,52 +123,24 @@ export default function RealEstateLayout({ business }: { business: any }) {
             </div>
           )}
 
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+          />
+
           {/* Reviews Section */}
           <div className="max-w-4xl mx-auto w-full">
-            <Card className="p-8">
-              <h2 className="font-headline-sm text-2xl mb-6">Client Reviews</h2>
-              <ReviewForm listingId={business.id} />
-
-              <div className="flex flex-col gap-6 mt-8">
-                {business.reviews && business.reviews.length > 0 ? (
-                  business.reviews.map((review: any) => (
-                    <div key={review.id} className="p-6 border border-outline-variant rounded-xl bg-surface-container-lowest">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-full overflow-hidden shrink-0 flex items-center justify-center text-primary font-bold text-xl">
-                          {review.user?.image ? (
-                            <img src={review.user.image} alt={review.user.name || 'User'} className="w-full h-full object-cover" />
-                          ) : (
-                            (review.user?.name || 'U').charAt(0).toUpperCase()
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-bold font-body-lg">
-                            {review.user?.id ? (
-                              <Link href={`/user/${review.user.id}`} className="hover:text-primary transition-colors hover:underline">
-                                {review.user.name || 'Anonymous User'}
-                              </Link>
-                            ) : (
-                              review.user?.name || 'Anonymous User'
-                            )}
-                          </div>
-                          <div className="text-sm text-on-surface-variant">
-                            {new Date(review.createdAt).toLocaleDateString()}
-                          </div>
-                        </div>
-                        <div className="text-primary font-bold text-lg">
-                          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                        </div>
-                      </div>
-                      <p className="font-body-lg text-on-surface-variant leading-relaxed">{review.comment}</p>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-on-surface-variant italic bg-surface-container-low p-8 rounded-xl text-center">
-                    No reviews yet. Be the first to review this agency!
-                  </div>
-                )}
-              </div>
-            </Card>
+            <UnifiedReviewsSection business={business} />
           </div>
         </div>
       </section>

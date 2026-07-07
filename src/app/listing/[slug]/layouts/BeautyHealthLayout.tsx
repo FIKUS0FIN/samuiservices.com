@@ -1,10 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function BeautyHealthLayout({ business }: { business: any }) {
+export default function BeautyHealthLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <div className="bg-[#faf5f5] min-h-screen text-gray-800 font-sans">
       {/* Beauty & Health Hero - Soft & Calming */}
@@ -24,7 +30,7 @@ export default function BeautyHealthLayout({ business }: { business: any }) {
           <div className="flex items-center justify-center gap-6 text-[#a08585] tracking-widest text-sm uppercase">
             <span>📍 {business.island.name}</span>
             <span className="w-1 h-1 rounded-full bg-[#d4c5c5]"></span>
-            <span>⭐ {business.averageRating}</span>
+            <span>⭐ {business.averageRating?.toFixed(1) || '0.0'}</span>
           </div>
         </div>
       </section>
@@ -48,11 +54,16 @@ export default function BeautyHealthLayout({ business }: { business: any }) {
 
         <div className="lg:col-span-7 flex flex-col gap-24">
           
-          <div className="text-center md:text-left">
-            <h2 className="font-serif text-4xl text-[#4a3f3f] mb-8">The Experience</h2>
-            <p className="font-light text-lg md:text-xl text-[#7a6b6b] leading-relaxed whitespace-pre-line">
-              {business.description}
-            </p>
+          <div className="text-center md:text-left flex flex-col gap-6">
+            <h2 className="font-serif text-4xl text-[#4a3f3f]">The Experience</h2>
+            <ServicesTags servicesRaw={business.services} theme="beauty" />
+            <DescriptionSection 
+              businessName={business.name}
+              categoryName={business.category?.name}
+              islandName={business.island?.name}
+              descriptionRaw={business.description}
+              theme="beauty"
+            />
           </div>
 
           {/* Service Menu */}
@@ -83,75 +94,81 @@ export default function BeautyHealthLayout({ business }: { business: any }) {
             </div>
           )}
 
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} theme="beauty" />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} theme="beauty" />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+            theme="beauty"
+          />
+
           {/* Reviews */}
           <div>
-            <h2 className="font-serif text-4xl text-[#4a3f3f] mb-12 text-center md:text-left">Guest Love</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
-              {business.reviews && business.reviews.length > 0 ? (
-                business.reviews.map((review: any) => (
-                  <div key={review.id} className="bg-white p-8 rounded-3xl shadow-sm border border-[#f4ecec]">
-                     <div className="text-[#e8b4b8] mb-4 text-xl">
-                       {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                     </div>
-                     <p className="font-light text-[#7a6b6b] leading-relaxed mb-6 italic">
-                       "{review.comment}"
-                     </p>
-                     <div className="flex items-center gap-4">
-                       <div className="w-10 h-10 bg-[#f9dbdd] rounded-full overflow-hidden text-[#a08585] flex items-center justify-center font-serif text-xl">
-                         {review.user?.image ? (
-                           <img src={review.user.image} alt="User" className="w-full h-full object-cover" />
-                         ) : (
-                           (review.user?.name || 'G').charAt(0).toUpperCase()
-                         )}
-                       </div>
-                       <div className="text-sm font-bold tracking-widest uppercase text-[#a08585]">
-                         {review.user?.name || 'Guest'}
-                       </div>
-                     </div>
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-2 text-[#a08585] italic">Be the first to share your experience.</div>
-              )}
-            </div>
-
-            <div className="bg-[#f4ecec] p-8 rounded-3xl">
-              <h3 className="font-serif text-2xl mb-6 text-[#4a3f3f]">Leave a Review</h3>
-              <ReviewForm listingId={business.id} />
-            </div>
+            <UnifiedReviewsSection business={business} theme="beauty" />
           </div>
         </div>
 
         {/* Sidebar Info & Booking */}
         <div className="lg:col-span-5">
-          <div className="bg-white rounded-[3rem] p-10 md:p-12 shadow-xl shadow-[#e0d6d6]/40 sticky top-24 border border-[#f4ecec]">
+          <div className="bg-white rounded-[3rem] p-10 md:p-12 shadow-xl shadow-[#e0d6d6]/40 sticky top-24 border border-[#f4ecec] z-10">
              <h3 className="font-serif text-3xl text-[#4a3f3f] mb-8 text-center">Reserve</h3>
              
              <div className="space-y-6 mb-12 text-center">
-                <div>
-                  <div className="text-[#a08585] text-xs font-bold tracking-widest uppercase mb-2">Location</div>
-                  {business.mapLink ? (
-                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="text-lg text-[#4a3f3f] hover:text-[#a08585] transition-colors hover:underline">
-                      {business.address}
-                    </a>
-                  ) : (
-                    <div className="text-lg text-[#4a3f3f]">{business.address}</div>
-                  )}
-                </div>
-                <div>
-                  <div className="text-[#a08585] text-xs font-bold tracking-widest uppercase mb-2">Contact</div>
-                  <div className="text-lg text-[#4a3f3f]">{business.phone}</div>
-                </div>
-                <div>
-                  <div className="text-[#a08585] text-xs font-bold tracking-widest uppercase mb-2">Hours</div>
-                  <div className="text-lg text-[#4a3f3f]">{business.hours || 'By appointment'}</div>
-                </div>
+                {business.address && (
+                  <div>
+                    <div className="text-[#a08585] text-xs font-bold tracking-widest uppercase mb-2">Location</div>
+                    {business.mapLink ? (
+                      <a href={business.mapLink} target="_blank" rel="noreferrer" className="text-lg text-[#4a3f3f] hover:text-[#a08585] transition-colors hover:underline">
+                        {business.address}
+                      </a>
+                    ) : (
+                      <div className="text-lg text-[#4a3f3f]">{business.address}</div>
+                    )}
+                  </div>
+                )}
+                {business.phone && (
+                  <div>
+                    <div className="text-[#a08585] text-xs font-bold tracking-widest uppercase mb-2">Contact</div>
+                    <a href={`tel:${business.phone}`} className="text-lg text-[#4a3f3f] hover:text-[#a08585] transition-colors">{business.phone}</a>
+                  </div>
+                )}
+                {business.website && (
+                  <div>
+                    <div className="text-[#a08585] text-xs font-bold tracking-widest uppercase mb-2">Website</div>
+                    <a href={business.website} target="_blank" rel="noreferrer" className="text-lg text-[#4a3f3f] hover:text-[#a08585] transition-colors hover:underline block truncate max-w-full">{business.website}</a>
+                  </div>
+                )}
              </div>
 
-             <div className="pt-8 border-t border-[#f4ecec]">
-               <h4 className="font-serif text-xl text-[#4a3f3f] mb-6 text-center">Send Inquiry</h4>
+             <div className="beauty-dark-form">
                <MessageForm receiverId={business.userId} listingId={business.id} />
              </div>
+             
+             <style dangerouslySetInnerHTML={{__html: `
+               .beauty-dark-form input, .beauty-dark-form textarea {
+                 background: #faf5f5;
+                 border: 1px solid #f4ecec;
+                 color: #4a3f3f;
+               }
+               .beauty-dark-form input:focus, .beauty-dark-form textarea:focus {
+                 border-color: #e8b4b8;
+               }
+               .beauty-dark-form button {
+                 background: #e8b4b8;
+                 color: white;
+               }
+               .beauty-dark-form button:hover {
+                 background: #d49da2;
+               }
+             `}} />
           </div>
         </div>
 

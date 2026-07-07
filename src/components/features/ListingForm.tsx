@@ -334,7 +334,19 @@ export function ListingForm({
             <label className="font-label-md text-sm text-on-surface-variant ml-1">Layout Style</label>
             <select name="layout" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface appearance-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" defaultValue={listing?.layout || 'standard'} required>
               <option value="standard">Standard Listing</option>
-              <option value="premium">Premium Landing Page</option>
+              <option value="real-estate">Real Estate Agency</option>
+              <option value="transportation">Transportation & Delivery</option>
+              <option value="electronics-repair">Electronics Repair</option>
+              <option value="construction">Construction & Repair</option>
+              <option value="children-services">Children's Services</option>
+              <option value="home-garden">Home & Garden Services</option>
+              <option value="clothing">Clothing & Accessories</option>
+              <option value="gift-shop">Gift & Souvenir Shop</option>
+              <option value="furniture">Furniture & Interior Shop</option>
+              <option value="tours">Tours Provider</option>
+              <option value="beauty-health">Beauty & Health Services</option>
+              <option value="hobbies-sports">Hobbies & Sports Service</option>
+              <option value="business-services">Business Service</option>
             </select>
           </div>
         </div>

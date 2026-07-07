@@ -1,12 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function ClothingLayout({ business }: { business: any }) {
+export default function ClothingLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
-    <div className="bg-white min-h-screen font-sans">
+    <div className="bg-white min-h-screen font-sans text-gray-900">
       {/* Fashion Hero - Editorial Style */}
       <section className="relative w-full h-[70vh] md:h-[85vh]">
         <div className="absolute inset-0 bg-black/10 z-10 pointer-events-none"></div>
@@ -18,15 +24,15 @@ export default function ClothingLayout({ business }: { business: any }) {
         
         <div className="absolute inset-0 z-20 flex flex-col justify-center items-center text-center p-6 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
            <div className="mt-auto pb-12 md:pb-24 max-w-4xl">
-             <div className="text-white/80 uppercase tracking-[0.3em] text-xs font-bold mb-4">
-               Clothing & Accessories
-             </div>
-             <h1 className="font-serif text-5xl md:text-8xl text-white mb-6 uppercase tracking-wider" style={{ letterSpacing: '0.05em' }}>
-               {business.name}
-             </h1>
-             <p className="text-white/90 text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto">
-               Curated fashion in the heart of {business.island.name}.
-             </p>
+              <div className="text-white/80 uppercase tracking-[0.3em] text-xs font-bold mb-4">
+                Clothing & Accessories
+              </div>
+              <h1 className="font-serif text-5xl md:text-8xl text-white mb-6 uppercase tracking-wider" style={{ letterSpacing: '0.05em' }}>
+                {business.name}
+              </h1>
+              <p className="text-white/90 text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto">
+                Curated fashion in the heart of {business.island.name}.
+              </p>
            </div>
         </div>
       </section>
@@ -42,7 +48,7 @@ export default function ClothingLayout({ business }: { business: any }) {
                <span>Visit Us At {business.address}</span>
              )}
             <span>•</span>
-            <span>{business.averageRating} Star Rating</span>
+            <span>{business.averageRating?.toFixed(1) || '0.0'} Star Rating</span>
             <span className="md:hidden">•</span>
             <span className="hidden md:inline">Latest Collections In-Store</span>
          </div>
@@ -61,12 +67,16 @@ export default function ClothingLayout({ business }: { business: any }) {
           <div className="lg:col-span-8 flex flex-col gap-20">
             
             {/* The Brand Story */}
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="font-serif text-3xl md:text-4xl uppercase tracking-widest mb-8">The Brand</h2>
-              <div className="w-12 h-[1px] bg-black mx-auto mb-8"></div>
-              <p className="font-light text-lg md:text-xl leading-loose text-gray-700 whitespace-pre-line">
-                {business.description}
-              </p>
+            <div className="text-center max-w-3xl mx-auto flex flex-col gap-6">
+              <h2 className="font-serif text-3xl md:text-4xl uppercase tracking-widest">The Brand</h2>
+              <div className="w-12 h-[1px] bg-black mx-auto"></div>
+              <ServicesTags servicesRaw={business.services} />
+              <DescriptionSection 
+                businessName={business.name}
+                categoryName={business.category?.name}
+                islandName={business.island?.name}
+                descriptionRaw={business.description}
+              />
             </div>
 
             {/* Collection / Products */}
@@ -89,7 +99,7 @@ export default function ClothingLayout({ business }: { business: any }) {
                       </div>
                       <div className="text-center">
                         <h3 className="font-medium text-lg uppercase tracking-wider mb-2">{product.name}</h3>
-                        <p className="text-gray-500 text-sm font-light mb-3 line-clamp-2 px-4">{product.description}</p>
+                        <p className="text-gray-550 text-sm font-light mb-3 line-clamp-2 px-4">{product.description}</p>
                         {product.price && (
                           <div className="font-serif text-lg">฿{product.price.toLocaleString()}</div>
                         )}
@@ -100,63 +110,59 @@ export default function ClothingLayout({ business }: { business: any }) {
               </div>
             )}
 
-            {/* Reviews as Editorial Quotes */}
+            {/* Opening Hours */}
+            <OpeningHoursWidget hoursRaw={business.hours} />
+
+            {/* Gallery Grid */}
+            <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+            {/* Location Map */}
+            <InteractiveMap 
+              businessName={business.name}
+              address={business.address}
+              lat={business.lat}
+              lng={business.lng}
+              mapLink={business.mapLink}
+            />
+
+            {/* Reviews Section */}
             <div className="border-t border-black/10 pt-20">
-              <h2 className="font-serif text-3xl text-center uppercase tracking-widest mb-16">What They Say</h2>
-              
-              <div className="grid grid-cols-1 gap-12 max-w-3xl mx-auto">
-                {business.reviews && business.reviews.length > 0 ? (
-                  business.reviews.map((review: any) => (
-                    <div key={review.id} className="text-center">
-                      <div className="text-gray-300 font-serif text-6xl mb-4 leading-none">"</div>
-                      <p className="font-serif text-xl md:text-2xl italic leading-relaxed mb-6">
-                        {review.comment}
-                      </p>
-                      <div className="text-sm uppercase tracking-widest font-bold">
-                        {review.user?.name || 'Customer'}
-                      </div>
-                      <div className="text-xs text-gray-400 mt-2 tracking-widest">
-                        {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-center text-gray-400 italic font-serif text-xl">Be the first to leave a review.</p>
-                )}
-              </div>
-              
-              <div className="mt-16 max-w-xl mx-auto border border-black/10 p-8">
-                <ReviewForm listingId={business.id} />
-              </div>
+              <UnifiedReviewsSection business={business} />
             </div>
           </div>
 
           {/* Boutique Info Sidebar */}
           <div className="lg:col-span-4" id="shop">
-            <div className="sticky top-24 border border-black/10 p-8 md:p-10">
+            <div className="sticky top-24 border border-black/10 p-8 md:p-10 z-10 bg-white">
               <h3 className="font-serif text-2xl uppercase tracking-widest mb-8 text-center">Boutique Info</h3>
               
               <div className="space-y-8 text-sm tracking-wide font-light">
-                <div>
-                  <div className="uppercase font-bold mb-2">Visit Us</div>
-                  {business.mapLink ? (
-                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="leading-loose text-gray-600 hover:text-black transition-colors hover:underline block">
-                      {business.address}
-                    </a>
-                  ) : (
-                    <div className="leading-loose text-gray-600">{business.address}</div>
-                  )}
-                </div>
+                {business.address && (
+                  <div>
+                    <div className="uppercase font-bold mb-2">Visit Us</div>
+                    {business.mapLink ? (
+                      <a href={business.mapLink} target="_blank" rel="noreferrer" className="leading-loose text-gray-600 hover:text-black transition-colors hover:underline block">
+                        {business.address}
+                      </a>
+                    ) : (
+                      <div className="leading-loose text-gray-600">{business.address}</div>
+                    )}
+                  </div>
+                )}
                 
-                <div>
-                  <div className="uppercase font-bold mb-2">Contact</div>
-                  <div className="leading-loose text-gray-600">{business.phone}</div>
-                </div>
+                {business.phone && (
+                  <div>
+                    <div className="uppercase font-bold mb-2">Contact</div>
+                    <a href={`tel:${business.phone}`} className="leading-loose text-gray-600 hover:text-black transition-colors block">{business.phone}</a>
+                  </div>
+                )}
                 
-                <div>
-                  <div className="uppercase font-bold mb-2">Hours</div>
-                  <div className="leading-loose text-gray-600">{business.hours || 'Contact for hours'}</div>
-                </div>
+                {business.website && (
+                  <div>
+                    <div className="uppercase font-bold mb-2">Website</div>
+                    <a href={business.website} target="_blank" rel="noreferrer" className="leading-loose text-gray-600 hover:text-black transition-colors block truncate max-w-full">{business.website}</a>
+                  </div>
+                )}
               </div>
 
               <div className="mt-12 pt-12 border-t border-black/10">

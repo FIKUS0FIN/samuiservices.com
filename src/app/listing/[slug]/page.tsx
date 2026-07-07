@@ -354,24 +354,44 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
   if (faqSchema) schemas.push(faqSchema);
 
   // Route to the appropriate layout
+  const layout = business.layout || 'standard';
   const categoryName = business.category?.name || '';
   let LayoutComponent = StandardLayout;
 
-  switch (categoryName) {
-    case 'Real Estate agencies': LayoutComponent = RealEstateLayout; break;
-    case 'Transportation and Delivery Service': LayoutComponent = TransportationLayout; break;
-    case 'Electronics Repair Serivce': LayoutComponent = ElectronicsRepairLayout; break;
-    case 'Construction & Repair Service': LayoutComponent = ConstructionLayout; break;
-    case "Children's Interactions Services": LayoutComponent = ChildrenServicesLayout; break;
-    case 'Home & Garden Services': LayoutComponent = HomeGardenLayout; break;
-    case 'Clothing & Accessories Shops': LayoutComponent = ClothingLayout; break;
-    case 'Gitf & Souvenir Shops': LayoutComponent = GiftShopLayout; break;
-    case 'Furniture & Interior Shops': LayoutComponent = FurnitureLayout; break;
-    case 'Toure Providers': LayoutComponent = ToursLayout; break;
-    case 'Beauty & Health Services': LayoutComponent = BeautyHealthLayout; break;
-    case 'Hobbies & Sports Service': LayoutComponent = HobbiesSportsLayout; break;
-    case 'Business Service': LayoutComponent = BusinessServiceLayout; break;
-    default: LayoutComponent = StandardLayout; break;
+  switch (layout) {
+    case 'real-estate': LayoutComponent = RealEstateLayout; break;
+    case 'transportation': LayoutComponent = TransportationLayout; break;
+    case 'electronics-repair': LayoutComponent = ElectronicsRepairLayout; break;
+    case 'construction': LayoutComponent = ConstructionLayout; break;
+    case 'children-services': LayoutComponent = ChildrenServicesLayout; break;
+    case 'home-garden': LayoutComponent = HomeGardenLayout; break;
+    case 'clothing': LayoutComponent = ClothingLayout; break;
+    case 'gift-shop': LayoutComponent = GiftShopLayout; break;
+    case 'furniture': LayoutComponent = FurnitureLayout; break;
+    case 'tours': LayoutComponent = ToursLayout; break;
+    case 'beauty-health': LayoutComponent = BeautyHealthLayout; break;
+    case 'hobbies-sports': LayoutComponent = HobbiesSportsLayout; break;
+    case 'business-services': LayoutComponent = BusinessServiceLayout; break;
+    case 'standard': LayoutComponent = StandardLayout; break;
+    default:
+      // Fallback to category-based matching for backward compatibility
+      switch (categoryName) {
+        case 'Real Estate agencies': LayoutComponent = RealEstateLayout; break;
+        case 'Transportation and Delivery Service': LayoutComponent = TransportationLayout; break;
+        case 'Electronics Repair Serivce': LayoutComponent = ElectronicsRepairLayout; break;
+        case 'Construction & Repair Service': LayoutComponent = ConstructionLayout; break;
+        case "Children's Interactions Services": LayoutComponent = ChildrenServicesLayout; break;
+        case 'Home & Garden Services': LayoutComponent = HomeGardenLayout; break;
+        case 'Clothing & Accessories Shops': LayoutComponent = ClothingLayout; break;
+        case 'Gitf & Souvenir Shops': LayoutComponent = GiftShopLayout; break;
+        case 'Furniture & Interior Shops': LayoutComponent = FurnitureLayout; break;
+        case 'Toure Providers': LayoutComponent = ToursLayout; break;
+        case 'Beauty & Health Services': LayoutComponent = BeautyHealthLayout; break;
+        case 'Hobbies & Sports Service': LayoutComponent = HobbiesSportsLayout; break;
+        case 'Business Service': LayoutComponent = BusinessServiceLayout; break;
+        default: LayoutComponent = StandardLayout; break;
+      }
+      break;
   }
 
   return (

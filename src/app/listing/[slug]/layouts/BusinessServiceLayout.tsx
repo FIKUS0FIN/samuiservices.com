@@ -1,10 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function BusinessServiceLayout({ business }: { business: any }) {
+export default function BusinessServiceLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <div className="bg-[#f8f9fa] min-h-screen text-[#212529] font-sans">
       {/* Professional Hero Section */}
@@ -34,8 +40,8 @@ export default function BusinessServiceLayout({ business }: { business: any }) {
               </a>
               <div className="flex items-center gap-2 text-[#495057]">
                 <span className="text-[#ffc107] text-xl">★</span>
-                <span className="font-bold">{business.averageRating}</span>
-                <span className="text-[#adb5bd]">({business.reviewCount} Reviews)</span>
+                <span className="font-bold">{business.averageRating?.toFixed(1) || '0.0'}</span>
+                <span className="text-[#adb5bd]">({business.reviewCount || 0} Reviews)</span>
               </div>
             </div>
           </div>
@@ -63,9 +69,15 @@ export default function BusinessServiceLayout({ business }: { business: any }) {
           {/* Company Overview */}
           <div>
             <h2 className="text-3xl font-bold text-[#212529] mb-6 border-b border-[#dee2e6] pb-4">Company Overview</h2>
-            <p className="text-lg text-[#495057] leading-relaxed whitespace-pre-line">
-              {business.description}
-            </p>
+            <div className="flex flex-col gap-6">
+              <ServicesTags servicesRaw={business.services} />
+              <DescriptionSection 
+                businessName={business.name}
+                categoryName={business.category?.name}
+                islandName={business.island?.name}
+                descriptionRaw={business.description}
+              />
+            </div>
           </div>
 
           {/* Core Services */}
@@ -93,86 +105,89 @@ export default function BusinessServiceLayout({ business }: { business: any }) {
             </div>
           )}
 
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+          />
+
           {/* Client References / Reviews */}
           <div>
-            <h2 className="text-3xl font-bold text-[#212529] mb-8 border-b border-[#dee2e6] pb-4">Client References</h2>
-            
-            <div className="space-y-6 mb-12">
-              {business.reviews && business.reviews.length > 0 ? (
-                business.reviews.map((review: any) => (
-                  <div key={review.id} className="bg-white p-6 rounded-lg border border-[#dee2e6] flex gap-6">
-                    <div className="w-12 h-12 bg-[#f8f9fa] border border-[#dee2e6] rounded-full flex items-center justify-center text-[#495057] font-bold text-xl shrink-0">
-                      {review.user?.image ? (
-                        <img src={review.user.image} alt="User" className="w-full h-full object-cover rounded-full" />
-                      ) : (
-                        (review.user?.name || 'C').charAt(0).toUpperCase()
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="font-bold text-[#212529]">{review.user?.name || 'Corporate Client'}</div>
-                        <div className="text-[#ffc107] text-sm">
-                          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                        </div>
-                      </div>
-                      <p className="text-[#495057] italic leading-relaxed text-sm">
-                        "{review.comment}"
-                      </p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-[#6c757d] bg-white p-6 border border-[#dee2e6] rounded-lg">No references available yet.</div>
-              )}
-            </div>
-            
-            <div className="bg-[#f8f9fa] border border-[#dee2e6] p-8 rounded-lg">
-              <h3 className="font-bold text-lg mb-4 text-[#212529]">Leave a Review</h3>
-              <ReviewForm listingId={business.id} />
-            </div>
+            <UnifiedReviewsSection business={business} />
           </div>
         </div>
 
         {/* Contact Information */}
         <div className="lg:col-span-4" id="contact">
-          <div className="bg-white border border-[#dee2e6] rounded-lg shadow-sm sticky top-24">
+          <div className="bg-white border border-[#dee2e6] rounded-lg shadow-sm sticky top-24 z-10">
             <div className="p-6 border-b border-[#dee2e6] bg-[#f8f9fa] rounded-t-lg">
               <h3 className="text-xl font-bold text-[#212529]">Contact Information</h3>
             </div>
             
             <div className="p-6 space-y-6">
-              <div className="flex items-start gap-4 text-[#495057]">
-                 <div className="text-[#0d6efd] mt-1">📍</div>
-                  <div>
-                    <div className="text-sm font-bold text-[#212529] mb-1">Office Address</div>
-                    {business.mapLink ? (
-                      <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline text-[#0d6efd] transition-colors">
-                        {business.address}
-                      </a>
-                    ) : (
-                      <div>{business.address}</div>
-                    )}
-                  </div>
-              </div>
-              <div className="flex items-start gap-4 text-[#495057]">
-                 <div className="text-[#0d6efd] mt-1">📞</div>
-                 <div>
-                   <div className="text-sm font-bold text-[#212529] mb-1">Phone Number</div>
-                   <div>{business.phone}</div>
-                 </div>
-              </div>
-              <div className="flex items-start gap-4 text-[#495057]">
-                 <div className="text-[#0d6efd] mt-1">🕒</div>
-                 <div>
-                   <div className="text-sm font-bold text-[#212529] mb-1">Business Hours</div>
-                   <div>{business.hours || 'Mon-Fri, 9:00 AM - 6:00 PM'}</div>
-                 </div>
-              </div>
+              {business.address && (
+                <div className="flex items-start gap-4 text-[#495057]">
+                   <div className="text-[#0d6efd] mt-1">📍</div>
+                    <div>
+                      <div className="text-sm font-bold text-[#212529] mb-1">Office Address</div>
+                      {business.mapLink ? (
+                        <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline text-[#0d6efd] transition-colors">
+                          {business.address}
+                        </a>
+                      ) : (
+                        <div>{business.address}</div>
+                      )}
+                    </div>
+                </div>
+              )}
+              {business.phone && (
+                <div className="flex items-start gap-4 text-[#495057]">
+                   <div className="text-[#0d6efd] mt-1">📞</div>
+                   <div>
+                     <div className="text-sm font-bold text-[#212529] mb-1">Phone Number</div>
+                     <a href={`tel:${business.phone}`} className="hover:underline">{business.phone}</a>
+                   </div>
+                </div>
+              )}
+              {business.website && (
+                <div className="flex items-start gap-4 text-[#495057]">
+                   <div className="text-[#0d6efd] mt-1">🌐</div>
+                   <div>
+                     <div className="text-sm font-bold text-[#212529] mb-1">Website</div>
+                     <a href={business.website} target="_blank" rel="noreferrer" className="hover:underline block truncate max-w-[200px]">{business.website}</a>
+                   </div>
+                </div>
+              )}
             </div>
 
             <div className="p-6 border-t border-[#dee2e6] bg-[#f8f9fa] rounded-b-lg">
               <h4 className="font-bold text-[#212529] mb-4">Send an Inquiry</h4>
-              <MessageForm receiverId={business.userId} listingId={business.id} />
+              <div className="business-dark-form">
+                <MessageForm receiverId={business.userId} listingId={business.id} />
+              </div>
+              <style dangerouslySetInnerHTML={{__html: `
+                .business-dark-form input, .business-dark-form textarea {
+                  background: #fff;
+                  border: 1px solid #dee2e6;
+                }
+                .business-dark-form button {
+                  background: #0d6efd;
+                  color: white;
+                  border-radius: 4px;
+                }
+                .business-dark-form button:hover {
+                  background: #0b5ed7;
+                }
+              `}} />
             </div>
           </div>
         </div>

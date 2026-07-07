@@ -1,10 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function ChildrenServicesLayout({ business }: { business: any }) {
+export default function ChildrenServicesLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <div className="bg-[#fcf8e8] min-h-screen">
       {/* Playful Hero Section */}
@@ -22,7 +28,7 @@ export default function ChildrenServicesLayout({ business }: { business: any }) 
            <div className="font-bold text-xl flex justify-center items-center gap-2 drop-shadow-md">
              <span>📍 {business.island.name}</span>
              <span>•</span>
-             <span>⭐ {business.averageRating} Rating</span>
+             <span>⭐ {business.averageRating?.toFixed(1) || '0.0'} Rating</span>
            </div>
         </div>
       </section>
@@ -42,9 +48,15 @@ export default function ChildrenServicesLayout({ business }: { business: any }) 
           <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border-2 border-primary/20 relative" id="about">
             <div className="absolute -top-6 -left-4 text-6xl">✨</div>
             <h2 className="font-display text-3xl md:text-4xl text-primary font-bold mb-6">About Us</h2>
-            <p className="font-body-lg text-lg text-on-surface-variant leading-relaxed whitespace-pre-line">
-              {business.description}
-            </p>
+            <div className="flex flex-col gap-6">
+              <ServicesTags servicesRaw={business.services} />
+              <DescriptionSection 
+                businessName={business.name}
+                categoryName={business.category?.name}
+                islandName={business.island?.name}
+                descriptionRaw={business.description}
+              />
+            </div>
           </div>
 
           {/* Activities & Programs */}
@@ -65,7 +77,7 @@ export default function ChildrenServicesLayout({ business }: { business: any }) 
                       )}
                       <div className="p-6">
                         <h3 className="font-display text-2xl font-bold mb-2">{item.name}</h3>
-                        <p className="text-on-surface-variant mb-4">{item.description}</p>
+                        <p className="text-on-surface-variant mb-4 text-sm">{item.description}</p>
                         {item.price && (
                           <div className="inline-block bg-surface-container text-on-surface font-bold px-4 py-2 rounded-full text-sm">
                             ฿{item.price.toLocaleString()}
@@ -79,79 +91,83 @@ export default function ChildrenServicesLayout({ business }: { business: any }) 
             </div>
           )}
 
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+          />
+
           {/* Parent Reviews */}
           <div className="bg-white p-8 rounded-[2rem] shadow-sm border-2 border-tertiary/20">
-            <h2 className="font-display text-3xl text-tertiary font-bold mb-2">Happy Parents</h2>
-            <p className="text-on-surface-variant mb-6">See what other families are saying.</p>
-            <ReviewForm listingId={business.id} />
-
-            <div className="flex flex-col gap-4 mt-8">
-              {business.reviews && business.reviews.length > 0 ? (
-                business.reviews.map((review: any) => (
-                  <div key={review.id} className="p-6 bg-surface-container-lowest rounded-2xl">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 bg-[#ffb74d] rounded-full overflow-hidden flex items-center justify-center text-white font-bold text-xl border-2 border-white shadow-sm">
-                        {review.user?.image ? (
-                          <img src={review.user.image} alt={review.user.name || 'User'} className="w-full h-full object-cover" />
-                        ) : (
-                          (review.user?.name || 'P').charAt(0).toUpperCase()
-                        )}
-                      </div>
-                      <div>
-                        <div className="font-bold text-lg">{review.user?.name || 'Parent'}</div>
-                        <div className="text-secondary font-bold text-sm tracking-widest">
-                          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-on-surface-variant text-lg">"{review.comment}"</p>
-                  </div>
-                ))
-              ) : (
-                <div className="text-on-surface-variant text-center py-8">No reviews yet. We'd love to hear from you!</div>
-              )}
-            </div>
+            <UnifiedReviewsSection business={business} />
           </div>
         </div>
 
         {/* Sidebar Info */}
         <div className="lg:col-span-4 flex flex-col gap-8">
-          <div className="bg-primary-container text-on-primary-container p-8 rounded-[2rem] shadow-sm transform rotate-1 hover:rotate-0 transition-transform">
+          <div className="bg-primary-container text-on-primary-container p-8 rounded-[2rem] shadow-sm transform rotate-1 hover:rotate-0 transition-transform z-10">
             <h3 className="font-display text-2xl font-bold mb-6">Contact & Location</h3>
             <div className="space-y-6">
-              <div className="flex gap-4">
-                <div className="text-2xl">📍</div>
-                <div>
-                  <div className="font-bold mb-1 opacity-80 text-sm uppercase">Where to find us</div>
-                  {business.mapLink ? (
-                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline transition-colors">
-                      {business.address}
-                    </a>
-                  ) : (
-                    <div className="font-medium text-lg">{business.address}</div>
-                  )}
+              {business.address && (
+                <div className="flex gap-4">
+                  <div className="text-2xl text-primary">📍</div>
+                  <div>
+                    <div className="font-bold mb-1 opacity-80 text-sm uppercase">Where to find us</div>
+                    {business.mapLink ? (
+                      <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline transition-colors">
+                        {business.address}
+                      </a>
+                    ) : (
+                      <div className="font-medium text-lg">{business.address}</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="text-2xl">📞</div>
-                <div>
-                  <div className="font-bold mb-1 opacity-80 text-sm uppercase">Call us</div>
-                  <div className="font-medium text-lg">{business.phone}</div>
+              )}
+              {business.phone && (
+                <div className="flex gap-4">
+                  <div className="text-2xl text-secondary">📞</div>
+                  <div>
+                    <div className="font-bold mb-1 opacity-80 text-sm uppercase">Call us</div>
+                    <a href={`tel:${business.phone}`} className="font-medium text-lg hover:underline">{business.phone}</a>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="text-2xl">🕒</div>
-                <div>
-                  <div className="font-bold mb-1 opacity-80 text-sm uppercase">Open Hours</div>
-                  <div className="font-medium text-lg">{business.hours || 'Contact us for hours'}</div>
+              )}
+              {business.website && (
+                <div className="flex gap-4">
+                  <div className="text-2xl text-tertiary">🌐</div>
+                  <div>
+                    <div className="font-bold mb-1 opacity-80 text-sm uppercase">Website</div>
+                    <a href={business.website} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline truncate block max-w-[200px]">{business.website}</a>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
           <div className="bg-white p-8 rounded-[2rem] shadow-sm border-2 border-outline-variant">
             <h3 className="font-display text-2xl font-bold mb-4">Send a Message</h3>
-            <MessageForm receiverId={business.userId} listingId={business.id} />
+            <div className="children-dark-form">
+              <MessageForm receiverId={business.userId} listingId={business.id} />
+            </div>
+            <style dangerouslySetInnerHTML={{__html: `
+              .children-dark-form input, .children-dark-form textarea {
+                background: #fcf8e8;
+                border: 2px border-primary/20;
+              }
+              .children-dark-form button {
+                background: var(--md-sys-color-primary);
+                color: white;
+              }
+            `}} />
           </div>
         </div>
 

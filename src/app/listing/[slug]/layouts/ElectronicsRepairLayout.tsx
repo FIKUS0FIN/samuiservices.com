@@ -1,10 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function ElectronicsRepairLayout({ business }: { business: any }) {
+export default function ElectronicsRepairLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <>
       {/* Electronics Hero Section - Tech focused */}
@@ -29,18 +36,20 @@ export default function ElectronicsRepairLayout({ business }: { business: any })
               <a href="#services" className="px-6 py-3 bg-primary text-on-primary rounded-xl font-bold hover:bg-primary/90 transition-colors">
                 View Repair Services
               </a>
-              <a href={`tel:${business.phone}`} className="px-6 py-3 bg-surface-container-highest text-on-surface border border-outline rounded-xl font-bold hover:bg-surface-container-high transition-colors">
-                Call {business.phone}
-              </a>
+              {business.phone && (
+                <a href={`tel:${business.phone}`} className="px-6 py-3 bg-surface-container-highest text-on-surface border border-outline rounded-xl font-bold hover:bg-surface-container-high transition-colors">
+                  Call {business.phone}
+                </a>
+              )}
             </div>
           </div>
           {business.image && (
             <div className="w-full md:w-1/3 aspect-square rounded-3xl overflow-hidden border-4 border-surface shadow-xl relative">
               <img src={business.image} alt={business.name} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-                 <div className="text-white font-bold text-xl flex items-center gap-2">
-                   <span>⭐</span> {business.averageRating} ({business.reviewCount} Reviews)
-                 </div>
+                  <div className="text-white font-bold text-xl flex items-center gap-2">
+                    <span>⭐</span> {business.averageRating?.toFixed(1) || '0.0'} ({business.reviewCount || 0} Reviews)
+                  </div>
               </div>
             </div>
           )}
@@ -60,9 +69,15 @@ export default function ElectronicsRepairLayout({ business }: { business: any })
           
           <div className="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant">
             <h2 className="font-headline-md text-2xl mb-4">About Our Workshop</h2>
-            <p className="font-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line">
-              {business.description}
-            </p>
+            <div className="flex flex-col gap-6">
+              <ServicesTags servicesRaw={business.services} />
+              <DescriptionSection 
+                businessName={business.name}
+                categoryName={business.category?.name}
+                islandName={business.island?.name}
+                descriptionRaw={business.description}
+              />
+            </div>
           </div>
 
           {/* Services List (Tech focused table-like layout) */}
@@ -91,7 +106,6 @@ export default function ElectronicsRepairLayout({ business }: { business: any })
                       </div>
                       <div className="col-span-1 md:col-span-3 text-sm text-on-surface-variant md:text-center flex md:block items-center gap-2">
                         <span className="md:hidden font-bold">Time:</span> 
-                        {/* Assuming description might hold some time info, or fallback */}
                         {service.description?.includes('hour') || service.description?.includes('day') ? service.description.split('.')[0] : 'Varies'}
                       </div>
                       <div className="col-span-1 md:col-span-3 font-bold text-primary text-lg md:text-right">
@@ -107,42 +121,39 @@ export default function ElectronicsRepairLayout({ business }: { business: any })
           {/* Trust & Warranty Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
              <div className="bg-primary/10 p-6 rounded-xl border border-primary/20 text-center">
-               <div className="text-3xl mb-3">🛡️</div>
-               <h4 className="font-bold mb-2 text-primary">Warranty</h4>
-               <p className="text-sm text-on-surface-variant">We provide 90-day warranty on all parts and labor.</p>
+                <div className="text-3xl mb-3">🛡️</div>
+                <h4 className="font-bold mb-2 text-primary">Warranty</h4>
+                <p className="text-sm text-on-surface-variant">We provide 90-day warranty on all parts and labor.</p>
              </div>
              <div className="bg-secondary/10 p-6 rounded-xl border border-secondary/20 text-center">
-               <div className="text-3xl mb-3">⚡</div>
-               <h4 className="font-bold mb-2 text-secondary">Fast Turnaround</h4>
-               <p className="text-sm text-on-surface-variant">Same-day repairs available for most screen replacements.</p>
+                <div className="text-3xl mb-3">⚡</div>
+                <h4 className="font-bold mb-2 text-secondary">Fast Turnaround</h4>
+                <p className="text-sm text-on-surface-variant">Same-day repairs available for most screen replacements.</p>
              </div>
              <div className="bg-tertiary/10 p-6 rounded-xl border border-tertiary/20 text-center">
-               <div className="text-3xl mb-3">🔍</div>
-               <h4 className="font-bold mb-2 text-tertiary">Free Diagnostics</h4>
-               <p className="text-sm text-on-surface-variant">No fix, no fee policy on standard device evaluations.</p>
+                <div className="text-3xl mb-3">🔍</div>
+                <h4 className="font-bold mb-2 text-tertiary">Free Diagnostics</h4>
+                <p className="text-sm text-on-surface-variant">No fix, no fee policy on standard device evaluations.</p>
              </div>
           </div>
 
-          <Card className="p-8">
-            <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-            <ReviewForm listingId={business.id} />
-            {/* Standard Review list */}
-            <div className="flex flex-col gap-4 mt-6">
-              {business.reviews && business.reviews.length > 0 ? (
-                business.reviews.map((review: any) => (
-                  <div key={review.id} className="p-4 bg-surface-container-low rounded-lg border border-outline-variant">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="font-bold">{review.user?.name || 'Customer'}</div>
-                      <div className="text-primary text-sm tracking-widest">{'★'.repeat(review.rating)}</div>
-                    </div>
-                    <p className="text-sm text-on-surface-variant">{review.comment}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="text-sm text-on-surface-variant">No reviews yet.</div>
-              )}
-            </div>
-          </Card>
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+          />
+
+          {/* Reviews Section */}
+          <UnifiedReviewsSection business={business} />
         </div>
 
         {/* Sidebar */}
@@ -150,24 +161,34 @@ export default function ElectronicsRepairLayout({ business }: { business: any })
           <Card className="p-6">
             <h3 className="font-headline-sm mb-4">Location & Hours</h3>
             <div className="space-y-4">
-              <div>
-                <div className="text-sm text-on-surface-variant mb-1 font-bold">Address</div>
-                {business.mapLink ? (
-                  <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline text-primary transition-colors block">
-                    {business.address}
-                  </a>
-                ) : (
-                  <div>{business.address}</div>
-                )}
-              </div>
-              <div>
-                <div className="text-sm text-on-surface-variant mb-1 font-bold">Operating Hours</div>
-                <div>{business.hours || 'Contact for hours'}</div>
-              </div>
+              {business.address && (
+                <div>
+                  <div className="text-sm text-on-surface-variant mb-1 font-bold">Address</div>
+                  {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline text-primary transition-colors block">
+                      {business.address}
+                    </a>
+                  ) : (
+                    <div>{business.address}</div>
+                  )}
+                </div>
+              )}
+              {business.phone && (
+                <div>
+                  <div className="text-sm text-on-surface-variant mb-1 font-bold">Phone</div>
+                  <a href={`tel:${business.phone}`} className="hover:underline text-primary transition-colors block">{business.phone}</a>
+                </div>
+              )}
+              {business.website && (
+                <div>
+                  <div className="text-sm text-on-surface-variant mb-1 font-bold">Website</div>
+                  <a href={business.website} target="_blank" rel="noreferrer" className="hover:underline text-primary transition-colors block truncate max-w-full">{business.website}</a>
+                </div>
+              )}
             </div>
           </Card>
 
-          <Card className="p-6 bg-surface-container-low">
+          <Card className="p-6 bg-surface-container-low z-10">
             <h3 className="font-headline-sm mb-4">Message Technician</h3>
             <MessageForm receiverId={business.userId} listingId={business.id} />
           </Card>

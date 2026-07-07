@@ -1,10 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function GiftShopLayout({ business }: { business: any }) {
+export default function GiftShopLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <div className="bg-[#fff9f5] min-h-screen text-[#4a3b32]">
       {/* Gift Shop Hero - Cozy & Welcoming */}
@@ -24,16 +30,10 @@ export default function GiftShopLayout({ business }: { business: any }) {
               Find the perfect keepsake from {business.island.name}.
             </p>
             <div className="flex items-center justify-center md:justify-start gap-4">
-              <span className="text-[#e07a5f] font-bold text-lg">★ {business.averageRating}</span>
-              <span className="text-[#8c7462]">({business.reviewCount} Reviews)</span>
+              <span className="text-[#e07a5f] font-bold text-lg">★ {business.averageRating?.toFixed(1) || '0.0'}</span>
+              <span className="text-[#8c7462]">({business.reviewCount || 0} Reviews)</span>
               <span className="text-[#d4bcae]">|</span>
-              <span className="text-[#8c7462]">📍 {business.mapLink ? (
-                <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline">
-                  {business.address}
-                </a>
-              ) : (
-                business.address
-              )}</span>
+              <span className="text-[#8c7462]">📍 {business.island.name}</span>
             </div>
           </div>
           
@@ -60,9 +60,15 @@ export default function GiftShopLayout({ business }: { business: any }) {
           
           <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-[#f0e4dc]">
             <h2 className="font-display text-3xl font-bold mb-6 text-[#3d2f26]">Our Story</h2>
-            <p className="font-body-lg text-lg text-[#6b584a] leading-relaxed whitespace-pre-line">
-              {business.description}
-            </p>
+            <div className="flex flex-col gap-6">
+              <ServicesTags servicesRaw={business.services} />
+              <DescriptionSection 
+                businessName={business.name}
+                categoryName={business.category?.name}
+                islandName={business.island?.name}
+                descriptionRaw={business.description}
+              />
+            </div>
           </div>
 
           {/* Featured Items */}
@@ -96,66 +102,80 @@ export default function GiftShopLayout({ business }: { business: any }) {
             </div>
           )}
 
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+          />
+
           {/* Reviews */}
           <div>
-             <h2 className="font-display text-3xl font-bold mb-8 text-[#3d2f26]">Visitor Guestbook</h2>
-             
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                {business.reviews && business.reviews.length > 0 ? (
-                  business.reviews.map((review: any) => (
-                    <div key={review.id} className="bg-[#fffdfb] p-6 rounded-2xl border-2 border-dashed border-[#e6d5c9] relative">
-                       <div className="absolute -top-3 -right-3 text-3xl transform rotate-12">📌</div>
-                       <div className="text-[#e07a5f] mb-2 tracking-widest text-sm">
-                         {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                       </div>
-                       <p className="text-[#6b584a] italic mb-4">"{review.comment}"</p>
-                       <div className="font-bold text-sm text-[#8c7462]">— {review.user?.name || 'Visitor'}</div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="col-span-2 text-center text-[#8c7462] py-8">No messages in the guestbook yet.</div>
-                )}
-             </div>
-
-             <div className="bg-white p-8 rounded-3xl shadow-sm border border-[#f0e4dc]">
-               <h3 className="font-bold mb-4 text-xl">Leave a message</h3>
-               <ReviewForm listingId={business.id} />
-             </div>
+            <UnifiedReviewsSection business={business} />
           </div>
         </div>
 
         {/* Sidebar Info */}
         <div className="lg:col-span-4">
-          <div className="bg-[#e07a5f] text-white rounded-3xl p-8 sticky top-24 shadow-lg overflow-hidden relative">
+          <div className="bg-[#e07a5f] text-white rounded-3xl p-8 sticky top-24 shadow-lg overflow-hidden relative z-10">
             <div className="absolute -right-10 -bottom-10 text-[150px] opacity-10 pointer-events-none">🛍️</div>
             
             <h3 className="font-display text-3xl font-bold mb-8">Visit the Shop</h3>
             
             <div className="space-y-6 mb-10">
-              <div>
-                <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Location</div>
-                {business.mapLink ? (
-                  <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline text-white block">
-                    {business.address}
-                  </a>
-                ) : (
-                  <div className="font-medium text-lg">{business.address}</div>
-                )}
-              </div>
-              <div>
-                <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Hours</div>
-                <div className="font-medium text-lg">{business.hours || 'Open Daily'}</div>
-              </div>
-              <div>
-                <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Phone</div>
-                <div className="font-medium text-lg">{business.phone}</div>
-              </div>
+              {business.address && (
+                <div>
+                  <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Location</div>
+                  {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline text-white block">
+                      {business.address}
+                    </a>
+                  ) : (
+                    <div className="font-medium text-lg">{business.address}</div>
+                  )}
+                </div>
+              )}
+              {business.phone && (
+                <div>
+                  <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Phone</div>
+                  <a href={`tel:${business.phone}`} className="font-medium text-lg text-white block hover:underline">{business.phone}</a>
+                </div>
+              )}
+              {business.website && (
+                <div>
+                  <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Website</div>
+                  <a href={business.website} target="_blank" rel="noreferrer" className="font-medium text-lg text-white block hover:underline truncate max-w-full">{business.website}</a>
+                </div>
+              )}
             </div>
 
             <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/20">
                <h4 className="font-bold mb-4 text-white">Ask a question</h4>
-               {/* Note: In a real app we might need a custom styled MessageForm to fit the dark background, but we'll use standard for now */}
-               <MessageForm receiverId={business.userId} listingId={business.id} />
+               <div className="gift-shop-dark-form">
+                 <MessageForm receiverId={business.userId} listingId={business.id} />
+               </div>
+               <style dangerouslySetInnerHTML={{__html: `
+                 .gift-shop-dark-form input, .gift-shop-dark-form textarea {
+                   background: rgba(255, 255, 255, 0.1);
+                   border: 1px solid rgba(255, 255, 255, 0.2);
+                   color: white;
+                 }
+                 .gift-shop-dark-form label {
+                   color: rgba(255, 255, 255, 0.8);
+                 }
+                 .gift-shop-dark-form button {
+                   background: white;
+                   color: #e07a5f;
+                 }
+               `}} />
             </div>
           </div>
         </div>

@@ -1,10 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { Card } from '@/components/ui/Card';
 import { MessageForm } from "@/components/features/MessageForm";
-import { ReviewForm } from '@/components/features/ReviewForm';
 import { ClaimButton } from '@/components/features/ClaimButton';
+import { 
+  ServicesTags, 
+  DescriptionSection, 
+  OpeningHoursWidget, 
+  InteractiveMap, 
+  GalleryGrid, 
+  UnifiedReviewsSection 
+} from '../components/LayoutWidgets';
 
-export default function ToursLayout({ business }: { business: any }) {
+export default function ToursLayout({ business, faqs = [] }: { business: any, faqs?: any[] }) {
   return (
     <>
       {/* Tours Hero - Immersive & Adventurous */}
@@ -30,8 +36,8 @@ export default function ToursLayout({ business }: { business: any }) {
             <div className="flex flex-wrap items-center gap-6 text-white/90 text-lg md:text-xl">
               <div className="flex items-center gap-2">
                 <span className="text-[#fca311] text-2xl">★</span>
-                <span className="font-bold text-white">{business.averageRating}</span>
-                <span className="text-white/70">({business.reviewCount} reviews)</span>
+                <span className="font-bold text-white">{business.averageRating?.toFixed(1) || '0.0'}</span>
+                <span className="text-white/70">({business.reviewCount || 0} reviews)</span>
               </div>
               <div className="hidden md:block w-1.5 h-1.5 rounded-full bg-white/50"></div>
               {business.mapLink ? (
@@ -66,11 +72,15 @@ export default function ToursLayout({ business }: { business: any }) {
 
         <div className="lg:col-span-8 flex flex-col gap-16">
           
-          <div className="prose prose-lg max-w-none">
-            <h2 className="font-display text-4xl mb-6 font-bold text-on-surface">Experience the Extraordinary</h2>
-            <p className="font-body-lg text-on-surface-variant leading-relaxed whitespace-pre-line text-xl">
-              {business.description}
-            </p>
+          <div className="flex flex-col gap-6">
+            <h2 className="font-display text-4xl font-bold text-on-surface">Experience the Extraordinary</h2>
+            <ServicesTags servicesRaw={business.services} />
+            <DescriptionSection 
+              businessName={business.name}
+              categoryName={business.category?.name}
+              islandName={business.island?.name}
+              descriptionRaw={business.description}
+            />
           </div>
 
           {/* Tours / Packages */}
@@ -112,46 +122,24 @@ export default function ToursLayout({ business }: { business: any }) {
             </div>
           )}
 
+          {/* Opening Hours */}
+          <OpeningHoursWidget hoursRaw={business.hours} />
+
+          {/* Gallery Grid */}
+          <GalleryGrid businessName={business.name} galleryRaw={business.galleryImages} />
+
+          {/* Location Map */}
+          <InteractiveMap 
+            businessName={business.name}
+            address={business.address}
+            lat={business.lat}
+            lng={business.lng}
+            mapLink={business.mapLink}
+          />
+
           {/* Reviews List */}
           <div>
-            <div className="flex items-end justify-between mb-8">
-              <h2 className="font-display text-4xl font-bold text-on-surface">Traveler Reviews</h2>
-              <div className="text-2xl font-bold flex items-center gap-2">
-                <span className="text-[#fca311]">★</span> {business.averageRating}
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              {business.reviews && business.reviews.length > 0 ? (
-                business.reviews.map((review: any) => (
-                  <div key={review.id} className="bg-surface-container-low p-8 rounded-3xl border border-outline-variant">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 bg-tertiary/20 rounded-full flex items-center justify-center text-tertiary font-bold text-xl overflow-hidden shrink-0">
-                        {review.user?.image ? (
-                           <img src={review.user.image} alt="User" className="w-full h-full object-cover" />
-                        ) : (
-                           (review.user?.name || 'T').charAt(0).toUpperCase()
-                        )}
-                      </div>
-                      <div>
-                        <div className="font-bold text-lg">{review.user?.name || 'Traveler'}</div>
-                        <div className="text-[#fca311] text-sm tracking-widest mt-1">
-                          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-on-surface-variant italic leading-relaxed text-lg">"{review.comment}"</p>
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-2 text-on-surface-variant text-lg">No reviews yet.</div>
-              )}
-            </div>
-
-            <Card className="p-8 bg-surface-container-highest border-none shadow-inner">
-               <h3 className="font-bold text-xl mb-4">Write a Review</h3>
-               <ReviewForm listingId={business.id} />
-            </Card>
+            <UnifiedReviewsSection business={business} />
           </div>
         </div>
 
@@ -162,20 +150,30 @@ export default function ToursLayout({ business }: { business: any }) {
             <p className="text-on-surface-variant mb-8">Send a message to our guides to secure your spot or ask questions.</p>
             
             <div className="mb-8 space-y-4">
-              <div className="flex justify-between items-center py-3 border-b border-outline-variant">
-                <span className="font-bold text-on-surface-variant">Phone</span>
-                <span className="font-medium text-lg">{business.phone}</span>
-              </div>
-              <div className="flex justify-between items-center py-3 border-b border-outline-variant">
-                <span className="font-bold text-on-surface-variant">Location</span>
-                {business.mapLink ? (
-                  <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg text-right hover:underline hover:text-primary transition-colors">
-                    {business.address}
-                  </a>
-                ) : (
-                  <span className="font-medium text-lg text-right">{business.address}</span>
-                )}
-              </div>
+              {business.phone && (
+                <div className="flex justify-between items-center py-3 border-b border-outline-variant">
+                  <span className="font-bold text-on-surface-variant">Phone</span>
+                  <a href={`tel:${business.phone}`} className="font-medium text-lg hover:text-primary transition-colors">{business.phone}</a>
+                </div>
+              )}
+              {business.website && (
+                <div className="flex justify-between items-center py-3 border-b border-outline-variant">
+                  <span className="font-bold text-on-surface-variant">Website</span>
+                  <a href={business.website} target="_blank" rel="noreferrer" className="font-medium text-lg hover:text-primary transition-colors text-right truncate max-w-[200px]">Visit Site</a>
+                </div>
+              )}
+              {business.address && (
+                <div className="flex justify-between items-start py-3 border-b border-outline-variant gap-2">
+                  <span className="font-bold text-on-surface-variant shrink-0">Location</span>
+                  {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-right hover:underline hover:text-primary transition-colors">
+                      {business.address}
+                    </a>
+                  ) : (
+                    <span className="font-medium text-right">{business.address}</span>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="bg-surface-container-low p-6 rounded-2xl">
