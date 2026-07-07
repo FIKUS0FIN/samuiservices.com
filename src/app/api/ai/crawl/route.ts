@@ -56,7 +56,14 @@ async function fetchGooglePlaceData(mapsUrl: string, apiKey: string) {
       if (placeNameMatch) {
         const placeName = decodeURIComponent(placeNameMatch[1].replace(/\+/g, ' '));
         const cleanName = placeName.split('/')[0].split('@')[0].trim();
-        const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(cleanName)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
+        
+        // Extract coordinate bias if available, e.g. @9.563042,100.064808
+        const coordsMatch = mapsUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+        const biasQuery = coordsMatch 
+          ? `&locationbias=point:${coordsMatch[1]},${coordsMatch[2]}` 
+          : '&locationbias=point:9.53,100.00';
+          
+        const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(cleanName)}&inputtype=textquery&fields=place_id${biasQuery}&key=${apiKey}`;
         const res = await fetch(findUrl);
         const data = await res.json() as any;
         if (data.status === 'OK' && data.candidates?.length > 0) {
