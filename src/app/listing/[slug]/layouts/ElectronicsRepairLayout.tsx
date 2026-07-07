@@ -45,7 +45,7 @@ export default function ElectronicsRepairLayout({ business, faqs = [] }: { busin
           </div>
           {business.image && (
             <div className="w-full md:w-1/3 aspect-square rounded-3xl overflow-hidden border-4 border-surface shadow-xl relative">
-              <img src={business.image} alt={business.name} className="w-full h-full object-cover" />
+              <img src={business.image} alt={business.name} className="w-full h-full object-cover" fetchPriority="high" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
                   <div className="text-white font-bold text-xl flex items-center gap-2">
                     <span>⭐</span> {business.averageRating?.toFixed(1) || '0.0'} ({business.reviewCount || 0} Reviews)
@@ -97,7 +97,7 @@ export default function ElectronicsRepairLayout({ business, faqs = [] }: { busin
                     <div key={service.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-5 items-center hover:bg-surface-container-lowest transition-colors">
                       <div className="col-span-1 md:col-span-6 flex gap-4 items-center">
                         {service.image && (
-                           <img src={service.image} alt={service.name} className="w-12 h-12 rounded bg-surface-container-high object-cover shrink-0" />
+                           <img src={service.image} alt={service.name} className="w-12 h-12 rounded bg-surface-container-high object-cover shrink-0" loading="lazy" />
                         )}
                         <div>
                           <div className="font-bold text-on-surface">{service.name}</div>

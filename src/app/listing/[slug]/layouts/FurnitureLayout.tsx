@@ -16,9 +16,9 @@ export default function FurnitureLayout({ business, faqs = [] }: { business: any
       {/* Furniture Hero - Minimalist & Spacious */}
       <section className="relative w-full h-[75vh] bg-[#ebe7e0]">
         {business.image ? (
-          <img className="w-full h-full object-cover mix-blend-multiply opacity-80" src={business.image} alt={business.name} />
+          <img className="w-full h-full object-cover mix-blend-multiply opacity-80" src={business.image} alt={business.name} fetchPriority="high" />
         ) : (
-          <img className="w-full h-full object-cover mix-blend-multiply opacity-80" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=2000&auto=format&fit=crop" alt="Furniture Showroom" />
+          <img className="w-full h-full object-cover mix-blend-multiply opacity-80" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=2000&auto=format&fit=crop" alt="Furniture Showroom" loading="lazy" />
         )}
         
         <div className="absolute inset-0 flex items-center justify-center p-6">
@@ -96,7 +96,7 @@ export default function FurnitureLayout({ business, faqs = [] }: { business: any
                 <div key={item.id} className="group">
                   <div className="aspect-[4/5] bg-gray-100 overflow-hidden mb-6 relative">
                     {item.image ? (
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" loading="lazy" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-300">Image Unavailable</div>
                     )}

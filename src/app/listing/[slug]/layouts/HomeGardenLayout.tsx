@@ -15,7 +15,7 @@ export default function HomeGardenLayout({ business, faqs = [] }: { business: an
     <>
       {/* Home & Garden Hero - Earthy and fresh */}
       <section className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
-        <img className="w-full h-full object-cover" src={business.image || 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2000&auto=format&fit=crop'} alt={business.name} />
+        <img className="w-full h-full object-cover" src={business.image || 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2000&auto=format&fit=crop'} alt={business.name} fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#2c4c3b]/90 via-[#2c4c3b]/70 to-transparent"></div>
         
         <div className="absolute inset-0 flex items-center">
@@ -74,7 +74,7 @@ export default function HomeGardenLayout({ business, faqs = [] }: { business: an
                   <div key={service.id} className="bg-surface border border-[#e8f3ec] shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
                     {service.image && (
                       <div className="h-48 overflow-hidden">
-                        <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
                       </div>
                     )}
                     <div className="p-6">

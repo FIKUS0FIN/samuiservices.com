@@ -49,7 +49,7 @@ export default function BusinessServiceLayout({ business, faqs = [] }: { busines
           {business.image && (
             <div className="relative">
                <div className="absolute inset-0 bg-[#0d6efd] transform translate-x-4 translate-y-4 rounded-lg -z-10"></div>
-               <img src={business.image} alt={business.name} className="w-full h-auto aspect-video object-cover rounded-lg shadow-md border border-[#dee2e6]" />
+               <img src={business.image} alt={business.name} className="w-full h-auto aspect-video object-cover rounded-lg shadow-md border border-[#dee2e6]" fetchPriority="high" />
             </div>
           )}
         </div>

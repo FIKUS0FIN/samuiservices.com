@@ -15,7 +15,7 @@ export default function ToursLayout({ business, faqs = [] }: { business: any, fa
     <>
       {/* Tours Hero - Immersive & Adventurous */}
       <section className="relative w-full h-[85vh] overflow-hidden">
-        <img className="w-full h-full object-cover" src={business.image || 'https://images.unsplash.com/photo-1544550581-5f7ceaf7f992?q=80&w=2000&auto=format&fit=crop'} alt={business.name} />
+        <img className="w-full h-full object-cover" src={business.image || 'https://images.unsplash.com/photo-1544550581-5f7ceaf7f992?q=80&w=2000&auto=format&fit=crop'} alt={business.name} fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
         
         <div className="absolute inset-0 flex flex-col justify-end pb-24 md:pb-32">
@@ -92,7 +92,7 @@ export default function ToursLayout({ business, faqs = [] }: { business: any, fa
                   <div key={tour.id} className="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant flex flex-col md:flex-row group hover:shadow-xl transition-shadow">
                     {tour.image && (
                       <div className="md:w-5/12 h-64 md:h-auto relative overflow-hidden">
-                        <img src={tour.image} alt={tour.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <img src={tour.image} alt={tour.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur text-on-surface font-bold px-3 py-1 rounded-lg text-sm shadow-sm">
                           Best Seller
                         </div>

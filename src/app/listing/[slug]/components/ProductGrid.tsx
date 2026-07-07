@@ -26,8 +26,7 @@ export default function ProductGrid({ products }: { products: any[] }) {
               <div style={{ position: 'relative', width: '100%', paddingTop: '75%', overflow: 'hidden' }}>
                 <img
                   src={product.image}
-                  alt={product.name}
-                  style={{
+                  alt={product.name} loading="lazy" style={{
                     position: 'absolute',
                     top: 0,
                     left: 0,

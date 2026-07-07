@@ -40,7 +40,7 @@ export default function GiftShopLayout({ business, faqs = [] }: { business: any,
           {business.image && (
             <div className="w-full md:w-5/12">
                <div className="aspect-[4/5] rounded-t-full rounded-b-3xl overflow-hidden shadow-xl border-8 border-white transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                  <img src={business.image} alt={business.name} className="w-full h-full object-cover" />
+                  <img src={business.image} alt={business.name} className="w-full h-full object-cover" fetchPriority="high" />
                </div>
             </div>
           )}
@@ -84,7 +84,7 @@ export default function GiftShopLayout({ business, faqs = [] }: { business: any,
                   <div key={item.id} className="bg-white rounded-2xl p-4 shadow-sm border border-[#f0e4dc] hover:shadow-md transition-shadow group">
                     <div className="aspect-square w-full rounded-xl overflow-hidden bg-[#fff9f5] mb-4 relative">
                       {item.image ? (
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-4xl">🎁</div>
                       )}

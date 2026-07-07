@@ -16,7 +16,7 @@ export default function TransportationLayout({ business, faqs = [] }: { business
     <>
       {/* Transportation Hero Section - Fast and bold */}
       <section className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden bg-surface-container-highest">
-        <img className="w-full h-full object-cover opacity-60 mix-blend-overlay" src={business.image || 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2000&auto=format&fit=crop'} alt={business.name} />
+        <img className="w-full h-full object-cover opacity-60 mix-blend-overlay" src={business.image || 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2000&auto=format&fit=crop'} alt={business.name} fetchPriority="high" />
         
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-surface/90 backdrop-blur-md p-8 md:p-12 rounded-3xl text-center max-w-3xl mx-4 border border-outline-variant shadow-2xl">
@@ -77,7 +77,7 @@ export default function TransportationLayout({ business, faqs = [] }: { business
                   <div key={service.id} className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-md transition-shadow">
                     {service.image && (
                       <div className="md:w-1/3 h-48 md:h-auto bg-surface-container-high">
-                        <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
+                        <img src={service.image} alt={service.name} className="w-full h-full object-cover" loading="lazy" />
                       </div>
                     )}
                     <div className="p-6 flex-1 flex flex-col justify-center">

@@ -15,11 +15,7 @@ export default function HobbiesSportsLayout({ business, faqs = [] }: { business:
     <div className="bg-[#111] min-h-screen text-gray-300 font-sans">
       {/* Sports Hero - Dynamic & Energetic */}
       <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden bg-black">
-        <img 
-          className="w-full h-full object-cover opacity-60 scale-105" 
-          src={business.image || 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2000&auto=format&fit=crop'} 
-          alt={business.name} 
-        />
+        <img className="w-full h-full object-cover opacity-60 scale-105" src={business.image || 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2000&auto=format&fit=crop'} alt={business.name} fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-[#111]/50 to-transparent"></div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] mix-blend-overlay"></div>
         
@@ -98,7 +94,7 @@ export default function HobbiesSportsLayout({ business, faqs = [] }: { business:
                   <div key={item.id} className="bg-gray-900 border border-gray-805 group hover:border-gray-600 transition-colors overflow-hidden flex flex-col">
                     {item.image && (
                       <div className="h-48 overflow-hidden relative">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 group-hover:grayscale-0 grayscale-[50%] transition-all duration-500" />
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 group-hover:grayscale-0 grayscale-[50%] transition-all duration-500" loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                       </div>
                     )}

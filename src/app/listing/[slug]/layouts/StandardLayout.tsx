@@ -74,21 +74,21 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
         {heroImages.length >= 3 ? (
           <div className="grid grid-cols-4 grid-rows-2 h-[50vh] md:h-[60vh] gap-1">
             <div className="col-span-4 md:col-span-2 row-span-2 relative">
-              <img className="w-full h-full object-cover" src={heroImages[0]} alt={business.name} itemProp="image" />
+              <img className="w-full h-full object-cover" src={heroImages[0]} alt={business.name} itemProp="image" fetchPriority="high" />
               <div className="absolute inset-0 hero-gradient opacity-60"></div>
             </div>
             <div className="hidden md:block col-span-2 row-span-1 relative">
-              <img className="w-full h-full object-cover" src={heroImages[1]} alt={business.name} />
+              <img className="w-full h-full object-cover" src={heroImages[1]} alt={business.name} fetchPriority="high" />
               <div className="absolute inset-0 bg-black/20"></div>
             </div>
             <div className="hidden md:block col-span-2 row-span-1 relative">
-              <img className="w-full h-full object-cover" src={heroImages[2]} alt={business.name} />
+              <img className="w-full h-full object-cover" src={heroImages[2]} alt={business.name} fetchPriority="high" />
               <div className="absolute inset-0 bg-black/20"></div>
             </div>
           </div>
         ) : (
           <div className="w-full h-[50vh] md:h-[60vh] relative">
-            <img className="w-full h-full object-cover" src={heroImages[0]} alt={business.name} itemProp="image" />
+            <img className="w-full h-full object-cover" src={heroImages[0]} alt={business.name} itemProp="image" fetchPriority="high" />
             <div className="absolute inset-0 hero-gradient"></div>
           </div>
         )}

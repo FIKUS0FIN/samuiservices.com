@@ -16,7 +16,7 @@ export default function RealEstateLayout({ business, faqs = [] }: { business: an
     <>
       {/* Real Estate Hero Section - Taller with prominent contact */}
       <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden">
-        <img className="w-full h-full object-cover" src={business.image || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2000&auto=format&fit=crop'} alt={business.name} />
+        <img className="w-full h-full object-cover" src={business.image || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2000&auto=format&fit=crop'} alt={business.name} fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-transparent"></div>
         
         <div className="absolute inset-0 flex items-end">
@@ -101,7 +101,7 @@ export default function RealEstateLayout({ business, faqs = [] }: { business: an
                   <Card key={property.id} className="overflow-hidden hover:-translate-y-1 transition-transform duration-300">
                     <div className="aspect-[4/3] w-full bg-surface-container-high relative">
                       {property.image ? (
-                        <img src={property.image} alt={property.name} className="w-full h-full object-cover" />
+                        <img src={property.image} alt={property.name} className="w-full h-full object-cover" loading="lazy" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-on-surface-variant text-4xl">
                           🏠

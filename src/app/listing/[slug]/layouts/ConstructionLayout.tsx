@@ -16,7 +16,7 @@ export default function ConstructionLayout({ business, faqs = [] }: { business: 
     <>
       {/* Construction Hero - Solid and reliable */}
       <section className="relative w-full h-[65vh] overflow-hidden">
-        <img className="w-full h-full object-cover grayscale-[20%]" src={business.image || 'https://images.unsplash.com/photo-1541888086225-ee5a006ee42d?q=80&w=2000&auto=format&fit=crop'} alt={business.name} />
+        <img className="w-full h-full object-cover grayscale-[20%]" src={business.image || 'https://images.unsplash.com/photo-1541888086225-ee5a006ee42d?q=80&w=2000&auto=format&fit=crop'} alt={business.name} fetchPriority="high" />
         <div className="absolute inset-0 bg-surface/80 mix-blend-multiply"></div>
         
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
@@ -89,7 +89,7 @@ export default function ConstructionLayout({ business, faqs = [] }: { business: 
                   <div key={item.id} className="group relative overflow-hidden bg-surface-container-low shadow-md hover:shadow-xl transition-all">
                     {item.image ? (
                        <div className="aspect-[4/3] w-full overflow-hidden">
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                        </div>
                     ) : (
                        <div className="aspect-[4/3] w-full bg-surface-container-high flex items-center justify-center">

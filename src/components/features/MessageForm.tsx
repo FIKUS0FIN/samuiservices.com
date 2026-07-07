@@ -74,6 +74,7 @@ export function MessageForm({ receiverId, listingId }: MessageFormProps) {
             name="content" 
             required 
             rows={3}
+            aria-label="Message content"
             style={{ 
               width: '100%', 
               padding: '0.75rem', 

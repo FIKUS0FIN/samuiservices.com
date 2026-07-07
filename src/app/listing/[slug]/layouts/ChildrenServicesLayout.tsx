@@ -15,7 +15,7 @@ export default function ChildrenServicesLayout({ business, faqs = [] }: { busine
     <div className="bg-[#fcf8e8] min-h-screen">
       {/* Playful Hero Section */}
       <section className="relative w-full h-[55vh] md:h-[65vh] overflow-hidden rounded-b-[3rem] md:rounded-b-[5rem] shadow-sm">
-        <img className="w-full h-full object-cover opacity-90" src={business.image || 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=2000&auto=format&fit=crop'} alt={business.name} />
+        <img className="w-full h-full object-cover opacity-90" src={business.image || 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=2000&auto=format&fit=crop'} alt={business.name} fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent"></div>
         
         <div className="absolute bottom-0 w-full p-8 md:p-12 text-center text-white">
@@ -72,7 +72,7 @@ export default function ChildrenServicesLayout({ business, faqs = [] }: { busine
                     <div key={item.id} className={`bg-white rounded-3xl overflow-hidden shadow-sm border-4 ${colorClass} hover:shadow-md transition-shadow relative top-0 hover:-top-1`}>
                       {item.image && (
                         <div className="h-48 w-full">
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
                         </div>
                       )}
                       <div className="p-6">

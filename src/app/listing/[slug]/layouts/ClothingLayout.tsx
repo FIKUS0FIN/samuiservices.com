@@ -16,11 +16,7 @@ export default function ClothingLayout({ business, faqs = [] }: { business: any,
       {/* Fashion Hero - Editorial Style */}
       <section className="relative w-full h-[70vh] md:h-[85vh]">
         <div className="absolute inset-0 bg-black/10 z-10 pointer-events-none"></div>
-        <img 
-          className="w-full h-full object-cover object-top" 
-          src={business.image || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2000&auto=format&fit=crop'} 
-          alt={business.name} 
-        />
+        <img className="w-full h-full object-cover object-top" src={business.image || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2000&auto=format&fit=crop'} alt={business.name} fetchPriority="high" />
         
         <div className="absolute inset-0 z-20 flex flex-col justify-center items-center text-center p-6 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
            <div className="mt-auto pb-12 md:pb-24 max-w-4xl">
@@ -92,7 +88,7 @@ export default function ClothingLayout({ business, faqs = [] }: { business: any,
                     <div key={product.id} className="group cursor-pointer">
                       <div className="aspect-[3/4] w-full overflow-hidden bg-gray-100 mb-6">
                         {product.image ? (
-                          <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                          <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-gray-300">No Image</div>
                         )}

@@ -355,7 +355,7 @@ export function UnifiedReviewsSection({
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold overflow-hidden border border-outline-variant/30">
                           {review.authorImage ? (
-                            <img src={review.authorImage} alt={review.authorName} className="w-full h-full object-cover" />
+                            <img src={review.authorImage} alt={review.authorName} className="w-full h-full object-cover" loading="lazy" />
                           ) : (
                             (review.authorName || 'U').charAt(0).toUpperCase()
                           )}

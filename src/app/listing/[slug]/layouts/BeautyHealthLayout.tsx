@@ -39,7 +39,7 @@ export default function BeautyHealthLayout({ business, faqs = [] }: { business: 
       {business.image && (
         <div className="max-w-[1200px] mx-auto px-6 -mt-16 relative z-20">
            <div className="aspect-[21/9] w-full rounded-2xl md:rounded-[3rem] overflow-hidden shadow-2xl shadow-[#e0d6d6]/50">
-             <img src={business.image} alt={business.name} className="w-full h-full object-cover" />
+             <img src={business.image} alt={business.name} className="w-full h-full object-cover" fetchPriority="high" />
            </div>
         </div>
       )}
@@ -82,7 +82,7 @@ export default function BeautyHealthLayout({ business, faqs = [] }: { business: 
                     </div>
                     <div className="flex gap-6 items-start">
                        {service.image && (
-                         <img src={service.image} alt={service.name} className="w-24 h-24 object-cover rounded-xl shadow-sm hidden sm:block" />
+                         <img src={service.image} alt={service.name} className="w-24 h-24 object-cover rounded-xl shadow-sm hidden sm:block" loading="lazy" />
                        )}
                        <p className="font-light text-[#7a6b6b] text-lg leading-relaxed flex-1">
                          {service.description}
