@@ -143,10 +143,16 @@ export default function BusinessServiceLayout({ business }: { business: any }) {
             <div className="p-6 space-y-6">
               <div className="flex items-start gap-4 text-[#495057]">
                  <div className="text-[#0d6efd] mt-1">📍</div>
-                 <div>
-                   <div className="text-sm font-bold text-[#212529] mb-1">Office Address</div>
-                   <div>{business.address}</div>
-                 </div>
+                  <div>
+                    <div className="text-sm font-bold text-[#212529] mb-1">Office Address</div>
+                    {business.mapLink ? (
+                      <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline text-[#0d6efd] transition-colors">
+                        {business.address}
+                      </a>
+                    ) : (
+                      <div>{business.address}</div>
+                    )}
+                  </div>
               </div>
               <div className="flex items-start gap-4 text-[#495057]">
                  <div className="text-[#0d6efd] mt-1">📞</div>

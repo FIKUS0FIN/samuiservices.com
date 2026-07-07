@@ -27,7 +27,13 @@ export default function GiftShopLayout({ business }: { business: any }) {
               <span className="text-[#e07a5f] font-bold text-lg">★ {business.averageRating}</span>
               <span className="text-[#8c7462]">({business.reviewCount} Reviews)</span>
               <span className="text-[#d4bcae]">|</span>
-              <span className="text-[#8c7462]">📍 {business.address}</span>
+              <span className="text-[#8c7462]">📍 {business.mapLink ? (
+                <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline">
+                  {business.address}
+                </a>
+              ) : (
+                business.address
+              )}</span>
             </div>
           </div>
           
@@ -128,7 +134,13 @@ export default function GiftShopLayout({ business }: { business: any }) {
             <div className="space-y-6 mb-10">
               <div>
                 <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Location</div>
-                <div className="font-medium text-lg">{business.address}</div>
+                {business.mapLink ? (
+                  <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline text-white block">
+                    {business.address}
+                  </a>
+                ) : (
+                  <div className="font-medium text-lg">{business.address}</div>
+                )}
               </div>
               <div>
                 <div className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Hours</div>

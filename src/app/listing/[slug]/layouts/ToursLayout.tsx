@@ -34,7 +34,13 @@ export default function ToursLayout({ business }: { business: any }) {
                 <span className="text-white/70">({business.reviewCount} reviews)</span>
               </div>
               <div className="hidden md:block w-1.5 h-1.5 rounded-full bg-white/50"></div>
-              <div className="font-medium">{business.address}</div>
+              {business.mapLink ? (
+                <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium hover:underline hover:text-primary transition-colors">
+                  {business.address}
+                </a>
+              ) : (
+                <div className="font-medium">{business.address}</div>
+              )}
             </div>
           </div>
         </div>
@@ -162,7 +168,13 @@ export default function ToursLayout({ business }: { business: any }) {
               </div>
               <div className="flex justify-between items-center py-3 border-b border-outline-variant">
                 <span className="font-bold text-on-surface-variant">Location</span>
-                <span className="font-medium text-lg text-right">{business.address}</span>
+                {business.mapLink ? (
+                  <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg text-right hover:underline hover:text-primary transition-colors">
+                    {business.address}
+                  </a>
+                ) : (
+                  <span className="font-medium text-lg text-right">{business.address}</span>
+                )}
               </div>
             </div>
 

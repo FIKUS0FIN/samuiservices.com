@@ -36,7 +36,11 @@ export default function ClothingLayout({ business }: { business: any }) {
          <div className="flex gap-12 animate-marquee whitespace-nowrap justify-center text-sm tracking-widest uppercase">
             <span>Free Local Delivery Available</span>
             <span>•</span>
-            <span>Visit Us At {business.address}</span>
+             {business.mapLink ? (
+               <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline">Visit Us At {business.address}</a>
+             ) : (
+               <span>Visit Us At {business.address}</span>
+             )}
             <span>•</span>
             <span>{business.averageRating} Star Rating</span>
             <span className="md:hidden">•</span>
@@ -135,7 +139,13 @@ export default function ClothingLayout({ business }: { business: any }) {
               <div className="space-y-8 text-sm tracking-wide font-light">
                 <div>
                   <div className="uppercase font-bold mb-2">Visit Us</div>
-                  <div className="leading-loose text-gray-600">{business.address}</div>
+                  {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="leading-loose text-gray-600 hover:text-black transition-colors hover:underline block">
+                      {business.address}
+                    </a>
+                  ) : (
+                    <div className="leading-loose text-gray-600">{business.address}</div>
+                  )}
                 </div>
                 
                 <div>

@@ -57,7 +57,19 @@ export default function TransportationLayout({ business }: { business: any }) {
               <div className="bg-surface-container-low p-6 rounded-xl min-w-[250px]">
                 <h4 className="font-bold text-on-surface mb-4">Quick Info</h4>
                 <ul className="space-y-3 font-body-md text-on-surface-variant">
-                  <li className="flex gap-2"><span>📍</span> Base: {business.address}</li>
+                  <li className="flex gap-2">
+                    <span>📍</span>
+                    <span>
+                      Base:{" "}
+                      {business.mapLink ? (
+                        <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline text-primary transition-colors">
+                          {business.address}
+                        </a>
+                      ) : (
+                        business.address
+                      )}
+                    </span>
+                  </li>
                   <li className="flex gap-2"><span>⭐</span> {business.averageRating} Rating ({business.reviewCount} verified)</li>
                   <li className="flex gap-2"><span>🕒</span> {business.hours || '24/7 Available'}</li>
                 </ul>

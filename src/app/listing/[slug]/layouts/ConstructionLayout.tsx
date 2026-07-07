@@ -135,7 +135,13 @@ export default function ConstructionLayout({ business }: { business: any }) {
                 <div className="text-tertiary mt-1">📍</div>
                 <div>
                   <div className="font-bold text-sm text-on-surface-variant uppercase tracking-wider mb-1">Office Location</div>
-                  <div className="font-medium text-lg">{business.address}</div>
+                  {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline text-tertiary transition-colors">
+                      {business.address}
+                    </a>
+                  ) : (
+                    <div className="font-medium text-lg">{business.address}</div>
+                  )}
                 </div>
               </div>
               <div className="flex gap-4 items-start">

@@ -60,6 +60,7 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
     const image = formData.get('image') as string;
     const slug = formData.get('slug') as string;
     const layout = formData.get('layout') as string;
+    const mapLink = formData.get('mapLink') as string || null;
 
     // Extract products
     const products: { id: string; name: string; price: number | null; description: string | null; image: string | null }[] = [];
@@ -107,6 +108,7 @@ export default async function EditListing({ params }: { params: Promise<{ id: st
         hours,
         lat,
         lng,
+        mapLink,
         description,
         image,
       }

@@ -130,7 +130,13 @@ export default function BeautyHealthLayout({ business }: { business: any }) {
              <div className="space-y-6 mb-12 text-center">
                 <div>
                   <div className="text-[#a08585] text-xs font-bold tracking-widest uppercase mb-2">Location</div>
-                  <div className="text-lg text-[#4a3f3f]">{business.address}</div>
+                  {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="text-lg text-[#4a3f3f] hover:text-[#a08585] transition-colors hover:underline">
+                      {business.address}
+                    </a>
+                  ) : (
+                    <div className="text-lg text-[#4a3f3f]">{business.address}</div>
+                  )}
                 </div>
                 <div>
                   <div className="text-[#a08585] text-xs font-bold tracking-widest uppercase mb-2">Contact</div>

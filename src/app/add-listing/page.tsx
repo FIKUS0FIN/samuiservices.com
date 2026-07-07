@@ -39,6 +39,7 @@ export default async function AddListing() {
     const image = formData.get('image') as string;
     const slug = formData.get('slug') as string;
     const layout = formData.get('layout') as string;
+    const mapLink = formData.get('mapLink') as string || null;
 
     // Extract products
     const products: { name: string; price: number | null; description: string | null; image: string | null }[] = [];
@@ -76,6 +77,7 @@ export default async function AddListing() {
         hours,
         lat,
         lng,
+        mapLink,
         description,
         image,
         userId: session.user.id

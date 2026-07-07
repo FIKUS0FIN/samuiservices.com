@@ -123,7 +123,13 @@ export default function ChildrenServicesLayout({ business }: { business: any }) 
                 <div className="text-2xl">📍</div>
                 <div>
                   <div className="font-bold mb-1 opacity-80 text-sm uppercase">Where to find us</div>
-                  <div className="font-medium text-lg">{business.address}</div>
+                  {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline transition-colors">
+                      {business.address}
+                    </a>
+                  ) : (
+                    <div className="font-medium text-lg">{business.address}</div>
+                  )}
                 </div>
               </div>
               <div className="flex gap-4">

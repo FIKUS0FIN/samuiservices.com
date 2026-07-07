@@ -132,7 +132,13 @@ export default function HomeGardenLayout({ business }: { business: any }) {
                    <div className="text-[#a3c9a8] mt-1">🌿</div>
                    <div>
                      <div className="text-sm uppercase tracking-wider opacity-80 mb-1">Service Area</div>
-                     <div className="font-medium text-lg">{business.address}</div>
+                     {business.mapLink ? (
+                       <a href={business.mapLink} target="_blank" rel="noreferrer" className="font-medium text-lg hover:underline text-[#a3c9a8] transition-colors block">
+                         {business.address}
+                       </a>
+                     ) : (
+                       <div className="font-medium text-lg">{business.address}</div>
+                     )}
                    </div>
                 </div>
                 <div className="flex items-start gap-4">

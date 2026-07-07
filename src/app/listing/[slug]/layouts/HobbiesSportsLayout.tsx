@@ -148,7 +148,13 @@ export default function HobbiesSportsLayout({ business }: { business: any }) {
              <div className="space-y-6 mb-8 font-bold">
                 <div>
                   <div className="text-black/60 text-xs uppercase tracking-widest mb-1">Location</div>
-                  <div className="text-xl">{business.address}</div>
+                  {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="text-xl hover:underline text-black block">
+                      {business.address}
+                    </a>
+                  ) : (
+                    <div className="text-xl">{business.address}</div>
+                  )}
                 </div>
                 <div>
                   <div className="text-black/60 text-xs uppercase tracking-widest mb-1">Phone</div>

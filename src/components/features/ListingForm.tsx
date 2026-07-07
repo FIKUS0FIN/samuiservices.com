@@ -27,6 +27,7 @@ interface ListingData {
   hours?: string | null;
   lat?: number | null;
   lng?: number | null;
+  mapLink?: string | null;
   description?: string;
   image?: string | null;
   socialLinks?: string | null;
@@ -275,6 +276,10 @@ export function ListingForm({
               <option value="premium">Premium Landing Page</option>
             </select>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 mt-6">
+          <Input label="Google Maps Link" name="mapLink" type="url" defaultValue={listing?.mapLink || ''} placeholder="https://maps.google.com/?cid=..." />
         </div>
       </div>
 

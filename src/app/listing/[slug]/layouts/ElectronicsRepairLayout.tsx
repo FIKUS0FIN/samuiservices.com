@@ -152,7 +152,13 @@ export default function ElectronicsRepairLayout({ business }: { business: any })
             <div className="space-y-4">
               <div>
                 <div className="text-sm text-on-surface-variant mb-1 font-bold">Address</div>
-                <div>{business.address}</div>
+                {business.mapLink ? (
+                  <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline text-primary transition-colors block">
+                    {business.address}
+                  </a>
+                ) : (
+                  <div>{business.address}</div>
+                )}
               </div>
               <div>
                 <div className="text-sm text-on-surface-variant mb-1 font-bold">Operating Hours</div>

@@ -32,7 +32,13 @@ export default function RealEstateLayout({ business }: { business: any }) {
                   <span className="font-label-md">({business.reviewCount} reviews)</span>
                 </div>
                 <div className="flex items-center gap-1.5 border-l border-outline-variant pl-4">
-                  <span className="font-body-md">📍 {business.address}, {business.island.name}</span>
+                  <span className="font-body-md">📍 {business.mapLink ? (
+                    <a href={business.mapLink} target="_blank" rel="noreferrer" className="hover:underline hover:text-primary transition-colors">
+                      {business.address}, {business.island.name}
+                    </a>
+                  ) : (
+                    <>{business.address}, {business.island.name}</>
+                  )}</span>
                 </div>
               </div>
             </div>
