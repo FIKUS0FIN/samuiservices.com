@@ -31,7 +31,7 @@ export default function MallsPage() {
             Malls & Shopping Guide
           </h1>
           <p className="font-body-lg text-body-lg text-white/90 max-w-2xl mx-auto" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
-            From high-end international brands and premium supermarkets to coastal lifestyle pavilions, discover Samui's modern retail scene.
+            From high-end international brands and premium supermarkets to coastal lifestyle pavilions, discover Samui&apos;s modern retail scene.
           </p>
         </div>
       </section>
@@ -117,7 +117,7 @@ export default function MallsPage() {
                 <h2 className="text-2xl lg:text-3xl font-bold text-text-main mb-2 m-0">The Wharf Samui</h2>
                 <div className="flex items-center gap-2 text-text-muted mb-4">
                   <MapPin className="w-4 h-4 text-primary" />
-                  <span className="text-sm">Fisherman's Village, Bophut</span>
+                  <span className="text-sm">Fisherman&apos;s Village, Bophut</span>
                 </div>
                 <p className="text-text-muted text-sm leading-relaxed mb-6">
                   A charming beachfront shopping center that merges traditional retro-style Thai-Chinese architecture with Western comforts. Offers a direct walkway into the Friday Walking Street and holds gorgeous sunset views.
@@ -164,7 +164,7 @@ export default function MallsPage() {
             </div>
 
             <div className="bg-surface-container-lowest rounded-3xl p-6 shadow-sm border border-outline-variant/50 hover:shadow-md transition-all">
-              <h3 className="text-xl font-bold text-text-main mb-2">Lotus's Chaweng</h3>
+              <h3 className="text-xl font-bold text-text-main mb-2">Lotus&apos;s Chaweng</h3>
               <div className="flex items-center gap-2 text-text-muted mb-4 text-sm">
                 <MapPin className="w-4 h-4 text-primary" /> Chaweng (along the main ring road)
               </div>
@@ -188,7 +188,7 @@ export default function MallsPage() {
               <div>
                 <h4 className="font-bold text-text-main mb-1 text-sm">VAT Refund for Tourists</h4>
                 <p className="text-xs text-text-muted leading-relaxed">
-                  Look for shops displaying the "VAT Refund for Tourists" logo. For purchases over 2,000 THB at a single store, ask for the VAT Refund Form (P.P.10) to claim your 7% tax back at Samui Airport when departing!
+                  Look for shops displaying the &quot;VAT Refund for Tourists&quot; logo. For purchases over 2,000 THB at a single store, ask for the VAT Refund Form (P.P.10) to claim your 7% tax back at Samui Airport when departing!
                 </p>
               </div>
             </div>

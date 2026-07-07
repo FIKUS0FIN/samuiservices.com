@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { Calendar, ShieldCheck, CalendarRange, MapPin, Award, Compass } from 'lucide-react';
+import { Calendar, ShieldCheck, CalendarRange, Compass } from 'lucide-react';
 import { InteractiveCalendar } from '@/components/features/InteractiveCalendar';
 
 export const metadata: Metadata = {
@@ -71,7 +71,7 @@ export default function CalendarPage() {
                   Songkran (Thai New Year) <span className="bg-amber-50 text-amber-800 text-[10px] px-2 py-0.5 rounded-md font-bold border border-amber-200">National Holiday</span>
                 </h4>
                 <p className="text-xs text-text-muted leading-relaxed">
-                  The most famous festival in Thailand, celebrating the traditional New Year with nationwide water fights. On Koh Samui, Chaweng Beach Road and Fisherman's Village become massive street parties. Respectful water splashing represents washing away bad luck for the new year.
+                  The most famous festival in Thailand, celebrating the traditional New Year with nationwide water fights. On Koh Samui, Chaweng Beach Road and Fisherman&apos;s Village become massive street parties. Respectful water splashing represents washing away bad luck for the new year.
                 </p>
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function CalendarPage() {
                   The Samui Regatta <span className="bg-blue-50 text-blue-800 text-[10px] px-2 py-0.5 rounded-md font-bold border border-blue-200">Local Event</span>
                 </h4>
                 <p className="text-xs text-text-muted leading-relaxed">
-                  Asia's premier sailing event, attracting top international yachting crews and spectators from around the globe. Features daily competitive yacht races off the east coast of Samui and premium beachfront evening cocktail parties.
+                  Asia&apos;s premier sailing event, attracting top international yachting crews and spectators from around the globe. Features daily competitive yacht races off the east coast of Samui and premium beachfront evening cocktail parties.
                 </p>
               </div>
             </div>
@@ -125,7 +125,7 @@ export default function CalendarPage() {
                   Full Moon Party (Koh Phangan) <span className="bg-blue-50 text-blue-800 text-[10px] px-2 py-0.5 rounded-md font-bold border border-blue-200">Nearby Event</span>
                 </h4>
                 <p className="text-xs text-text-muted leading-relaxed">
-                  While held on neighboring Koh Phangan (Haad Rin Beach), this massive beach party shapes Samui's calendar monthly. Thousands of travelers stay on Samui and take night speedboats across the bay to join the neon-painted beach celebration.
+                  While held on neighboring Koh Phangan (Haad Rin Beach), this massive beach party shapes Samui&apos;s calendar monthly. Thousands of travelers stay on Samui and take night speedboats across the bay to join the neon-painted beach celebration.
                 </p>
               </div>
             </div>

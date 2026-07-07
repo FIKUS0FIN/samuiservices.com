@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Ship, Bus, Plane, Car, Route, MapPin, Anchor, ArrowRight, ShieldCheck, Ticket } from 'lucide-react';
+import { Ship, Bus, Plane, Car, Route, Anchor, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Koh Samui Transportation Guide: Ferries, Taxis & Buses (2026)',

@@ -59,9 +59,9 @@ export default function MarketsPage() {
               </div>
               <div className="p-6 flex-grow flex flex-col justify-between">
                 <div>
-                  <h3 className="text-xl font-bold text-text-main mb-2">Fisherman's Village Walking Street</h3>
+                  <h3 className="text-xl font-bold text-text-main mb-2">Fisherman&apos;s Village Walking Street</h3>
                   <p className="text-text-muted text-sm leading-relaxed mb-6">
-                    The island's flagship weekly market. Stretches down the narrow Bophut beach road, lined with boutique shops, beach bars, and hundreds of temporary stalls selling clothes, handicrafts, and cocktails.
+                    The island&apos;s flagship weekly market. Stretches down the narrow Bophut beach road, lined with boutique shops, beach bars, and hundreds of temporary stalls selling clothes, handicrafts, and cocktails.
                   </p>
                 </div>
                 <div className="space-y-2 text-sm pt-4 border-t border-outline-variant/30">
@@ -215,7 +215,7 @@ export default function MarketsPage() {
             <h2 className="text-2xl font-bold text-text-main m-0">Must-Try Market Delicacies</h2>
           </div>
           <p className="text-text-muted mb-8 leading-relaxed">
-            Don't leave the night markets without trying these highly popular and delicious Thai street foods:
+            Don&apos;t leave the night markets without trying these highly popular and delicious Thai street foods:
           </p>
           
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">

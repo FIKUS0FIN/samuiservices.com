@@ -57,7 +57,7 @@ export default function RentalsPage() {
             <div className="p-8 flex-grow flex flex-col justify-between">
               <div>
                 <p className="text-text-muted text-sm leading-relaxed mb-6">
-                  The most agile and popular option for navigating Samui's traffic and narrow side roads. Ideal for solo travelers and couples.
+                  The most agile and popular option for navigating Samui&apos;s traffic and narrow side roads. Ideal for solo travelers and couples.
                 </p>
                 
                 <div className="space-y-4 mb-8">
@@ -126,7 +126,7 @@ export default function RentalsPage() {
               </div>
               
               <div className="bg-primary/5 rounded-2xl p-4 text-xs text-text-muted border border-primary/20 leading-relaxed">
-                <strong>Legal Requirement:</strong> Requires a valid driver's license from your home country, accompanied by an IDP. Security deposit (usually 3,000 - 5,000 THB) is mandatory.
+                <strong>Legal Requirement:</strong> Requires a valid driver&apos;s license from your home country, accompanied by an IDP. Security deposit (usually 3,000 - 5,000 THB) is mandatory.
               </div>
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function RentalsPage() {
                 <CheckCircle2 className="w-4 h-4 text-primary" /> Check the Insurance
               </h3>
               <p className="text-xs text-text-muted leading-relaxed">
-                Ask for "First Class Insurance" with excess waiver for peace of mind. Standard government insurance only covers basic third-party medical care, not damage to your rental vehicle.
+                Ask for &quot;First Class Insurance&quot; with excess waiver for peace of mind. Standard government insurance only covers basic third-party medical care, not damage to your rental vehicle.
               </p>
             </div>
             

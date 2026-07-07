@@ -31,7 +31,7 @@ export default function HospitalsPage() {
             Hospitals & Medical Care
           </h1>
           <p className="font-body-lg text-body-lg text-white/90 max-w-2xl mx-auto" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
-            Your safety and health are paramount. Review Koh Samui's premium international private clinics, government hospitals, and emergency guidelines.
+            Your safety and health are paramount. Review Koh Samui&apos;s premium international private clinics, government hospitals, and emergency guidelines.
           </p>
         </div>
       </section>

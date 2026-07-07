@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { Palmtree, MapPin, Users, Waves, Navigation, Music, Search, Star, Lightbulb, Sun, Droplets, ThermometerSun, ShieldCheck } from 'lucide-react';
+import { Waves, Search, Star, Lightbulb, Sun, Droplets, ThermometerSun, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Best Koh Samui Beaches: Ultimate 2026 Island Guide',
@@ -26,7 +26,7 @@ export default function BeachesPage() {
         <div className="relative z-10 text-center px-margin-mobile max-w-2xl">
           <h1 className="font-display text-display md:text-display text-white mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>Samui Beaches</h1>
           <p className="font-body-lg text-body-lg text-white/90 mb-8" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
-            Discover your piece of paradise among the golden sands and turquoise waters of Thailand's most beloved island.
+            Discover your piece of paradise among the golden sands and turquoise waters of Thailand&apos;s most beloved island.
           </p>
           <div className="mt-8 flex justify-center">
             <div className="bg-surface-container-lowest/90 backdrop-blur-md p-1 rounded-full flex items-center shadow-lg w-full max-w-md">
@@ -80,7 +80,7 @@ export default function BeachesPage() {
                   <span className="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">White Sand</span>
                 </div>
                 <p className="font-body-md text-body-md text-on-surface-variant mb-8">
-                  The heartbeat of Koh Samui, Chaweng offers miles of powdery white sand, turquoise waters, and the island's most dynamic social scene.
+                  The heartbeat of Koh Samui, Chaweng offers miles of powdery white sand, turquoise waters, and the island&apos;s most dynamic social scene.
                 </p>
               </div>
               <div className="bg-surface-container-low p-6 rounded-xl border-l-4 border-primary">
@@ -160,7 +160,7 @@ export default function BeachesPage() {
                   <span className="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">Heritage</span>
                 </div>
                 <p className="font-body-md text-body-md text-on-surface-variant mb-8">
-                  Blending authentic Thai culture with upscale leisure, Bophut is home to the historic Fisherman's Village and its trendy boutique shops and restaurants.
+                  Blending authentic Thai culture with upscale leisure, Bophut is home to the historic Fisherman&apos;s Village and its trendy boutique shops and restaurants.
                 </p>
               </div>
               <div className="bg-surface-container-low p-6 rounded-xl border-l-4 border-primary">
@@ -169,7 +169,7 @@ export default function BeachesPage() {
                   <span className="font-label-md text-label-md text-primary">Pro Tip</span>
                 </div>
                 <p className="font-body-sm text-body-sm text-on-surface-variant italic">
-                  Best visited on Friday evenings for the Fisherman's Village night market, a feast for all senses.
+                  Best visited on Friday evenings for the Fisherman&apos;s Village night market, a feast for all senses.
                 </p>
               </div>
             </div>
@@ -223,7 +223,7 @@ export default function BeachesPage() {
         <div className="max-w-container-max mx-auto">
           <div className="bg-surface-container-lowest rounded-3xl p-8 md:p-12 shadow-sm border border-outline-variant flex flex-col md:flex-row items-center gap-10">
             <div className="flex-1 text-center md:text-left">
-              <h2 className="font-headline-md text-headline-md text-on-surface mb-3">Today's Beach Forecast</h2>
+              <h2 className="font-headline-md text-headline-md text-on-surface mb-3">Today&apos;s Beach Forecast</h2>
               <p className="font-body-md text-body-md text-on-surface-variant">Planning a swim? Check current conditions before heading out to the sands.</p>
             </div>
             

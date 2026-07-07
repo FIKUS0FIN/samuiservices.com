@@ -187,7 +187,7 @@ export default function PiersPage() {
               <div>
                 <h4 className="font-bold text-text-main mb-1 text-sm">Advance Booking Highly Recommended</h4>
                 <p className="text-xs text-text-muted leading-relaxed">
-                  During peak seasons (Dec-Feb, Jul-Aug) and around the monthly Full Moon Party in Phangan, ferry tickets sell out days in advance. Always book online via the operator's official website.
+                  During peak seasons (Dec-Feb, Jul-Aug) and around the monthly Full Moon Party in Phangan, ferry tickets sell out days in advance. Always book online via the operator&apos;s official website.
                 </p>
               </div>
             </div>

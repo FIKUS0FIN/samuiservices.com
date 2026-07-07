@@ -54,7 +54,7 @@ export default function PostOfficesPage() {
                 <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full">ZIP Code: 84140</span>
               </div>
               <p className="text-text-muted text-sm leading-relaxed mb-6">
-                The island's main sorting office and headquarters. Handles the largest volume of inbound/outbound packages, EMS shipments, and customs clearances for international parcel inspections.
+                The island&apos;s main sorting office and headquarters. Handles the largest volume of inbound/outbound packages, EMS shipments, and customs clearances for international parcel inspections.
               </p>
               <div className="space-y-2 text-sm pt-4 border-t border-outline-variant/30">
                 <div className="flex items-center gap-2 text-text-muted"><MapPin className="w-4 h-4 text-primary" /> Nathon Capital Town (West Coast)</div>
@@ -147,7 +147,7 @@ export default function PostOfficesPage() {
                 <h4 className="font-bold text-text-main text-sm m-0">Address Formats</h4>
               </div>
               <p className="leading-relaxed">
-                Always print the destination address clearly, including the recipient's phone number. For international shipments, write the country in bold capital letters at the bottom.
+                Always print the destination address clearly, including the recipient&apos;s phone number. For international shipments, write the country in bold capital letters at the bottom.
               </p>
             </div>
           </div>

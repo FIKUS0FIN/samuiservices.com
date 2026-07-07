@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { CloudSun, Sun, CloudRain, Droplets, ThermometerSun, Map as MapIcon, ShieldCheck, CheckSquare, Wind } from 'lucide-react';
+import { CloudSun, Sun, CloudRain, ThermometerSun, Map as MapIcon, ShieldCheck, CheckSquare, Wind } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Koh Samui Weather & 2026 Microclimates Travel Guide',
@@ -68,7 +68,7 @@ export default function WeatherPage() {
         <section className="bg-surface-container-lowest rounded-3xl p-8 md:p-10 shadow-sm border border-outline-variant/50">
           <h2 className="text-2xl font-bold text-text-main mb-6 border-b border-outline-variant/30 pb-4">Island Microclimates</h2>
           <p className="text-text-muted mb-8 leading-relaxed max-w-3xl">
-            You can experience sunshine on one side of Samui and a torrential downpour on the other. This is due to localized microclimates created by the island's topography:
+            You can experience sunshine on one side of Samui and a torrential downpour on the other. This is due to localized microclimates created by the island&apos;s topography:
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="p-6 bg-surface-container-low rounded-2xl border border-outline-variant/30 hover:border-primary/20 transition-all duration-200">
@@ -100,7 +100,7 @@ export default function WeatherPage() {
               <h3 className="text-xl font-bold text-text-main mb-2">Dry Season</h3>
               <div className="text-sm font-semibold text-primary mb-4">December – February</div>
               <p className="text-text-muted text-sm leading-relaxed mb-4">
-                The most popular and stable time to visit. You'll experience lower humidity, cooler evening breezes, clear skies, and calm seas. It is the peak tourist season.
+                The most popular and stable time to visit. You&apos;ll experience lower humidity, cooler evening breezes, clear skies, and calm seas. It is the peak tourist season.
               </p>
             </div>
 
