@@ -418,7 +418,7 @@ export function UnifiedReviewsSection({
                     className="inline-flex items-center gap-3 px-6 py-3.5 bg-surface-container-low border border-outline-variant hover:bg-surface-container-medium hover:border-primary/30 text-primary hover:text-primary font-semibold rounded-2xl shadow-sm transition-all text-sm group"
                   >
                     <svg className="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.555 0-6.445-2.89-6.445-6.445s2.89-6.445 6.445-6.445c1.614 0 3.084.593 4.225 1.574l3.19-3.19C19.29 2.015 15.938 1 12.24 1 5.922 1 12.24s4.922 11.24 11.24 11.24c6.643 0 11.24-4.667 11.24-11.24 0-.75-.084-1.477-.24-2.215H12.24z"/>
+                      <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.555 0-6.445-2.89-6.445-6.445s2.89-6.445 6.445-6.445c1.614 0 3.084.593 4.225 1.574l3.19-3.19C19.29 2.015 15.938 1 12.24 1 5.922 1 1 5.922 1 12.24s4.922 11.24 11.24 11.24c6.643 0 11.24-4.667 11.24-11.24 0-.75-.084-1.477-.24-2.215H12.24z"/>
                     </svg>
                     <span>Read all {googleCount} Google reviews</span>
                     <span className="group-hover:translate-x-1.5 transition-transform">→</span>
