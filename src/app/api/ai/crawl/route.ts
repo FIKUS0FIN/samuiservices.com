@@ -5,12 +5,61 @@ import { getCloudflareContext } from '@opennextjs/cloudflare';
 import * as cheerio from 'cheerio';
 import dns from 'dns/promises';
 
+async function fetchGooglePlaceData(mapsUrl: string, apiKey: string) {
+  try {
+    let placeId: string | null = null;
+    
+    // 1. Check if CID is in the URL
+    const cidMatch = mapsUrl.match(/[?&]cid=(\d+)/);
+    if (cidMatch) {
+      const cid = cidMatch[1];
+      const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=cid:${cid}&inputtype=textquery&fields=place_id&key=${apiKey}`;
+      const res = await fetch(findUrl);
+      const data = await res.json() as any;
+      if (data.status === 'OK' && data.candidates?.length > 0) {
+        placeId = data.candidates[0].place_id;
+      }
+    }
+    
+    // 2. If no placeId yet, try to extract name from /maps/place/Name+Here/
+    if (!placeId) {
+      const placeNameMatch = mapsUrl.match(/\/maps\/place\/([^/]+)/);
+      if (placeNameMatch) {
+        const placeName = decodeURIComponent(placeNameMatch[1].replace(/\+/g, ' '));
+        const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeName)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
+        const res = await fetch(findUrl);
+        const data = await res.json() as any;
+        if (data.status === 'OK' && data.candidates?.length > 0) {
+          placeId = data.candidates[0].place_id;
+        }
+      }
+    }
+
+    if (!placeId) return null;
+
+    // 3. Fetch Place Details
+    const fields = 'name,rating,formatted_phone_number,formatted_address,opening_hours,website,photos,reviews,url,price_level,types,user_ratings_total,editorial_summary';
+    const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=${fields}&key=${apiKey}`;
+    const res = await fetch(detailsUrl);
+    const data = await res.json() as any;
+    if (data.status === 'OK') {
+      return data.result;
+    }
+  } catch (e) {
+    console.error('Error fetching Google Place data:', e);
+  }
+  return null;
+}
+
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const { env } = getCloudflareContext();
+    const apiKey = (env as any)?.GOOGLE_API_KEY || process.env.GOOGLE_API_KEY || '';
 
     const body = await req.json() as { urls: string[] };
     let { urls } = body;
@@ -30,6 +79,54 @@ export async function POST(req: Request) {
       let fetchUrl = url;
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
         fetchUrl = `https://${url}`;
+      }
+
+      // Check if it is a Google Maps Link
+      if (fetchUrl.includes('google.com/maps') || fetchUrl.includes('maps.google.com') || fetchUrl.includes('maps.app.goo.gl')) {
+        // Resolve redirect for maps.app.goo.gl
+        if (fetchUrl.includes('maps.app.goo.gl')) {
+          try {
+            const res = await fetch(fetchUrl, { redirect: 'manual' });
+            const location = res.headers.get('location');
+            if (location) {
+              fetchUrl = location;
+            }
+          } catch (e) {
+            console.error('Failed to resolve redirect for', fetchUrl, e);
+          }
+        }
+        
+        // Fetch data from Google Place Details API
+        const placeData = await fetchGooglePlaceData(fetchUrl, apiKey);
+        if (placeData) {
+          let placeText = `Google Maps Place Details:\n`;
+          if (placeData.name) placeText += `Name: ${placeData.name}\n`;
+          if (placeData.formatted_address) placeText += `Address: ${placeData.formatted_address}\n`;
+          if (placeData.formatted_phone_number) placeText += `Phone: ${placeData.formatted_phone_number}\n`;
+          if (placeData.website) placeText += `Website: ${placeData.website}\n`;
+          if (placeData.opening_hours?.weekday_text) {
+            placeText += `Hours: ${placeData.opening_hours.weekday_text.join(', ')}\n`;
+          }
+          if (placeData.editorial_summary?.overview) {
+            placeText += `Description: ${placeData.editorial_summary.overview}\n`;
+          }
+          if (placeData.rating) placeText += `Rating: ${placeData.rating}/5 (${placeData.user_ratings_total} reviews)\n`;
+          if (placeData.reviews) {
+            placeText += `Top Reviews:\n`;
+            for (const r of placeData.reviews.slice(0, 5)) {
+              placeText += `- ${r.author_name} (${r.rating}/5): ${r.text}\n`;
+            }
+          }
+          combinedTexts.push(placeText);
+
+          if (placeData.photos) {
+            for (const photo of placeData.photos.slice(0, 10)) {
+              const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photo_reference=${photo.photo_reference}&key=${apiKey}`;
+              allImageUrls.add(photoUrl);
+            }
+          }
+        }
+        continue;
       }
 
       // 🛡️ Sentinel: Prevent Server-Side Request Forgery (SSRF)
@@ -104,8 +201,7 @@ export async function POST(req: Request) {
 
 
 
-    // Get the Cloudflare AI binding via OpenNext
-    const { env } = getCloudflareContext();
+    // Get the Cloudflare AI binding via OpenNext (context env resolved at top)
     
     if (!env || !env.AI) {
       // Fallback for local development
@@ -134,23 +230,35 @@ ${textContext}
 ---
 
 Extract the following information:
-1. "description": Write an engaging, SEO-optimized business description based on the text. 
-2. "products": An array of products or services offered. Each object should have: "name" (string), "description" (string, short), "price" (number or null), "image" (string or null).
-3. "hours": A string representing their opening and closing hours, if found.
-4. "socialLinks": An object containing social media URLs, e.g. {"facebook": "...", "instagram": "..."}.
-5. "faqs": An array of frequently asked questions found. Each object should have: {"question": "...", "answer": "..."}.
-6. "specialOffers": An array of current discounts or promotions. Each object should have: {"title": "...", "description": "...", "validUntil": "...", "ctaLink": "..."}.
-7. "menu": An array representing a menu/pricing table. Each object: {"category": "...", "items": [{"name": "...", "price": "...", "description": "..."}]}.
-8. "videoUrls": An array of strings containing any YouTube/Vimeo links found.
-9. "bookingUrl": A string containing a link to book or reserve directly.
-10. "trustBadges": An array of strings representing any credentials, e.g. ["PADI Certified", "Eco-Friendly"].
-11. "amenities": An array of strings representing available facilities, e.g. ["Free Wifi", "Parking"].
-12. "externalReviews": An array of URLs pointing to their Google Maps, TripAdvisor, or Yelp review pages.
+1. "name": The name of the business / website.
+2. "phone": The primary phone number of the business.
+3. "address": The physical address of the business.
+4. "website": The main website URL.
+5. "mapLink": The Google Maps URL / link for the business location (if found).
+6. "keywords": An array of core SEO keywords (strings) describing the business's services and niche (e.g. ["diving", "diving lessons", "padi certifcate"]).
+7. "description": Write an engaging, SEO-optimized business description based on the text. 
+8. "products": An array of products or services offered. Each object should have: "name" (string), "description" (string, short), "price" (number or null), "image" (string or null).
+9. "hours": A string representing their opening and closing hours, if found.
+10. "socialLinks": An object containing social media URLs, e.g. {"facebook": "...", "instagram": "..."}.
+11. "faqs": An array of frequently asked questions found. Each object should have: {"question": "...", "answer": "..."}.
+12. "specialOffers": An array of current discounts or promotions. Each object should have: {"title": "...", "description": "...", "validUntil": "...", "ctaLink": "..."}.
+13. "menu": An array representing a menu/pricing table. Each object: {"category": "...", "items": [{"name": "...", "price": "...", "description": "..."}]}.
+14. "videoUrls": An array of strings containing any YouTube/Vimeo links found.
+15. "bookingUrl": A string containing a link to book or reserve directly.
+16. "trustBadges": An array of strings representing any credentials, e.g. ["PADI Certified", "Eco-Friendly"].
+17. "amenities": An array of strings representing available facilities, e.g. ["Free Wifi", "Parking"].
+18. "externalReviews": An array of URLs pointing to their Google Maps, TripAdvisor, or Yelp review pages.
 
 Respond ONLY with a valid JSON object. Do not wrap it in markdown code blocks like \`\`\`json. The response should start with { and end with }.
 
 Example output format:
 {
+  "name": "Blue Lagoon Diving",
+  "phone": "+66 81 234 5678",
+  "address": "123 Beach Rd, Koh Samui",
+  "website": "https://bluelagoondiving.com",
+  "mapLink": "https://maps.google.com/?cid=12345",
+  "keywords": ["scuba diving", "PADI courses", "dive trips"],
   "description": "Engaging description...",
   "products": [
     { "name": "Service A", "description": "...", "price": 100, "image": null }

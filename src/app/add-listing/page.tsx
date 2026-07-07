@@ -40,6 +40,11 @@ export default async function AddListing() {
     const slug = formData.get('slug') as string;
     const layout = formData.get('layout') as string;
     const mapLink = formData.get('mapLink') as string || null;
+    const keywordsRaw = formData.get('keywords') as string;
+    const services = keywordsRaw 
+      ? JSON.stringify(keywordsRaw.split(',').map(s => s.trim()).filter(s => s))
+      : null;
+    const galleryImages = formData.get('galleryImages') as string || null;
 
     // Extract products
     const products: { name: string; price: number | null; description: string | null; image: string | null }[] = [];
@@ -78,6 +83,8 @@ export default async function AddListing() {
         lat,
         lng,
         mapLink,
+        services,
+        galleryImages,
         description,
         image,
         userId: session.user.id

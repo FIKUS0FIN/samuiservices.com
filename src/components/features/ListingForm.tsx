@@ -30,6 +30,8 @@ interface ListingData {
   mapLink?: string | null;
   description?: string;
   image?: string | null;
+  services?: string | null;
+  galleryImages?: string | null;
   socialLinks?: string | null;
   faqs?: string | null;
   specialOffers?: string | null;
@@ -62,11 +64,32 @@ export function ListingForm({
   const formRef = useRef<HTMLFormElement>(null);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [isCrawling, setIsCrawling] = useState(false);
+
+  // Helper to safely parse services JSON to keywords string
+  const getKeywordsString = (servicesJson: string | null | undefined) => {
+    if (!servicesJson) return '';
+    try {
+      const parsed = JSON.parse(servicesJson);
+      if (Array.isArray(parsed)) {
+        return parsed.join(', ');
+      }
+    } catch (e) {
+      return servicesJson;
+    }
+    return '';
+  };
+
+  const [nameValue, setNameValue] = useState(listing?.name || '');
+  const [phoneValue, setPhoneValue] = useState(listing?.phone || '');
+  const [addressValue, setAddressValue] = useState(listing?.address || '');
+  const [mapLinkValue, setMapLinkValue] = useState(listing?.mapLink || '');
+  const [keywordsValue, setKeywordsValue] = useState(getKeywordsString(listing?.services));
   const [descriptionValue, setDescriptionValue] = useState(listing?.description || '');
   const [websiteValue, setWebsiteValue] = useState(listing?.website || '');
   const [crawlUrlsValue, setCrawlUrlsValue] = useState(listing?.website || '');
   const [hoursValue, setHoursValue] = useState(listing?.hours || '');
   const [imageValue, setImageValue] = useState(listing?.image || '');
+  const [galleryImagesValue, setGalleryImagesValue] = useState(listing?.galleryImages || '');
 
   // Widget States
   const [socialLinksValue, setSocialLinksValue] = useState(listing?.socialLinks || '');
@@ -143,12 +166,15 @@ export function ListingForm({
 
   const handleCrawlWebsite = async () => {
     const urls = crawlUrlsValue.split('\n').map(u => u.trim()).filter(u => u);
+    if (mapLinkValue && !urls.includes(mapLinkValue)) {
+      urls.push(mapLinkValue);
+    }
     if (urls.length === 0) {
-      alert("Please enter at least one website URL to crawl.");
+      alert("Please enter at least one website URL to crawl or set a Google Maps Link.");
       return;
     }
-    if (urls.length > 5) {
-      alert("Please enter a maximum of 5 URLs.");
+    if (urls.length > 6) {
+      alert("Please enter a maximum of 5 URLs (plus Google Maps Link).");
       return;
     }
 
@@ -170,6 +196,12 @@ export function ListingForm({
       const { result } = await crawlRes.json() as { result: Record<string, unknown> };
       
       // Update basic fields
+      if (typeof result.name === 'string') setNameValue(result.name);
+      if (typeof result.phone === 'string') setPhoneValue(result.phone);
+      if (typeof result.address === 'string') setAddressValue(result.address);
+      if (typeof result.website === 'string') setWebsiteValue(result.website);
+      if (typeof result.mapLink === 'string') setMapLinkValue(result.mapLink);
+      if (Array.isArray(result.keywords)) setKeywordsValue(result.keywords.join(', '));
       if (typeof result.description === 'string') setDescriptionValue(result.description);
       if (typeof result.hours === 'string') setHoursValue(result.hours);
       
@@ -203,9 +235,12 @@ export function ListingForm({
         }
       }
 
-      // Populate cover image if available
+      // Populate cover image and gallery images if available
       if (finalImages.length > 0) {
         setImageValue(finalImages[0]);
+        if (finalImages.length > 1) {
+          setGalleryImagesValue(JSON.stringify(finalImages.slice(1), null, 2));
+        }
       }
 
       // Combine AI extracted products with existing products
@@ -254,7 +289,7 @@ export function ListingForm({
           <h2 className="font-headline-md text-2xl text-on-surface">Basic Information</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Input label="Business Name" name="name" type="text" defaultValue={listing?.name} placeholder="e.g. Blue Lagoon Plumbing" required />
+          <Input label="Business Name" name="name" type="text" value={nameValue} onChange={(e) => setNameValue(e.target.value)} placeholder="e.g. Blue Lagoon Plumbing" required />
 
           <div className="flex flex-col gap-2">
             <label className="font-label-md text-sm text-on-surface-variant ml-1">Category</label>
@@ -278,8 +313,9 @@ export function ListingForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 mt-6">
-          <Input label="Google Maps Link" name="mapLink" type="url" defaultValue={listing?.mapLink || ''} placeholder="https://maps.google.com/?cid=..." />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <Input label="Google Maps Link" name="mapLink" type="url" value={mapLinkValue} onChange={(e) => setMapLinkValue(e.target.value)} placeholder="https://maps.google.com/?cid=..." />
+          <Input label="Core Keywords (comma separated)" name="keywords" type="text" value={keywordsValue} onChange={(e) => setKeywordsValue(e.target.value)} placeholder="e.g. plumbing, leak repair, emergency" />
         </div>
       </div>
 
@@ -299,7 +335,7 @@ export function ListingForm({
               ))}
             </select>
           </div>
-          <Input label="Phone Number" name="phone" type="tel" defaultValue={listing?.phone || ''} placeholder="+66 XX XXX XXXX" />
+          <Input label="Phone Number" name="phone" type="tel" value={phoneValue} onChange={(e) => setPhoneValue(e.target.value)} placeholder="+66 XX XXX XXXX" />
           <div className="flex flex-col gap-2 md:col-span-2">
             <div className="flex justify-between items-center">
               <label className="font-label-md text-sm text-on-surface-variant ml-1">URLs to Crawl & AI Auto-Fill (Up to 5, one per line)</label>
@@ -321,7 +357,7 @@ export function ListingForm({
             />
           </div>
           <div className="md:col-span-2">
-            <Input label="Full Address" name="address" type="text" fullWidth defaultValue={listing?.address || ''} placeholder="123 Beach Rd, Koh Samui..." />
+            <Input label="Full Address" name="address" type="text" fullWidth value={addressValue} onChange={(e) => setAddressValue(e.target.value)} placeholder="123 Beach Rd, Koh Samui..." />
           </div>
           <Input 
             label="Primary Website"
@@ -384,6 +420,17 @@ export function ListingForm({
             onChange={(e) => setImageValue(e.target.value)}
             placeholder="https://..." 
             className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all w-full"
+          />
+        </div>
+        <div className="flex flex-col gap-2 mb-6">
+          <label className="font-label-md text-sm text-on-surface-variant ml-1">Gallery Image URLs (JSON Array of strings)</label>
+          <textarea 
+            name="galleryImages" 
+            className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1 focus:ring-primary" 
+            rows={4} 
+            value={galleryImagesValue} 
+            onChange={(e) => setGalleryImagesValue(e.target.value)} 
+            placeholder='["https://...", "https://..."]'
           />
         </div>
       </div>
