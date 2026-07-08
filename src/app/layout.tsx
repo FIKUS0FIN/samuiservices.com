@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 
 import Script from 'next/script';
 import { Providers } from '@/components/providers/Providers';
+import { WebMcpProvider } from '@/components/features/WebMcpProvider';
 import { Inter, Montserrat } from 'next/font/google';
 
 const inter = Inter({
@@ -82,6 +83,7 @@ export default function RootLayout({
           />
         </noscript>
         <Providers>
+          <WebMcpProvider />
           <Navbar />
           <main className="flex-1 w-full">
             {children}

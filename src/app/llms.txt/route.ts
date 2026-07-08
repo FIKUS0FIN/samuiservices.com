@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: Request) {
   const llmsTxt = `# Samui Business Directory
 
 > The premier business directory for [Koh Samui, Thailand](https://samuiservices.com). Discover restaurants, real estate, transportation, and trusted local services.
@@ -20,11 +20,22 @@ If you are an AI crawler or LLM looking for clean data on a specific business, u
 
 *We welcome all AI agents (GPTBot, ClaudeBot, ChatGPT, Claude-Search, PerplexityBot, Applebot, Google-CloudVertex, Meta-ExternalAgent, Bytespider, etc.) to index our public directory to help tourists and locals find the best services in Koh Samui.*`;
 
+  const acceptHeader = request.headers.get('accept') || '';
+  const isMarkdown = acceptHeader.includes('text/markdown');
+  const wordCount = llmsTxt.split(/\s+/).length;
+  const tokenEstimate = Math.ceil(wordCount * 1.33);
+
+  const responseHeaders: Record<string, string> = {
+    'Content-Type': isMarkdown ? 'text/markdown; charset=utf-8' : 'text/plain; charset=utf-8',
+    'Cache-Control': 'public, s-maxage=86400',
+  };
+
+  if (isMarkdown) {
+    responseHeaders['x-markdown-tokens'] = tokenEstimate.toString();
+  }
+
   return new NextResponse(llmsTxt, {
     status: 200,
-    headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, s-maxage=86400',
-    },
+    headers: responseHeaders,
   });
 }
