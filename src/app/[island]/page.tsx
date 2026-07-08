@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notFound } from 'next/navigation';
-import { getBusinessesByIsland, getAllIslands, getAllCategories } from '@/lib/db';
+import { getBusinessesByIsland, getAllIslands, getAllCategories, getCategoryCounts } from '@/lib/db';
 import { FilterSidebar } from '@/components/features/FilterSidebar';
 import { BusinessCard } from '@/components/features/BusinessCard';
 import { Card } from '@/components/ui/Card';
@@ -48,8 +48,9 @@ export default async function IslandDirectory({
   
   const session = await getServerSession(authOptions);
   
-  const { listings: islandBusinesses, totalPages } = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id, page, limit);
+  const { listings: islandBusinesses, totalPages, totalCount } = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id, page, limit);
   const categories = await getAllCategories();
+  const categoryCounts = await getCategoryCounts(island);
 
   let mapCenter: [number, number] = [9.5120, 100.0136];
   let mapZoom = 11;
@@ -71,14 +72,14 @@ export default async function IslandDirectory({
       <div className="w-full lg:w-80 flex-shrink-0 lg:overflow-y-auto border-b lg:border-b-0 lg:border-r border-outline-variant p-6 bg-surface-container-lowest z-10">
         <h2 className="text-display-sm font-bold mb-2 text-on-surface">{islandName} Services</h2>
         <p className="text-on-surface-variant text-body-md mb-8">Browse local businesses and top-rated services.</p>
-        <FilterSidebar categories={categories} />
+        <FilterSidebar categories={categories} categoryCounts={categoryCounts} />
       </div>
 
       {/* Results List */}
       <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-surface">
         <div className="max-w-3xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <p className="font-medium text-title-md text-on-surface">{islandBusinesses.length} businesses found</p>
+            <p className="font-medium text-title-md text-on-surface">{totalCount} businesses found</p>
             <select className="input-field w-auto py-2">
               <option>Recommended</option>
               <option>Highest Rated</option>

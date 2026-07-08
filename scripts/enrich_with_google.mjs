@@ -44,6 +44,25 @@ async function getPlaceDetails(placeId) {
   return await response.json();
 }
 
+function getBestCatalogCategoryFromGoogleTypes(types) {
+  if (!types || !Array.isArray(types)) return null;
+  if (types.includes('lodging') || types.includes('campground') || types.includes('rv_park')) return 'accommodation';
+  if (types.includes('restaurant') || types.includes('cafe') || types.includes('food') || types.includes('bakery')) return 'food & beverage';
+  if (types.includes('bar') || types.includes('night_club')) return 'nightlife';
+  if (types.includes('spa') || types.includes('beauty_salon') || types.includes('hair_care')) return 'beauty & wellness';
+  if (types.includes('car_rental') || types.includes('taxi_stand') || types.includes('transit_station')) return 'transport';
+  if (types.includes('travel_agency')) return 'travel agencies';
+  if (types.includes('doctor') || types.includes('hospital') || types.includes('dentist') || types.includes('pharmacy') || types.includes('physiotherapist')) return 'health & medical';
+  if (types.includes('gym') || types.includes('stadium') || types.includes('sports_complex')) return 'sports & fitness';
+  if (types.includes('clothing_store') || types.includes('department_store') || types.includes('electronics_store') || types.includes('home_goods_store') || types.includes('shopping_mall') || types.includes('store') || types.includes('supermarket')) return 'retail & convenience';
+  if (types.includes('real_estate_agency')) return 'property & real estate';
+  if (types.includes('lawyer') || types.includes('accounting') || types.includes('finance') || types.includes('bank') || types.includes('insurance_agency')) return 'legal & financial services';
+  if (types.includes('amusement_park') || types.includes('aquarium') || types.includes('zoo') || types.includes('tourist_attraction') || types.includes('museum')) return 'activities';
+  if (types.includes('child_care') || types.includes('school') || types.includes('preschool')) return 'for kids';
+  if (types.includes('moving_company') || types.includes('storage') || types.includes('car_repair') || types.includes('laundry') || types.includes('veterinary_care') || types.includes('pet_store') || types.includes('locksmith')) return 'local services';
+  return null;
+}
+
 async function processFile(filePath) {
   console.log(`Processing ${filePath}...`);
   const content = await fsPromises.readFile(filePath, 'utf-8');
@@ -142,7 +161,22 @@ async function processFile(filePath) {
     }
   }
   
-  const newContent = content + googleSection;
+  let updatedContent = content;
+  if (place.types && place.types.length > 0) {
+    const detectedCategory = getBestCatalogCategoryFromGoogleTypes(place.types);
+    if (detectedCategory) {
+      const categoryMatch = content.match(/^\*\*Category:\*\* (.*)$/m);
+      if (categoryMatch) {
+        const currentCategory = categoryMatch[1].trim();
+        if (currentCategory.toLowerCase() !== detectedCategory.toLowerCase()) {
+          console.log(`  Fixing category inconsistency for ${businessName}: "${currentCategory}" -> "${detectedCategory}"`);
+          updatedContent = content.replace(/^\*\*Category:\*\* .*$/m, `**Category:** ${detectedCategory}`);
+        }
+      }
+    }
+  }
+  
+  const newContent = updatedContent + googleSection;
   await fsPromises.writeFile(filePath, newContent);
   console.log(`  Enriched ${businessName} successfully!`);
 }

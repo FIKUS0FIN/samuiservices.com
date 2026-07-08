@@ -26,7 +26,7 @@ async function fetchGooglePlaceData(businessName: string) {
     
     if (findData.status === 'OK' && findData.candidates?.length > 0) {
       const placeId = findData.candidates[0].place_id;
-      const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=rating,user_ratings_total,geometry&key=${GOOGLE_API_KEY}`;
+      const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=rating,user_ratings_total,geometry,types&key=${GOOGLE_API_KEY}`;
       const detailsRes = await fetch(detailsUrl);
       const detailsData = await detailsRes.json() as any;
       
@@ -36,13 +36,27 @@ async function fetchGooglePlaceData(businessName: string) {
           rating: result.rating || 0,
           reviewsCount: result.user_ratings_total || 0,
           lat: result.geometry?.location?.lat || null,
-          lng: result.geometry?.location?.lng || null
+          lng: result.geometry?.location?.lng || null,
+          types: result.types || []
         };
       }
     }
   } catch (e) {
     console.error(`Error fetching Google Places stats for ${businessName}:`, e);
   }
+  return null;
+}
+
+function getBestCategoryFromGoogleTypes(types: string[]): string | null {
+  if (!types || !Array.isArray(types)) return null;
+  if (types.includes('cafe')) return 'cafe';
+  if (types.includes('restaurant')) return 'restaurant';
+  if (types.includes('bar') || types.includes('night_club')) return 'bar';
+  if (types.includes('spa') || types.includes('beauty_salon') || types.includes('hair_care')) return 'spa';
+  if (types.includes('lodging')) return 'hotel';
+  if (types.includes('car_rental')) return 'rental';
+  if (types.includes('travel_agency') || types.includes('tourist_attraction')) return 'tour';
+  if (types.includes('general_contractor') || types.includes('painter') || types.includes('plumber') || types.includes('electrician') || types.includes('roofing_contractor')) return 'construction';
   return null;
 }
 
@@ -71,9 +85,7 @@ async function run() {
         tour: ['Tours', 'Excursions', 'Sightseeing', 'Guided Tour', 'Adventures']
       };
 
-      business.services = categoryFallbackMap[business.category?.toLowerCase()] || ['Local Service', 'Koh Samui', 'Thailand'];
-
-      // Fetch Google Place reviews count, rating and coordinates
+      // Fetch Google Place reviews count, rating, coordinates, and types
       const googleData = await fetchGooglePlaceData(business.name);
       if (googleData) {
         business.averageRating = googleData.rating;
@@ -82,7 +94,26 @@ async function run() {
           business.lat = googleData.lat;
           business.lng = googleData.lng;
         }
+
+        // Fix category inconsistency if detected
+        if (googleData.types && googleData.types.length > 0) {
+          const detectedCategory = getBestCategoryFromGoogleTypes(googleData.types);
+          if (detectedCategory) {
+            const currentLower = business.category?.toLowerCase();
+            const isGastronomy = ['restaurant', 'cafe', 'bar', 'club'].includes(currentLower) && 
+                                 ['restaurant', 'cafe', 'bar'].includes(detectedCategory);
+            const isLodging = ['hotel', 'resort', 'villa'].includes(currentLower) && 
+                              detectedCategory === 'hotel';
+            
+            if (currentLower !== detectedCategory && !isGastronomy && !isLodging) {
+              console.log(`Fixing category inconsistency for ${business.name}: ${business.category} -> ${detectedCategory}`);
+              business.category = detectedCategory;
+            }
+          }
+        }
       }
+
+      business.services = categoryFallbackMap[business.category?.toLowerCase()] || ['Local Service', 'Koh Samui', 'Thailand'];
 
       if (!business.website || business.website === 'Error' || business.website.includes('404 Error') || business.website.includes('Access Denied')) {
         console.log(`Skipping ${business.name} website crawl (No valid website, Google Place data updated: ${googleData ? 'Yes' : 'No'})`);

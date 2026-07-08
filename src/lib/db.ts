@@ -68,8 +68,37 @@ export async function getBusinessesByIsland(
       ...listing,
       isFavorited: listing.favorites && listing.favorites.length > 0
     })),
-    totalPages
+    totalPages,
+    totalCount
   };
+}
+
+export async function getCategoryCounts(islandSlug: string): Promise<Record<string, number>> {
+  const whereClause: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
+  
+  if (islandSlug !== 'all') {
+    if (islandSlug === 'samui') {
+      whereClause.island = { slug: { notIn: ['phangan', 'tao'] } };
+    } else {
+      whereClause.island = { slug: islandSlug };
+    }
+  }
+
+  const counts = await prisma.listing.groupBy({
+    by: ['categoryId'],
+    where: whereClause,
+    _count: {
+      id: true
+    }
+  });
+
+  const countMap: Record<string, number> = {};
+  for (const item of counts) {
+    if (item.categoryId) {
+      countMap[item.categoryId] = item._count.id;
+    }
+  }
+  return countMap;
 }
 
 export async function getAllIslands() {
