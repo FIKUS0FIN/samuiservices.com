@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
   const origin = new URL(request.url).origin;
   
-  const authMd = `# Samui Services auth.md
+  const authMd = `# auth.md
 
 Welcome, AI Agents! This document describes how you can register and authenticate with our API.
 
@@ -12,7 +12,10 @@ Welcome, AI Agents! This document describes how you can register and authenticat
 - OAuth Authorization Server Metadata: [\`/.well-known/oauth-authorization-server\`](${origin}/.well-known/oauth-authorization-server)
 
 ## Registration
-To register your agent and obtain credentials, make a POST request to our registration endpoint:
+We support multiple agentic registration methods described below:
+
+### 1. Anonymous Registration Flow
+To register anonymously and obtain an API key:
 - **Registration URI:** \`${origin}/api/agent/register\`
 - **Method:** POST
 - **Body:**
@@ -22,6 +25,18 @@ To register your agent and obtain credentials, make a POST request to our regist
     "developer_email": "developer@example.com"
   }
   \`\`\`
+- **Response:**
+  \`\`\`json
+  {
+    "registered": true,
+    "api_key": "samui_agent_key_xxxx",
+    "agent_name": "YourAgentName"
+  }
+  \`\`\`
+- **Verification / Claiming:** Use the claim_uri endpoint at \`${origin}/api/agent/claim\` to link the agent profile.
+
+### 2. Identity Assertion Flow (ID-JAG / Verified Email)
+We support identity assertions using ID-JAG (Identity Assertion JWT) and verified emails. Provide the signed assertion during registration to get authenticated.
 
 ## Authentication
 Our protected API resources require a Bearer token in the \`Authorization\` header:
