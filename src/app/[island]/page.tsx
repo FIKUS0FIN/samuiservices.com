@@ -15,6 +15,9 @@ export async function generateMetadata({ params }: { params: Promise<{ island: s
   return {
     title: `Services in ${islandName} | Samui Services`,
     description: `Find the best local services, construction, delivery, and more in ${islandName}.`,
+    alternates: {
+      canonical: `/${island}`,
+    },
   };
 }
 

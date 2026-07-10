@@ -9,6 +9,9 @@ import { ListingForm } from '@/components/features/ListingForm';
 export const metadata = {
   title: 'Add Your Business | Samui Services',
   description: 'Register your business on the premier directory for Koh Samui, Phangan, and Tao.',
+  alternates: {
+    canonical: '/add-listing',
+  },
 };
 
 export default async function AddListing() {

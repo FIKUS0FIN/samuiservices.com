@@ -5,6 +5,12 @@ import { FilterSidebar } from '@/components/features/FilterSidebar';
 import { ListingCard } from '@/components/features/ListingCard';
 import { Pagination } from '@/components/ui/Pagination';
 
+export const metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
+
 export default async function Home(props: { searchParams?: Promise<{ category?: string, view?: string, page?: string }> }) {
   const searchParams = await props.searchParams;
   const categorySlug = searchParams?.category;
