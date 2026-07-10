@@ -382,7 +382,7 @@ Example output format:
       parsedJson.googlePlaceId = googlePlaceResult.place_id || parsedJson.googlePlaceId;
 
       // Extract CID from the official Place URL to build standard maps link
-      let mapsUrl = googlePlaceResult.url;
+      const mapsUrl = googlePlaceResult.url;
       if (mapsUrl) {
         const cidMatch = mapsUrl.match(/[?&]cid=(\d+)/);
         if (cidMatch) {

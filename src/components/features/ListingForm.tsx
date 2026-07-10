@@ -369,7 +369,7 @@ export function ListingForm({
         
         if (uniqueNewImages.length > 0) {
           let newCover = imageValue;
-          let addedToGallery = [...existingGallery];
+          const addedToGallery = [...existingGallery];
           
           if (!newCover) {
             newCover = uniqueNewImages[0];
@@ -449,8 +449,8 @@ export function ListingForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <Input label="Slug (URL Path)" name="slug" type="text" defaultValue={listing?.slug} placeholder="e.g. blue-lagoon-plumbing" required />
           <div className="flex flex-col gap-2">
-            <label className="font-label-md text-sm text-on-surface-variant ml-1">Layout Style</label>
-            <select name="layout" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface appearance-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" defaultValue={listing?.layout || 'standard'} required>
+            <label htmlFor="layout" className="font-label-md text-sm text-on-surface-variant ml-1">Layout Style</label>
+            <select id="layout" name="layout" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface appearance-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" defaultValue={listing?.layout || 'standard'} required>
               <option value="standard">Standard Listing</option>
               <option value="real-estate">Real Estate Agency</option>
               <option value="transportation">Transportation & Delivery</option>
@@ -494,7 +494,7 @@ export function ListingForm({
           <Input label="Phone Number" name="phone" type="tel" value={phoneValue} onChange={(e) => setPhoneValue(e.target.value)} placeholder="+66 XX XXX XXXX" />
           <div className="flex flex-col gap-2 md:col-span-2">
             <div className="flex justify-between items-center">
-              <label className="font-label-md text-sm text-on-surface-variant ml-1">URLs to Crawl & AI Auto-Fill (Up to 5, one per line)</label>
+              <label htmlFor="crawlUrls" className="font-label-md text-sm text-on-surface-variant ml-1">URLs to Crawl & AI Auto-Fill (Up to 5, one per line)</label>
               <button 
                 type="button" 
                 onClick={handleCrawlWebsite}
@@ -505,6 +505,7 @@ export function ListingForm({
               </button>
             </div>
             <textarea 
+              id="crawlUrls"
               value={crawlUrlsValue} 
               onChange={(e) => setCrawlUrlsValue(e.target.value)}
               placeholder="https://example.com&#10;https://example.com/about" 
@@ -524,8 +525,9 @@ export function ListingForm({
             placeholder="https://" 
           />
           <div className="flex flex-col gap-2">
-            <label className="font-label-md text-sm text-on-surface-variant ml-1">Business Hours</label>
+            <label htmlFor="hours" className="font-label-md text-sm text-on-surface-variant ml-1">Business Hours</label>
             <input 
+              id="hours"
               name="hours" 
               type="text" 
               value={hoursValue}
@@ -556,8 +558,9 @@ export function ListingForm({
           </button>
         </div>
         <div className="flex flex-col gap-2 mb-6">
-          <label className="font-label-md text-sm text-on-surface-variant ml-1">Business Description</label>
+          <label htmlFor="description" className="font-label-md text-sm text-on-surface-variant ml-1">Business Description</label>
           <textarea 
+            id="description"
             name="description" 
             className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" 
             rows={8} 
@@ -568,8 +571,9 @@ export function ListingForm({
           />
         </div>
         <div className="flex flex-col gap-2 mb-6">
-          <label className="font-label-md text-sm text-on-surface-variant ml-1">Cover Image URL</label>
+          <label htmlFor="image" className="font-label-md text-sm text-on-surface-variant ml-1">Cover Image URL</label>
           <input 
+            id="image"
             name="image" 
             type="url" 
             value={imageValue}
@@ -579,8 +583,9 @@ export function ListingForm({
           />
         </div>
         <div className="flex flex-col gap-2 mb-6">
-          <label className="font-label-md text-sm text-on-surface-variant ml-1">Gallery Image URLs (JSON Array of strings)</label>
+          <label htmlFor="galleryImages" className="font-label-md text-sm text-on-surface-variant ml-1">Gallery Image URLs (JSON Array of strings)</label>
           <textarea 
+            id="galleryImages"
             name="galleryImages" 
             className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1 focus:ring-primary" 
             rows={4} 
@@ -607,8 +612,8 @@ export function ListingForm({
               <Input label="Price (Optional)" name={`products[${index}][price]`} type="number" step="any" value={product.price || ''} onChange={e => updateProduct(index, 'price', e.target.value)} />
             </div>
             <div className="flex flex-col gap-2">
-               <label className="font-label-md text-sm text-on-surface-variant ml-1">Description</label>
-               <textarea name={`products[${index}][description]`} className="bg-surface-container-lowest border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" rows={2} value={product.description || ''} onChange={e => updateProduct(index, 'description', e.target.value)}></textarea>
+               <label htmlFor={`products[${index}][description]`} className="font-label-md text-sm text-on-surface-variant ml-1">Description</label>
+               <textarea id={`products[${index}][description]`} name={`products[${index}][description]`} className="bg-surface-container-lowest border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" rows={2} value={product.description || ''} onChange={e => updateProduct(index, 'description', e.target.value)}></textarea>
             </div>
              <Input label="Image URL (Optional)" fullWidth name={`products[${index}][image]`} type="url" value={product.image || ''} onChange={e => updateProduct(index, 'image', e.target.value)} />
 
@@ -630,59 +635,59 @@ export function ListingForm({
           
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
-              <label className="font-label-md text-sm text-on-surface-variant ml-1">Social Links (JSON)</label>
+              <label htmlFor="socialLinks" className="font-label-md text-sm text-on-surface-variant ml-1">Social Links (JSON)</label>
               <button type="button" onClick={() => handleEnhanceWidget('socialLinks', socialLinksValue, setSocialLinksValue)} disabled={enhancingWidget === 'socialLinks'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Format</button>
             </div>
-            <textarea name="socialLinks" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={3} value={socialLinksValue} onChange={(e) => setSocialLinksValue(e.target.value)} />
+            <textarea id="socialLinks" name="socialLinks" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={3} value={socialLinksValue} onChange={(e) => setSocialLinksValue(e.target.value)} />
           </div>
 
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
-              <label className="font-label-md text-sm text-on-surface-variant ml-1">FAQs (JSON Array)</label>
+              <label htmlFor="faqs" className="font-label-md text-sm text-on-surface-variant ml-1">FAQs (JSON Array)</label>
               <button type="button" onClick={() => handleEnhanceWidget('faqs', faqsValue, setFaqsValue)} disabled={enhancingWidget === 'faqs'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Enhance</button>
             </div>
-            <textarea name="faqs" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={4} value={faqsValue} onChange={(e) => setFaqsValue(e.target.value)} />
+            <textarea id="faqs" name="faqs" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={4} value={faqsValue} onChange={(e) => setFaqsValue(e.target.value)} />
           </div>
 
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
-              <label className="font-label-md text-sm text-on-surface-variant ml-1">Special Offers (JSON Array)</label>
+              <label htmlFor="specialOffers" className="font-label-md text-sm text-on-surface-variant ml-1">Special Offers (JSON Array)</label>
               <button type="button" onClick={() => handleEnhanceWidget('specialOffers', specialOffersValue, setSpecialOffersValue)} disabled={enhancingWidget === 'specialOffers'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Enhance</button>
             </div>
-            <textarea name="specialOffers" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={4} value={specialOffersValue} onChange={(e) => setSpecialOffersValue(e.target.value)} />
+            <textarea id="specialOffers" name="specialOffers" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={4} value={specialOffersValue} onChange={(e) => setSpecialOffersValue(e.target.value)} />
           </div>
 
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
-              <label className="font-label-md text-sm text-on-surface-variant ml-1">Menu / Pricing (JSON Array)</label>
+              <label htmlFor="menu" className="font-label-md text-sm text-on-surface-variant ml-1">Menu / Pricing (JSON Array)</label>
               <button type="button" onClick={() => handleEnhanceWidget('menu', menuValue, setMenuValue)} disabled={enhancingWidget === 'menu'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Enhance</button>
             </div>
-            <textarea name="menu" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={5} value={menuValue} onChange={(e) => setMenuValue(e.target.value)} />
+            <textarea id="menu" name="menu" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={5} value={menuValue} onChange={(e) => setMenuValue(e.target.value)} />
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="font-label-md text-sm text-on-surface-variant ml-1">Video URLs (JSON Array of strings)</label>
-            <textarea name="videoUrls" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={videoUrlsValue} onChange={(e) => setVideoUrlsValue(e.target.value)} />
+            <label htmlFor="videoUrls" className="font-label-md text-sm text-on-surface-variant ml-1">Video URLs (JSON Array of strings)</label>
+            <textarea id="videoUrls" name="videoUrls" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={videoUrlsValue} onChange={(e) => setVideoUrlsValue(e.target.value)} />
           </div>
           
           <Input label="Booking URL" name="bookingUrl" type="url" fullWidth value={bookingUrlValue} onChange={(e) => setBookingUrlValue(e.target.value)} placeholder="https://" />
 
           <div className="flex flex-col gap-2">
-            <label className="font-label-md text-sm text-on-surface-variant ml-1">Trust Badges (JSON Array of strings)</label>
-            <textarea name="trustBadges" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={trustBadgesValue} onChange={(e) => setTrustBadgesValue(e.target.value)} />
+            <label htmlFor="trustBadges" className="font-label-md text-sm text-on-surface-variant ml-1">Trust Badges (JSON Array of strings)</label>
+            <textarea id="trustBadges" name="trustBadges" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={trustBadgesValue} onChange={(e) => setTrustBadgesValue(e.target.value)} />
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="font-label-md text-sm text-on-surface-variant ml-1">Amenities (JSON Array of strings)</label>
-            <textarea name="amenities" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={amenitiesValue} onChange={(e) => setAmenitiesValue(e.target.value)} />
+            <label htmlFor="amenities" className="font-label-md text-sm text-on-surface-variant ml-1">Amenities (JSON Array of strings)</label>
+            <textarea id="amenities" name="amenities" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={2} value={amenitiesValue} onChange={(e) => setAmenitiesValue(e.target.value)} />
           </div>
 
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
-              <label className="font-label-md text-sm text-on-surface-variant ml-1">External Reviews (JSON Array of Embed URLs / Place IDs)</label>
+              <label htmlFor="externalReviews" className="font-label-md text-sm text-on-surface-variant ml-1">External Reviews (JSON Array of Embed URLs / Place IDs)</label>
               <button type="button" onClick={() => handleEnhanceWidget('externalReviews', externalReviewsValue, setExternalReviewsValue)} disabled={enhancingWidget === 'externalReviews'} className="text-xs font-bold text-primary hover:underline flex items-center gap-1">✨ AI Format</button>
             </div>
-            <textarea name="externalReviews" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={3} value={externalReviewsValue} onChange={(e) => setExternalReviewsValue(e.target.value)} />
+            <textarea id="externalReviews" name="externalReviews" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface resize-none focus:border-primary focus:ring-1" rows={3} value={externalReviewsValue} onChange={(e) => setExternalReviewsValue(e.target.value)} />
           </div>
 
         </div>
