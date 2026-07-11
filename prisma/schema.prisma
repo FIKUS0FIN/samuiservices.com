@@ -20,8 +20,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -40,18 +39,18 @@ model User {
   email            String?        @unique
   emailVerified    DateTime?
   image            String?
-  accounts         Account[]
-  sessions         Session[]
-  listings         Listing[] // A user can have many listings
-  favorites        Favorite[]
-  reviews          Review[]
-  sentMessages     Message[]      @relation("SentMessages")
-  receivedMessages Message[]      @relation("ReceivedMessages")
   role             String         @default("USER")
   createdAt        DateTime       @default(now())
-  claimRequests    ClaimRequest[]
-  questions        Question[]
+  accounts         Account[]
   answers          Answer[]
+  claimRequests    ClaimRequest[]
+  favorites        Favorite[]
+  listings         Listing[]
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  sentMessages     Message[]      @relation("SentMessages")
+  questions        Question[]
+  reviews          Review[]
+  sessions         Session[]
 }
 
 model VerificationToken {
@@ -61,8 +60,6 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
-// Custom Domain Models
 
 model Category {
   id       String     @id @default(cuid())
@@ -83,56 +80,50 @@ model Island {
 }
 
 model Listing {
-  slug          String    @unique @default(cuid())
-  layout        String    @default("standard")
-  products      Product[]
-  id            String    @id @default(cuid())
-  name          String
-  description   String
-  image         String?
-  phone         String?
-  address       String?
-  lat           Float?
-  lng           Float?
-  averageRating Float     @default(0)
-  reviewCount   Int       @default(0)
-  isPremium     Boolean   @default(false)
-  isClaimed     Boolean   @default(true)
-  googlePlaceId String?   @unique
-  website       String?
-  hours         String?
-  galleryImages String? // Serialized JSON array of strings
-  services      String? // Serialized JSON array of strings
-  priceLevel    String?
-  subdistrict   String? // New field to store the specific subdistrict / area
-  mapLink       String?
-
-  // Widget Data Fields (Stored as Serialized JSON)
-  socialLinks     String?
-  faqs            String?
-  specialOffers   String?
-  menu            String?
-  videoUrls       String?
-  bookingUrl      String?
-  trustBadges     String?
+  slug            String     @unique @default(cuid())
+  layout          String     @default("standard")
+  id              String     @id @default(cuid())
+  name            String
+  description     String
+  image           String?
+  phone           String?
+  address         String?
+  lat             Float?
+  lng             Float?
+  averageRating   Float      @default(0)
+  reviewCount     Int        @default(0)
+  isPremium       Boolean    @default(false)
+  isClaimed       Boolean    @default(true)
+  googlePlaceId   String?    @unique
+  website         String?
+  hours           String?
+  categoryId      String
+  islandId        String
+  userId          String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  galleryImages   String?
+  mapLink         String?
+  priceLevel      String?
+  services        String?
   amenities       String?
-  externalReviews String? // For Google/TripAdvisor embeds 
-
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
-
-  islandId String
-  island   Island @relation(fields: [islandId], references: [id])
-
-  userId    String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  favorites Favorite[]
-  reviews   Review[]
-  messages  Message[]
-  questions Question[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  bookingUrl      String?
+  faqs            String?
+  menu            String?
+  socialLinks     String?
+  specialOffers   String?
+  trustBadges     String?
+  videoUrls       String?
+  externalReviews String?
+  subdistrict     String?
+  favorites       Favorite[]
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  island          Island     @relation(fields: [islandId], references: [id])
+  category        Category   @relation(fields: [categoryId], references: [id])
+  messages        Message[]
+  products        Product[]
+  questions       Question[]
+  reviews         Review[]
 }
 
 model Favorite {
@@ -140,9 +131,8 @@ model Favorite {
   userId    String
   listingId String
   createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, listingId])
 }
@@ -155,9 +145,8 @@ model Review {
   listingId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Message {
@@ -168,21 +157,19 @@ model Message {
   listingId  String?
   createdAt  DateTime @default(now())
   isRead     Boolean  @default(false)
-
-  sender   User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  receiver User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
-  listing  Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+  listing    Listing? @relation(fields: [listingId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 model ClaimRequest {
   id        String   @id @default(cuid())
   userId    String
   listingId String
-  status    String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  status    String   @default("PENDING")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Product {
@@ -202,10 +189,9 @@ model Question {
   listingId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  listing Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
-  answers Answer[]
+  answers   Answer[]
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Answer {
@@ -215,7 +201,6 @@ model Answer {
   questionId String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
