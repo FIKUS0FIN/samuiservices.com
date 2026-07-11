@@ -637,10 +637,14 @@ async function processBusiness(listing: any, browser: any) {
     try {
       const existingGallery = JSON.parse(listing.galleryImages);
       if (Array.isArray(existingGallery)) {
-        // Keep existing R2 images too, but filter out icons, buttons, and SVGs
+        // Keep existing R2 images too, but filter out icons, buttons, and SVGs.
+        // Also filter out legacy image formats like "slug-1.jpg" which are duplicates of "slug-google-1.jpg"
         const cleanExisting = existingGallery.filter(url => {
           const urlLower = url.toLowerCase();
+          // Filter out legacy formats but keep -google- and -site-
+          const isLegacyFormat = urlLower.match(/-[0-9]+\.(jpg|jpeg|png|webp)$/) !== null && !urlLower.includes('-google-') && !urlLower.includes('-site-');
           return !(
+            isLegacyFormat ||
             urlLower.includes('.svg') ||
             urlLower.includes('logo') ||
             urlLower.includes('icon') ||

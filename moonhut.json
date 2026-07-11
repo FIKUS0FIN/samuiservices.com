@@ -1,0 +1,62 @@
+[
+  {
+    "results": [
+      {
+        "slug": "moonhut-beach restaurant",
+        "layout": "standard",
+        "id": "cmrgbi6cd0000psp7q468p475",
+        "name": "Moonhut Beach Restaurant",
+        "description": "Moonhut Beach Restaurant is a relaxed and kid-friendly beachfront restaurant serving a wide range of Thai and European dishes. Enjoy live music events and stunning views of the ocean.",
+        "image": "https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771473423-581b254c.png",
+        "phone": "",
+        "address": "67, Tambon Mae Nam, Amphoe Ko Samui, Chang Wat Surat Thani 84330, Thailand",
+        "lat": 9.5695707,
+        "lng": 100.0021481,
+        "averageRating": 4.6,
+        "reviewCount": 525,
+        "isPremium": 0,
+        "isClaimed": 1,
+        "googlePlaceId": null,
+        "website": "https://moonhutbeach.com/",
+        "hours": "Monday to Sunday: 8:00 AM - 10:00 PM",
+        "categoryId": "cmqyzwjo70005iuxdq6twl89w",
+        "islandId": "cmqyzwjn00001iuxd3slf0go3",
+        "userId": "cmr1ic7oa0000psp7y1zf64h9",
+        "createdAt": "2026-07-11T12:05:15.805+00:00",
+        "updatedAt": "2026-07-11T12:05:15.805+00:00",
+        "galleryImages": "[\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771473803-9c4b4bb5.jpeg\",\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771474103-59f47a86.jpeg\",\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771474668-d1d8eae0.jpeg\",\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771475540-2392dc46.jpeg\",\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771476166-33d68ec8.jpeg\",\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771476970-edf4bb5b.jpeg\",\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771477246-c37cf58b.jpeg\",\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771477528-cc9e004b.jpeg\",\r\n  \"https://pub-3433478e81804444ae052b8316ad0d83.r2.dev/crawled/1783771477932-0916ea3a.jpeg\"\r\n]",
+        "mapLink": "https://www.google.com/maps?cid=12955090402541013742",
+        "priceLevel": null,
+        "services": "[\"restaurant\",\"beach restaurant\",\"Thai food\",\"European cuisine\",\"live music\"]",
+        "socialLinks": "{}",
+        "faqs": "[]",
+        "specialOffers": "[]",
+        "menu": "[\r\n  {\r\n    \"category\": \"Events\",\r\n    \"items\": [\r\n      {\r\n        \"name\": \"Live Thai Music\",\r\n        \"price\": null,\r\n        \"description\": \"Friday, 07:00 PM\"\r\n      },\r\n      {\r\n        \"name\": \"Live Peng Wetern Cover\",\r\n        \"price\": null,\r\n        \"description\": \"Saturday, 07:00 PM\"\r\n      },\r\n      {\r\n        \"name\": \"Nong Ozone Saxophone & Pork Leg Roast\",\r\n        \"price\": null,\r\n        \"description\": \"Sunday, 07:30 PM\"\r\n      }\r\n    ]\r\n  }\r\n]",
+        "videoUrls": "[]",
+        "bookingUrl": null,
+        "trustBadges": "[]",
+        "amenities": "[\r\n  \"pool table\",\r\n  \"board games\",\r\n  \"beach games\"\r\n]",
+        "externalReviews": "{\r\n  \"rating\": 4.6,\r\n  \"reviewCount\": 525,\r\n  \"reviews\": [\r\n    {\r\n      \"author\": \"Conor Fitzpatrick\",\r\n      \"avatar\": \"https://lh3.googleusercontent.com/a-/ALV-UjUKJz3Dr7fxCUZoWzFhn6E_M9OoOpVHzt-nvETLfs-lXxH1_DGhMw=s128-c0x00000000-cc-rp-mo\",\r\n      \"rating\": 5,\r\n      \"text\": \"Huge thank you to Honey, Coco and all the amazing staff at the moonhut. They are *incredible* with children. Lovely relaxed and kid friendly atmosphere in a beautiful part of Samui. The food is outstanding which is a huge surprise given how broad the menu is, from Thai classics to European cuisine and plenty from further afield, but all of it is prepared to a standard you'd not get even in a specialised restaurant. The laphet thoke is a particularly amazing vegetarian dish, and the Nam Tom is perfectly spiced and well balanced. Stayed for a week with two small children and would come back again in a heartbeat.\",\r\n      \"time\": \"a month ago\",\r\n      \"source\": \"Google\"\r\n    },\r\n    {\r\n      \"author\": \"Toni Seemann\",\r\n      \"avatar\": \"https://lh3.googleusercontent.com/a-/ALV-UjVieMn2_JizgOVj_npyeeFCRTai92SVTqm_x14TZBq3IboG8svh=s128-c0x00000000-cc-rp-mo-ba2\",\r\n      \"rating\": 5,\r\n      \"text\": \"I had an amazing experience at Moonhut Restaurant. The vibe is super chilled and relaxing, perfect for enjoying good food by the beach. The salmon avocado sourdough was absolutely delicious — fresh, tasty, and beautifully prepared.\\n\\nA special mention to Honey, who gave amazing service and made the experience even better with her friendly and attentive attitude. Highly recommended!\",\r\n      \"time\": \"a month ago\",\r\n      \"source\": \"Google\"\r\n    },\r\n    {\r\n      \"author\": \"MC Marcus\",\r\n      \"avatar\": \"https://lh3.googleusercontent.com/a/ACg8ocJRpFmqcjU3-DsPP4ALX1ScZ2ugyTRBzQ4UpIKihULLVcF_cw=s128-c0x00000000-cc-rp-mo\",\r\n      \"rating\": 5,\r\n      \"text\": \"A beautiful bar/restaurant at the beach of Maenam on Koh Samui. Great food, drinks and atmosphere with live events…, I enjoyed every moment there! The servants are all very kind, speak english and will fulfill your wishes for sure! Special thanks to „Honey“, I appreciated your great service and the good conversation 🫶🏼 - Thanks again, I will come back… 🏝️🥤🧉🥗🍝🍍🍛💖\",\r\n      \"time\": \"a month ago\",\r\n      \"source\": \"Google\"\r\n    },\r\n    {\r\n      \"author\": \"Bailey Richmond\",\r\n      \"avatar\": \"https://lh3.googleusercontent.com/a/ACg8ocJw5GR1l1y3MJDsH4KVS2c6G-m0HeKuZVxx9i5ATK3PNphh3Q=s128-c0x00000000-cc-rp-mo\",\r\n      \"rating\": 5,\r\n      \"text\": \"Beautiful location, pool table, board games/beach games, yummy food and drinks, what more could you ask for?\\n\\nThere is an extensive menu and the food is delicious. Highly recommend the red duck curry. Ko Ko provided exceptional service, always with a smile :)\\n\\nThis place is perfect to sip cocktails and enjoy a bite to eat on any day, even on a rainy day.\\n\\nThank you Moonhut!\",\r\n      \"time\": \"7 months ago\",\r\n      \"source\": \"Google\"\r\n    },\r\n    {\r\n      \"author\": \"Marina Stepanova\",\r\n      \"avatar\": \"https://lh3.googleusercontent.com/a/ACg8ocL7O3D0o472ys60g4k6LbsUSx7mhCsDsefasvjnaHL9Wce_gA=s128-c0x00000000-cc-rp-mo-ba2\",\r\n      \"rating\": 5,\r\n      \"text\": \"Not fancy, but excellent food and great value. Wide menu (not just Thai), relaxed beach vibe with the sound of waves, and friendly service. A great, no-fuss find.\",\r\n      \"time\": \"2 months ago\",\r\n      \"source\": \"Google\"\r\n    }\r\n  ]\r\n}",
+        "subdistrict": "Maenam"
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "APAC",
+      "served_by_colo": "HKG",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.3865
+      },
+      "duration": 0.3865,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 6787072,
+      "rows_read": 1,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]
