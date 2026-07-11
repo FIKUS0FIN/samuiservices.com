@@ -12,9 +12,10 @@ export async function GET(request: Request) {
 
   try {
     const whereClause: any = {
-      name: {
-        contains: q,
-      }
+      OR: [
+        { name: { contains: q } },
+        { slug: { contains: q } }
+      ]
     };
 
     if (island) {

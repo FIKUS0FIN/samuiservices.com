@@ -29,7 +29,12 @@ export default async function Dashboard(props: { searchParams?: Promise<{ listin
     prisma.listing.findMany({
       where: { 
         userId: session.user.id,
-        ...(search ? { name: { contains: search } } : {})
+        ...(search ? {
+          OR: [
+            { name: { contains: search } },
+            { slug: { contains: search } }
+          ]
+        } : {})
       },
       include: { category: true, island: true },
       orderBy: { createdAt: 'desc' },
@@ -39,7 +44,12 @@ export default async function Dashboard(props: { searchParams?: Promise<{ listin
     prisma.listing.count({ 
       where: { 
         userId: session.user.id,
-        ...(search ? { name: { contains: search } } : {})
+        ...(search ? {
+          OR: [
+            { name: { contains: search } },
+            { slug: { contains: search } }
+          ]
+        } : {})
       } 
     }),
     prisma.listing.count({ where: { userId: session.user.id } })

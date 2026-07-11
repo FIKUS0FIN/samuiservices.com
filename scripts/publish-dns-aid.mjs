@@ -146,6 +146,11 @@ async function run() {
     console.log('DNS-AID records check and update completed.');
   } catch (error) {
     console.error('❌ DNS-AID publishing process failed:', error);
+    const msg = error.message || String(error);
+    if (msg.includes('403') || msg.includes('Forbidden')) {
+      console.warn('⚠️ Cloudflare API Token does not have permission to manage DNS records (403 Forbidden). Skipping DNS-AID record publishing.');
+      process.exit(0);
+    }
     process.exit(1);
   }
 }

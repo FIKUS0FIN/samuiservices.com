@@ -36,7 +36,10 @@ export async function getBusinessesByIsland(
   }
 
   if (query) {
-    whereClause.name = { contains: query };
+    whereClause.OR = [
+      { name: { contains: query } },
+      { slug: { contains: query } }
+    ];
   }
 
   const skip = (page - 1) * limit;
