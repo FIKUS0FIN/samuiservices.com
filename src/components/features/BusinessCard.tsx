@@ -32,7 +32,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
           <div className="p-5 md:py-6 md:pr-8 flex flex-col flex-1 justify-center">
             <div className="flex justify-between items-start mb-2">
               <div className="text-primary font-semibold text-sm uppercase tracking-wide hidden md:block mb-1">
-                {business.category?.name || 'Uncategorized'} • {business.island?.name || 'Unknown Location'}
+                {business.category?.name || 'Uncategorized'} • {business.subdistrict ? `${business.subdistrict}, ` : ''}{business.island?.name || 'Unknown Location'}
               </div>
               {business.isPremium && (
                  <span className="bg-secondary-container text-secondary-text text-xs font-bold px-3 py-1 rounded-pill shadow-sm">

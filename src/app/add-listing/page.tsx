@@ -34,6 +34,7 @@ export default async function AddListing() {
     const name = formData.get('name') as string;
     const categoryId = formData.get('categoryId') as string;
     const islandId = formData.get('islandId') as string;
+    const subdistrict = formData.get('subdistrict') as string || null;
     const phone = formData.get('phone') as string;
     const address = formData.get('address') as string;
     const website = formData.get('website') as string;
@@ -118,6 +119,7 @@ export default async function AddListing() {
         name,
         categoryId,
         islandId,
+        subdistrict,
         phone,
         address,
         website,

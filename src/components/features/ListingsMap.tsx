@@ -63,7 +63,7 @@ export default function ListingsMap({ businesses, center = [9.5120, 100.0136], z
         />
 
         {/* District Highlight Circles */}
-        {DISTRICT_ZONES.map(d => (
+        {center[0] > 9.3 && center[0] < 9.65 && DISTRICT_ZONES.map(d => (
           <Circle 
             key={d.name}
             center={d.center as [number, number]}

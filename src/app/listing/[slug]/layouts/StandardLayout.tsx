@@ -60,6 +60,12 @@ export default function StandardLayout({ business, faqs = [] }: { business: any,
           <li>
             <Link href={`/${business.island.slug}`} className="hover:text-primary transition-colors">{business.island.name}</Link>
           </li>
+          {business.subdistrict && (
+            <>
+              <li><span className="text-outline">/</span></li>
+              <li className="text-on-surface truncate max-w-[120px]">{business.subdistrict}</li>
+            </>
+          )}
           <li><span className="text-outline">/</span></li>
           <li>
             <Link href={`/?category=${business.category.slug}`} className="hover:text-primary transition-colors">{business.category.name}</Link>

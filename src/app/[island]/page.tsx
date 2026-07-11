@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { notFound } from 'next/navigation';
-import { getBusinessesByIsland, getAllIslands, getAllCategories, getCategoryCounts } from '@/lib/db';
+import { getBusinessesByIsland, getAllIslands, getAllCategories, getCategoryCounts, getSubdistrictsWithCounts } from '@/lib/db';
 import { FilterSidebar } from '@/components/features/FilterSidebar';
 import { BusinessCard } from '@/components/features/BusinessCard';
 import { Card } from '@/components/ui/Card';
@@ -37,6 +37,11 @@ export default async function IslandDirectory({
     : undefined;
     
   const query = resolvedSearchParams.q as string | undefined;
+  
+  const subdistrictParam = resolvedSearchParams.subdistrict;
+  const subdistricts = subdistrictParam
+    ? (Array.isArray(subdistrictParam) ? subdistrictParam : [subdistrictParam])
+    : undefined;
 
   const islands = await getAllIslands();
   
@@ -51,9 +56,10 @@ export default async function IslandDirectory({
   
   const session = await getServerSession(authOptions);
   
-  const { listings: islandBusinesses, totalPages, totalCount } = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id, page, limit);
+  const { listings: islandBusinesses, totalPages, totalCount } = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id, page, limit, subdistricts);
   const categories = await getAllCategories();
   const categoryCounts = await getCategoryCounts(island);
+  const subdistrictCounts = await getSubdistrictsWithCounts(island);
 
   let mapCenter: [number, number] = [9.5120, 100.0136];
   let mapZoom = 11;
@@ -75,7 +81,7 @@ export default async function IslandDirectory({
       <div className="w-full lg:w-80 flex-shrink-0 lg:overflow-y-auto border-b lg:border-b-0 lg:border-r border-outline-variant p-6 bg-surface-container-lowest z-10">
         <h2 className="text-display-sm font-bold mb-2 text-on-surface">{islandName} Services</h2>
         <p className="text-on-surface-variant text-body-md mb-8">Browse local businesses and top-rated services.</p>
-        <FilterSidebar categories={categories} categoryCounts={categoryCounts} />
+        <FilterSidebar categories={categories} categoryCounts={categoryCounts} subdistrictCounts={subdistrictCounts} />
       </div>
 
       {/* Results List */}

@@ -23,9 +23,10 @@ interface SearchResult {
 interface FilterSidebarProps {
   categories: CategoryWithChildren[];
   categoryCounts?: Record<string, number>;
+  subdistrictCounts?: Record<string, number>;
 }
 
-export function FilterSidebar({ categories, categoryCounts = {} }: FilterSidebarProps) {
+export function FilterSidebar({ categories, categoryCounts = {}, subdistrictCounts = {} }: FilterSidebarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -35,6 +36,7 @@ export function FilterSidebar({ categories, categoryCounts = {} }: FilterSidebar
 
   // Read current state from URL
   const currentCategories = searchParams.getAll('category');
+  const currentSubdistricts = searchParams.getAll('subdistrict');
   const currentQuery = searchParams.get('q') || '';
 
   const createQueryString = useCallback(
@@ -58,6 +60,11 @@ export function FilterSidebar({ categories, categoryCounts = {} }: FilterSidebar
   const handleCategoryChange = (slug: string, checked: boolean) => {
     const action = checked ? 'set' : 'remove';
     router.push('?' + createQueryString('category', slug, action), { scroll: false });
+  };
+
+  const handleSubdistrictChange = (subdistrict: string, checked: boolean) => {
+    const action = checked ? 'add' : 'remove';
+    router.push('?' + createQueryString('subdistrict', subdistrict, action), { scroll: false });
   };
 
   const [searchQuery, setSearchQuery] = useState(currentQuery);
@@ -216,6 +223,47 @@ export function FilterSidebar({ categories, categoryCounts = {} }: FilterSidebar
         </div>
 
         <div className="flex flex-col gap-6">
+          {/* Districts (Subdistricts) Accordion Filter */}
+          {Object.keys(subdistrictCounts).length > 0 && (
+            <div className="w-full border-b border-outline-variant pb-6">
+              <button
+                onClick={() => toggleSection('location')}
+                className="flex justify-between items-center w-full bg-transparent border-none p-0 cursor-pointer text-left hover:opacity-80 transition-opacity"
+              >
+                <h4 className="text-label-lg font-bold uppercase tracking-wide text-on-surface m-0">
+                  Districts {currentSubdistricts.length > 0 && <span className="text-on-surface-variant font-medium">({currentSubdistricts.length})</span>}
+                </h4>
+                {openSections['location'] !== false ? <ChevronUp size={18} className="text-on-surface-variant" /> : <ChevronDown size={18} className="text-on-surface-variant" />}
+              </button>
+
+              {openSections['location'] !== false && (
+                <div className="flex flex-col gap-3 mt-4 max-h-64 overflow-y-auto pr-2">
+                  {Object.entries(subdistrictCounts).map(([sub, count]) => {
+                    const isChecked = currentSubdistricts.includes(sub);
+                    return (
+                      <label key={sub} className="flex items-center gap-3 cursor-pointer group">
+                        <div className="relative flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={(e) => handleSubdistrictChange(sub, e.target.checked)}
+                            className="peer appearance-none w-5 h-5 border-2 border-outline rounded-sm checked:bg-primary checked:border-primary transition-colors cursor-pointer"
+                          />
+                          <svg className="absolute w-3 h-3 text-on-primary left-1 top-1 opacity-0 peer-checked:opacity-100 pointer-events-none" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 5L4.5 8.5L13 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                        <span className={`text-body-md transition-colors ${isChecked ? 'text-on-surface font-semibold' : 'text-on-surface-variant group-hover:text-on-surface'}`}>
+                          {sub} <span className="text-on-surface-variant font-normal">({count})</span>
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
           {categories.filter(cat => cat.parentId === null).map(parent => {
             const parentSum = parent.children.reduce((sum, child) => sum + (categoryCounts[child.id] || 0), 0);
             return (

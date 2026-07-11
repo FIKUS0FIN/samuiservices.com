@@ -104,6 +104,7 @@ model Listing {
   galleryImages String? // Serialized JSON array of strings
   services      String? // Serialized JSON array of strings
   priceLevel    String?
+  subdistrict   String? // New field to store the specific subdistrict / area
   mapLink       String?
 
   // Widget Data Fields (Stored as Serialized JSON)

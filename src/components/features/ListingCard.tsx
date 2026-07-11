@@ -49,7 +49,7 @@ export function ListingCard({ business }: ListingCardProps) {
             </div>
 
             <div className="text-on-surface-variant text-body-sm mb-4 flex items-center gap-1.5">
-              <span className="text-outline">📍</span> {business.island?.name || 'Samui'}
+              <span className="text-outline">📍</span> {business.subdistrict ? `${business.subdistrict}, ` : ''}{business.island?.name || 'Samui'}
             </div>
             
             <div className="mt-auto pt-4 border-t border-outline-variant/30">

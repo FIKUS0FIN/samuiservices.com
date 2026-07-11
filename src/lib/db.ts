@@ -6,7 +6,8 @@ export async function getBusinessesByIsland(
   query?: string, 
   currentUserId?: string,
   page: number = 1,
-  limit: number = 50
+  limit: number = 50,
+  subdistricts?: string[]
 ) {
   const whereClause: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
   
@@ -16,6 +17,10 @@ export async function getBusinessesByIsland(
     } else {
       whereClause.island = { slug: islandSlug };
     }
+  }
+
+  if (subdistricts && subdistricts.length > 0) {
+    whereClause.subdistrict = { in: subdistricts };
   }
   
   if (categorySlugs && categorySlugs.length > 0) {
@@ -197,4 +202,32 @@ export async function getBusinessBySlug(slug: string) {
       }
     }
   });
+}
+
+export async function getSubdistrictsWithCounts(islandSlug: string): Promise<Record<string, number>> {
+  const whereClause: any = {};
+  if (islandSlug !== 'all') {
+    if (islandSlug === 'samui') {
+      whereClause.island = { slug: { notIn: ['phangan', 'tao'] } };
+    } else {
+      whereClause.island = { slug: islandSlug };
+    }
+  }
+  whereClause.subdistrict = { not: null };
+
+  const counts = await prisma.listing.groupBy({
+    by: ['subdistrict'],
+    where: whereClause,
+    _count: {
+      id: true
+    }
+  });
+
+  const countMap: Record<string, number> = {};
+  for (const item of counts) {
+    if (item.subdistrict) {
+      countMap[item.subdistrict] = item._count.id;
+    }
+  }
+  return countMap;
 }

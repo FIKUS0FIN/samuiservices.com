@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getAllCategories, getBusinessesByIsland, getCategoryCounts } from '@/lib/db';
+import { getAllCategories, getBusinessesByIsland, getCategoryCounts, getSubdistrictsWithCounts } from '@/lib/db';
 import { HeroSearch } from '@/components/features/HeroSearch';
 import { FilterSidebar } from '@/components/features/FilterSidebar';
 import { ListingCard } from '@/components/features/ListingCard';
@@ -18,13 +18,19 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
   
   const categories = await getAllCategories();
   const categoryCounts = await getCategoryCounts('all');
+  const subdistrictCounts = await getSubdistrictsWithCounts('all');
+  
+  const subdistrictParam = (searchParams as any)?.subdistrict;
+  const subdistricts = subdistrictParam
+    ? (Array.isArray(subdistrictParam) ? subdistrictParam : [subdistrictParam])
+    : undefined;
   
   // Fetch listings based on filter. 
   const categoryFilter = categorySlug ? [categorySlug] : undefined;
   
   // If no category is selected, we want to show a few items from each category, so we fetch more.
   const limit = categorySlug ? 10 : 100; 
-  const result = await getBusinessesByIsland('all', categoryFilter, undefined, undefined, currentPage, limit);
+  const result = await getBusinessesByIsland('all', categoryFilter, undefined, undefined, currentPage, limit, subdistricts);
   const allListings = result.listings;
   const totalPages = result.totalPages;
   
@@ -63,7 +69,7 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
           
           {/* Left Sidebar */}
           <aside className="w-full lg:w-[250px] shrink-0 lg:sticky lg:top-8 z-10 bg-surface-container-lowest rounded-card shadow-level-1 p-4 lg:bg-transparent lg:shadow-none lg:p-0">
-            <FilterSidebar categories={categories as any} categoryCounts={categoryCounts} />
+            <FilterSidebar categories={categories as any} categoryCounts={categoryCounts} subdistrictCounts={subdistrictCounts} />
           </aside>
           
           {/* Right Content */}

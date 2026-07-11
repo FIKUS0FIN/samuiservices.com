@@ -12,6 +12,7 @@ interface Category {
 interface Island {
   id: string;
   name: string;
+  slug: string;
 }
 
 interface ListingData {
@@ -21,6 +22,7 @@ interface ListingData {
   name?: string;
   categoryId?: string;
   islandId?: string;
+  subdistrict?: string | null;
   phone?: string | null;
   address?: string | null;
   website?: string | null;
@@ -52,6 +54,21 @@ interface ListingFormProps {
   cancelHref?: string;
 }
 
+const SUBDISTRICTS_MAP: Record<string, string[]> = {
+  'samui': [
+    'Bophut', 'Chaweng', 'Chaweng Noi', 'Lamai', 'Maenam', 'Nathon', 'Lipa Noi',
+    'Taling Ngam', 'Bang Por', 'Bang Rak', 'Plai Laem', 'Choeng Mon', 'Ban Tai',
+    'Hua Thanon', 'Fisherman\'s Village', 'Big Buddha', 'Laem Set', 'Namueang',
+    'Thong Krut', 'Bang Kao'
+  ],
+  'phangan': [
+    'Thong Sala', 'Ban Tai', 'Haad Rin', 'Srithanu', 'Chaloklum', 'Hin Kong', 'Madurwan'
+  ],
+  'tao': [
+    'Mae Haad', 'Sairee', 'Chalok Baan Kao'
+  ]
+};
+
 export function ListingForm({
   action,
   listing,
@@ -80,6 +97,8 @@ export function ListingForm({
   };
 
   const [nameValue, setNameValue] = useState(listing?.name || '');
+  const [selectedIslandId, setSelectedIslandId] = useState(listing?.islandId || '');
+  const [subdistrictValue, setSubdistrictValue] = useState(listing?.subdistrict || '');
   const [phoneValue, setPhoneValue] = useState(listing?.phone || '');
   const [addressValue, setAddressValue] = useState(listing?.address || '');
   const [mapLinkValue, setMapLinkValue] = useState(listing?.mapLink || '');
@@ -484,10 +503,30 @@ export function ListingForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex flex-col gap-2">
             <label className="font-label-md text-sm text-on-surface-variant ml-1">Island</label>
-            <select name="islandId" className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface appearance-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" defaultValue={listing?.islandId} required>
+            <select 
+              name="islandId" 
+              className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface appearance-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" 
+              value={selectedIslandId} 
+              onChange={(e) => { setSelectedIslandId(e.target.value); setSubdistrictValue(''); }} 
+              required
+            >
               <option value="">Select an island...</option>
               {islands.map(island => (
                 <option key={island.id} value={island.id}>{island.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="font-label-md text-sm text-on-surface-variant ml-1">Subdistrict</label>
+            <select 
+              name="subdistrict" 
+              className="bg-surface-container-low border border-outline-variant rounded-lg p-3 font-body-md text-on-surface appearance-none transition-all focus:border-primary focus:ring-1 focus:ring-primary" 
+              value={subdistrictValue} 
+              onChange={(e) => setSubdistrictValue(e.target.value)}
+            >
+              <option value="">Select a subdistrict...</option>
+              {(SUBDISTRICTS_MAP[islands.find(i => i.id === selectedIslandId)?.slug || ''] || []).map(sub => (
+                <option key={sub} value={sub}>{sub}</option>
               ))}
             </select>
           </div>
