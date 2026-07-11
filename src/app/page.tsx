@@ -6,11 +6,31 @@ import { ListingCard } from '@/components/features/ListingCard';
 import { Pagination } from '@/components/ui/Pagination';
 import { SortSelect } from '@/components/features/SortSelect';
 
-export const metadata = {
-  alternates: {
-    canonical: '/',
-  },
-};
+export async function generateMetadata(props: { searchParams?: Promise<{ category?: string, view?: string, page?: string }> }) {
+  const searchParams = await props.searchParams;
+  const categorySlug = searchParams?.category;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://samuiservices.com';
+
+  if (categorySlug) {
+    const categories = await getAllCategories();
+    const category = categories.find(c => c.slug === categorySlug);
+    if (category) {
+      return {
+        title: `Top ${category.name} in Koh Samui | Samui Services`,
+        description: `Browse the best ${category.name.toLowerCase()} services in Koh Samui. Find reviews, photos, business hours, and contact details.`,
+        alternates: {
+          canonical: `${baseUrl}/?category=${categorySlug}`,
+        },
+      };
+    }
+  }
+
+  return {
+    alternates: {
+      canonical: `${baseUrl}/`,
+    },
+  };
+}
 
 export default async function Home(props: { searchParams?: Promise<{ category?: string, view?: string, page?: string }> }) {
   const searchParams = await props.searchParams;
