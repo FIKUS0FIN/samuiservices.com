@@ -7,9 +7,10 @@ const client = createClient({
 
 async function main() {
   try {
-    // Let's see the schema of Category
-    const res = await client.execute(`PRAGMA table_info("Category");`);
-    console.log("Category columns:", res.rows);
+    const res = await client.execute(`
+      SELECT * FROM Island;
+    `);
+    console.log("All islands on Turso:", res.rows);
   } catch (err) {
     console.error(err);
   }

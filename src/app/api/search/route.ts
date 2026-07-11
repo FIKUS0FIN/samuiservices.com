@@ -19,9 +19,15 @@ export async function GET(request: Request) {
     };
 
     if (island) {
-      whereClause.island = {
-        slug: island
-      };
+      if (island === 'samui') {
+        whereClause.island = {
+          slug: { notIn: ['phangan', 'tao'] }
+        };
+      } else {
+        whereClause.island = {
+          slug: island
+        };
+      }
     }
 
     const results = await prisma.listing.findMany({

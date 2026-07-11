@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getAllCategories, getBusinessesByIsland } from '@/lib/db';
+import { getAllCategories, getBusinessesByIsland, getCategoryCounts } from '@/lib/db';
 import { HeroSearch } from '@/components/features/HeroSearch';
 import { FilterSidebar } from '@/components/features/FilterSidebar';
 import { ListingCard } from '@/components/features/ListingCard';
@@ -17,6 +17,7 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
   const currentPage = searchParams?.page ? parseInt(searchParams.page, 10) : 1;
   
   const categories = await getAllCategories();
+  const categoryCounts = await getCategoryCounts('all');
   
   // Fetch listings based on filter. 
   const categoryFilter = categorySlug ? [categorySlug] : undefined;
@@ -62,7 +63,7 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
           
           {/* Left Sidebar */}
           <aside className="w-full lg:w-[250px] shrink-0 lg:sticky lg:top-8 z-10 bg-surface-container-lowest rounded-card shadow-level-1 p-4 lg:bg-transparent lg:shadow-none lg:p-0">
-            <FilterSidebar categories={categories as any} />
+            <FilterSidebar categories={categories as any} categoryCounts={categoryCounts} />
           </aside>
           
           {/* Right Content */}
