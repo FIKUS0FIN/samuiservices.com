@@ -1,15 +1,21 @@
+import "dotenv/config";
 import { PrismaClient } from '@prisma/client';
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 import fs from 'fs';
 
-const prisma = new PrismaClient();
+const dbUrl = process.env.DATABASE_URL || "file:./dev.db";
+const adapter = new PrismaLibSql({
+  url: dbUrl,
+  authToken: process.env.TURSO_AUTH_TOKEN
+});
 
-// Ensure you have OPENAI_API_KEY set in your environment variables.
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const prisma = new PrismaClient({
+  adapter
+});
 
-if (!OPENAI_API_KEY) {
-  console.error("Please set OPENAI_API_KEY environment variable before running this script.");
-  process.exit(1);
-}
+// Local Ollama configuration
+const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'phi4-mini';
 
 const generateSEOContent = async (businessName: string, categoryName: string, islandName: string, currentDescription: string) => {
   const prompt = `
@@ -28,45 +34,93 @@ const generateSEOContent = async (businessName: string, categoryName: string, is
     5. Conclude with a strong call-to-action (e.g., inviting them to visit or contact).
     6. Ensure the tone is professional, welcoming, and helpful to tourists and expats in Koh Samui.
     
-    Output ONLY the rewritten Markdown description. Do not include any other conversational text.
+    Output ONLY the rewritten Markdown description. Do not include any other conversational text or surrounding quotes.
   `;
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5 * 60 * 1000); // 5 min timeout
+
+  const response = await fetch(`${OLLAMA_URL}/api/generate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${OPENAI_API_KEY}`,
     },
+    signal: controller.signal,
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
+      model: OLLAMA_MODEL,
+      prompt: prompt,
+      stream: false,
+      options: {
+        temperature: 0.7,
+        num_ctx: 4096,  // Match the 4k context we set in Ollama settings
+      }
     })
   });
+  clearTimeout(timeout);
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`OpenAI API Error: ${errorText}`);
+    throw new Error(`Ollama API Error: ${errorText}`);
   }
 
   const data = await response.json() as any;
-  return data.choices[0].message.content.trim();
+  return data.response.trim();
 };
 
 async function main() {
-  console.log("Fetching listings from local database...");
-  // You can limit this or add a where clause if you want to process in batches
-  const listings = await prisma.listing.findMany({
-    include: {
-      category: true,
-      island: true,
-    }
-  });
+  console.log(`Connecting to local Ollama at ${OLLAMA_URL} using model ${OLLAMA_MODEL}...`);
+  
+  // Verify Ollama connection
+  try {
+    const checkRes = await fetch(`${OLLAMA_URL}/api/tags`);
+    if (!checkRes.ok) throw new Error(`Ollama returned status ${checkRes.status}`);
+  } catch (e) {
+    console.error(`Error: Could not connect to local Ollama server at ${OLLAMA_URL}. Make sure Ollama is running.`);
+    process.exit(1);
+  }
 
-  console.log(`Found ${listings.length} listings to process.`);
+  console.log("Fetching listings from local database...");
+  
+  // Batch configuration (defaults to 50, customizable via LIMIT env var)
+  const limit = process.env.LIMIT ? parseInt(process.env.LIMIT, 10) : 50;
+  
+  // Use raw SQL to precisely target stub descriptions:
+  //   - Empty or null descriptions
+  //   - Descriptions that START with "## Top Reviews" AND are short (< 500 chars)
+  //     → true placeholder stubs, not AI-generated content that uses "## Top Reviews" as a heading
+  const rawListings = await prisma.$queryRawUnsafe<any[]>(`
+    SELECT l.id, l.name, l.description, l.slug,
+           c.name as categoryName,
+           i.name as islandName
+    FROM Listing l
+    JOIN Category c ON l.categoryId = c.id
+    JOIN Island i ON l.islandId = i.id
+    WHERE l.description IS NULL
+       OR l.description = ''
+       OR (l.description LIKE '## Top Reviews%' AND LENGTH(l.description) < 500)
+    LIMIT ${limit}
+  `);
+
+  // Shape into the same structure the rest of the script expects
+  const listings = rawListings.map((r: any) => ({
+    id: r.id,
+    name: r.name,
+    description: r.description,
+    slug: r.slug,
+    category: { name: r.categoryName },
+    island: { name: r.islandName },
+  }));
+
+  if (listings.length === 0) {
+    console.log("No listings found that require SEO description enrichment.");
+    return;
+  }
+
+  console.log(`Found ${listings.length} listings to process (Batch Limit: ${limit}).`);
   
   const migrationFile = 'seo_migration.sql';
-  fs.writeFileSync(migrationFile, '-- Generated SEO Migrations\n\n');
+  // If there's an existing migration file, we append to it or keep it clean
+  fs.writeFileSync(migrationFile, '-- Generated SEO Migrations with Local AI\n\n');
 
   let successCount = 0;
   
@@ -93,8 +147,8 @@ async function main() {
       fs.appendFileSync(migrationFile, `UPDATE Listing SET description = '${escapedDescription}' WHERE id = '${listing.id}';\n`);
       
       successCount++;
-      // Sleep slightly to respect rate limits
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Give a tiny breather to the local CPU/GPU running Ollama
+      await new Promise(resolve => setTimeout(resolve, 100));
     } catch (error) {
       console.error(`Failed to process ${listing.name}:`, error);
     }

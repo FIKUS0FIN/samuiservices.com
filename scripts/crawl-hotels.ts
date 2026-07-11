@@ -406,12 +406,9 @@ function getCloudflareToken(): string | null {
   return null;
 }
 
-async function runCloudflareAI(textContext: string): Promise<any> {
-  const token = getCloudflareToken();
-  if (!token) {
-    log('No Cloudflare OAuth token found in preferences. Skipping AI extraction.', 'WARNING');
-    return null;
-  }
+async function runLocalOllama(textContext: string): Promise<any> {
+  const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
+  const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen2.5:7b';
 
   const prompt = `
 You are an expert data extractor. I am giving you the raw text extracted from a business's website.
@@ -445,41 +442,35 @@ Extract the following information:
 Respond ONLY with a valid JSON object. Do not wrap it in markdown code blocks like \`\`\`json. The response should start with { and end with }.
 `;
 
-  log('Calling Cloudflare Workers AI (llama-3.1-70b-instruct) for structured data extraction...');
+  log(`Calling local Ollama (${OLLAMA_MODEL}) for structured data extraction...`);
   try {
-    const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai/run/@cf/meta/llama-3.1-70b-instruct`;
-    const res = await fetch(url, {
+    const res = await fetch(`${OLLAMA_URL}/api/generate`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        messages: [
-          { role: 'system', content: 'You are a strict data extraction AI. You only output valid, parsable JSON.' },
-          { role: 'user', content: prompt }
-        ],
-        max_tokens: 3000
+        model: OLLAMA_MODEL,
+        prompt: prompt,
+        stream: false,
+        format: 'json',
+        options: {
+          temperature: 0.2,
+          num_predict: 4096,
+          num_ctx: 16384,  // Website text can be long — need larger context than SEO enricher
+        }
       })
     });
 
     if (!res.ok) {
-      log(`Cloudflare AI request failed: ${res.statusText}`, 'WARNING');
+      log(`Local Ollama request failed: ${res.statusText}`, 'WARNING');
       return null;
     }
 
     const json = await res.json() as any;
-    if (!json.success) {
-      log(`Cloudflare AI returned error: ${JSON.stringify(json.errors)}`, 'WARNING');
-      return null;
-    }
-
-    let resultText = json.result.response || json.result;
-    if (typeof resultText !== 'string') {
-      resultText = JSON.stringify(resultText);
-    }
-
+    let resultText = json.response || json.result || '';
     resultText = resultText.trim();
+    
     const jsonMatch = resultText.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       resultText = jsonMatch[0];
@@ -487,7 +478,7 @@ Respond ONLY with a valid JSON object. Do not wrap it in markdown code blocks li
 
     return JSON.parse(resultText);
   } catch (e: any) {
-    log(`Failed to run Cloudflare AI: ${e.message}`, 'WARNING');
+    log(`Failed to run local Ollama: ${e.message}`, 'WARNING');
     return null;
   }
 }
@@ -734,9 +725,18 @@ async function processBusiness(listing: any, browser: any) {
   }
 
   let aiResult: any = null;
+  let textContext = '';
   if (webCrawlData && webCrawlData.texts && webCrawlData.texts.length > 0) {
-    const textContext = webCrawlData.texts.join('\n\n---\n\n').substring(0, 15000);
-    aiResult = await runCloudflareAI(textContext);
+    textContext = webCrawlData.texts.join('\n\n---\n\n').substring(0, 15000);
+  } else if (googleDetails) {
+    const reviewsText = (googleDetails.reviews || [])
+      .map((r: any) => `Review by ${r.author_name} (${r.rating} stars): ${r.text}`)
+      .join('\n\n');
+    textContext = `Business Name: ${listing.name}\nGoogle Editorial Summary: ${googleDetails.editorial_summary?.overview || 'None'}\n\nGoogle Reviews:\n${reviewsText}`;
+  }
+
+  if (textContext.trim().length > 0) {
+    aiResult = await runLocalOllama(textContext);
   }
 
   // Description
@@ -833,6 +833,21 @@ async function processBusiness(listing: any, browser: any) {
   // Update image (main cover image)
   const finalMainImage = uploadedImageUrls.length > 0 ? uploadedImageUrls[0] : listing.image;
 
+  // Check if googlePlaceId is already taken by another listing in the local DB
+  let finalGooglePlaceId = googlePlaceId;
+  if (finalGooglePlaceId) {
+    const existingWithPlaceId = await prisma.listing.findFirst({
+      where: {
+        googlePlaceId: finalGooglePlaceId,
+        id: { not: listing.id }
+      }
+    });
+    if (existingWithPlaceId) {
+      log(`[WARNING] googlePlaceId '${finalGooglePlaceId}' is already associated with listing '${existingWithPlaceId.slug}'. Setting to null for this update to avoid unique constraint failure.`, 'WARNING');
+      finalGooglePlaceId = null;
+    }
+  }
+
   // 6. Prepare update details
   const updateData = {
     website: targetWebsite || null,
@@ -844,7 +859,7 @@ async function processBusiness(listing: any, browser: any) {
     reviewCount: finalReviewCount ? parseInt(finalReviewCount) : 0,
     hours: finalHours,
     mapLink: finalMapLink || null,
-    googlePlaceId,
+    googlePlaceId: finalGooglePlaceId,
     galleryImages: finalGallery.length > 0 ? JSON.stringify(finalGallery) : null,
     image: finalMainImage,
     priceLevel: finalPrice,
