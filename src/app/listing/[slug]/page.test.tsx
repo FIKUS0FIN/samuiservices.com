@@ -124,6 +124,7 @@ describe('BusinessDetail JSON-LD XSS', () => {
     expect(product.offers).toBeDefined()
     expect(product.offers.availability).toBe('https://schema.org/InStock')
     expect(product.offers.priceValidUntil).toBe('2027-12-31')
+    expect(product.offers.validFrom).toBe(new Date().toISOString().split('T')[0])
     expect(product.offers.shippingDetails).toEqual({
       '@type': 'OfferShippingDetails',
       shippingRate: {

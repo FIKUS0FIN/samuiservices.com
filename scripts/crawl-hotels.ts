@@ -181,7 +181,7 @@ async function crawlCustomerWebsite(homepageUrl: string, browser: any) {
       
       // Get page title and content
       const title = await page.title();
-      const textContent = await page.evaluate(() => document.body.innerText);
+      const textContent = (await page.evaluate(() => document.body.innerText)) as string;
       const cleanTextContent = await page.evaluate(() => {
         const tags = Array.from(document.querySelectorAll('script, style, noscript, iframe, svg, canvas'));
         tags.forEach(t => t.remove());
@@ -201,11 +201,11 @@ async function crawlCustomerWebsite(homepageUrl: string, browser: any) {
       });
 
       // 2. Extract Phones
-      const telLinks = await page.evaluate(() => {
+      const telLinks = (await page.evaluate(() => {
         return Array.from(document.querySelectorAll('a[href^="tel:"]'))
           .map(a => a.getAttribute('href')?.replace('tel:', '').trim())
           .filter((t): t is string => !!t);
-      });
+      })) as string[];
       telLinks.forEach(p => data.phones.add(p));
 
       const phoneRegex = /(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
@@ -216,11 +216,11 @@ async function crawlCustomerWebsite(homepageUrl: string, browser: any) {
       });
 
       // 3. Extract Social Links & Booking Links
-      const pageLinks = await page.evaluate(() => {
+      const pageLinks = (await page.evaluate(() => {
         return Array.from(document.querySelectorAll('a'))
           .map(a => ({ href: a.href, text: a.innerText }))
           .filter(l => l.href && l.href.startsWith('http'));
-      });
+      })) as { href: string; text: string }[];
 
       for (const link of pageLinks) {
         const href = link.href.toLowerCase();
@@ -245,7 +245,7 @@ async function crawlCustomerWebsite(homepageUrl: string, browser: any) {
       }
 
       // 4. Extract Images
-      const imgUrls = await page.evaluate(() => {
+      const imgUrls = (await page.evaluate(() => {
         return Array.from(document.querySelectorAll('img'))
           .map(img => {
             const src = img.src || img.getAttribute('data-src') || '';
@@ -255,7 +255,7 @@ async function crawlCustomerWebsite(homepageUrl: string, browser: any) {
             return { src, w, h };
           })
           .filter(img => img.src && img.src.startsWith('http'));
-      });
+      })) as { src: string; w: number; h: number }[];
 
       imgUrls.forEach(img => {
         const srcLower = img.src.toLowerCase();
@@ -287,7 +287,7 @@ async function crawlCustomerWebsite(homepageUrl: string, browser: any) {
       });
 
       // 5. Extract FAQs (Heuristics)
-      const faqsExtracted = await page.evaluate(() => {
+      const faqsExtracted = (await page.evaluate(() => {
         const results: { question: string; answer: string }[] = [];
         // Look for headings ending in "?"
         const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6, strong'));
@@ -308,7 +308,7 @@ async function crawlCustomerWebsite(homepageUrl: string, browser: any) {
           }
         }
         return results;
-      });
+      })) as { question: string; answer: string }[];
       faqsExtracted.forEach(faq => {
         if (!data.faqs.some(f => f.question === faq.question)) {
           data.faqs.push(faq);
@@ -345,18 +345,18 @@ async function crawlCustomerWebsite(homepageUrl: string, browser: any) {
       });
 
       // 7. Services/Keywords (Heuristics)
-      const parsedHeadings = await page.evaluate(() => {
+      const parsedHeadings = (await page.evaluate(() => {
         return Array.from(document.querySelectorAll('h2, h3'))
           .map(h => (h as HTMLElement).innerText.trim())
           .filter(t => t.length > 5 && t.length < 50 && !t.includes('?') && !t.toLowerCase().includes('about') && !t.toLowerCase().includes('contact'));
-      });
+      })) as string[];
       parsedHeadings.forEach(h => data.services.add(h));
 
       // 8. Discover new internal links on homepage to crawl
       if (url === homepageUrl) {
-        const rawLinks = await page.evaluate(() => {
+        const rawLinks = (await page.evaluate(() => {
           return Array.from(document.querySelectorAll('a')).map(a => a.href);
-        });
+        })) as string[];
         const internalLinks = getInternalLinks(rawLinks, origin);
         
         // Prioritize interesting sections
@@ -926,17 +926,21 @@ async function run() {
   const args = process.argv.slice(2);
   const targetSlugIndex = args.indexOf('--slug');
   const targetSlug = targetSlugIndex !== -1 ? args[targetSlugIndex + 1] : null;
+  const targetCategoryIndex = args.indexOf('--category');
+  const targetCategorySlug = targetCategoryIndex !== -1 ? args[targetCategoryIndex + 1] : null;
 
   log(`Starting crawl-hotels script.`);
   log(`Database URL: ${dbUrl}`);
 
-  // Retrieve Categories representing Hotels
+  // Retrieve Categories representing Hotels/Resorts
+  let categorySlugs = ['hotels', 'accommodation-827', 'resorts'];
+  if (targetCategorySlug) {
+    categorySlugs = [targetCategorySlug];
+  }
+
   const categories = await prisma.category.findMany({
     where: {
-      OR: [
-        { slug: 'hotels' },
-        { slug: 'accommodation-827' }
-      ]
+      slug: { in: categorySlugs }
     }
   });
 

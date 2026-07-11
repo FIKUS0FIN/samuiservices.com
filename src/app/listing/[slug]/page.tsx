@@ -200,6 +200,7 @@ export default async function BusinessDetail({ params }: { params: Promise<{ slu
           availability: 'https://schema.org/InStock',
           url: `${baseUrl}/listing/${slug}`,
           priceValidUntil: '2027-12-31',
+          validFrom: safeToISOString(business.createdAt).split('T')[0],
             shippingDetails: {
               '@type': 'OfferShippingDetails',
               shippingRate: {
