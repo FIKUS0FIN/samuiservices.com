@@ -7,7 +7,8 @@ export async function getBusinessesByIsland(
   currentUserId?: string,
   page: number = 1,
   limit: number = 50,
-  subdistricts?: string[]
+  subdistricts?: string[],
+  sortBy?: string
 ) {
   const whereClause: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
   
@@ -49,6 +50,27 @@ export async function getBusinessesByIsland(
 
   const skip = (page - 1) * limit;
 
+  let orderByClause: any[] = [];
+  if (sortBy === 'newest') {
+    orderByClause = [
+      { updatedAt: 'desc' },
+      { createdAt: 'desc' }
+    ];
+  } else if (sortBy === 'highest-rated') {
+    orderByClause = [
+      { averageRating: 'desc' },
+      { reviewCount: 'desc' }
+    ];
+  } else {
+    // Recommended: highest rating + Fresh updated + number of reviews (keep premium on top)
+    orderByClause = [
+      { isPremium: 'desc' },
+      { averageRating: 'desc' },
+      { updatedAt: 'desc' },
+      { reviewCount: 'desc' }
+    ];
+  }
+
   const [listings, totalCount] = await Promise.all([
     prisma.listing.findMany({
       where: whereClause,
@@ -59,10 +81,7 @@ export async function getBusinessesByIsland(
           where: { userId: currentUserId }
         } : false
       },
-      orderBy: [
-        { isPremium: 'desc' },
-        { createdAt: 'desc' }
-      ],
+      orderBy: orderByClause,
       skip,
       take: limit,
     }),
@@ -230,4 +249,33 @@ export async function getSubdistrictsWithCounts(islandSlug: string): Promise<Rec
     }
   }
   return countMap;
+}
+
+export async function getTopListingsByCategory(
+  parentCategoryId: string,
+  childCategoryIds: string[],
+  subdistricts?: string[],
+  limit: number = 4
+) {
+  const whereClause: any = {
+    categoryId: { in: [parentCategoryId, ...childCategoryIds] },
+    island: { slug: { notIn: ['phangan', 'tao'] } } // Only Koh Samui
+  };
+
+  if (subdistricts && subdistricts.length > 0) {
+    whereClause.subdistrict = { in: subdistricts };
+  }
+
+  return prisma.listing.findMany({
+    where: whereClause,
+    include: {
+      category: true,
+      island: true,
+    },
+    orderBy: [
+      { averageRating: 'desc' },
+      { reviewCount: 'desc' }
+    ],
+    take: limit,
+  });
 }

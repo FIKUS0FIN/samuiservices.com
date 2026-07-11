@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { getAllCategories, getBusinessesByIsland, getCategoryCounts, getSubdistrictsWithCounts } from '@/lib/db';
+import { getAllCategories, getBusinessesByIsland, getCategoryCounts, getSubdistrictsWithCounts, getTopListingsByCategory } from '@/lib/db';
 import { HeroSearch } from '@/components/features/HeroSearch';
 import { FilterSidebar } from '@/components/features/FilterSidebar';
 import { ListingCard } from '@/components/features/ListingCard';
 import { Pagination } from '@/components/ui/Pagination';
+import { SortSelect } from '@/components/features/SortSelect';
 
 export const metadata = {
   alternates: {
@@ -27,17 +28,31 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
   
   // Fetch listings based on filter. 
   const categoryFilter = categorySlug ? [categorySlug] : undefined;
+  const sortBy = (searchParams as any)?.sort as string | undefined;
   
-  // If no category is selected, we want to show a few items from each category, so we fetch more.
-  const limit = categorySlug ? 10 : 100; 
-  const result = await getBusinessesByIsland('all', categoryFilter, undefined, undefined, currentPage, limit, subdistricts);
-  const allListings = result.listings;
-  const totalPages = result.totalPages;
-  
-  const listings = allListings;
+  let allListings: any[] = [];
+  let totalPages = 0;
+  let parentCategoriesWithListings: any[] = [];
 
-  // Separate listings by parent category for the homepage sections if no filter is applied
   const parentCategories = categories.filter(c => c.parentId === null);
+
+  if (categorySlug) {
+    const limit = 10; 
+    const result = await getBusinessesByIsland('all', categoryFilter, undefined, undefined, currentPage, limit, subdistricts, sortBy);
+    allListings = result.listings;
+    totalPages = result.totalPages;
+  } else {
+    parentCategoriesWithListings = await Promise.all(
+      parentCategories.map(async (parentCat) => {
+        const childIds = parentCat.children.map(c => c.id);
+        const listings = await getTopListingsByCategory(parentCat.id, childIds, subdistricts, 4);
+        return {
+          ...parentCat,
+          listings
+        };
+      })
+    );
+  }
 
   return (
     <div>
@@ -78,15 +93,16 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
             {categorySlug ? (
               // View when category is filtered
               <div>
-                <div className="mb-6">
+                <div className="flex justify-between items-center mb-6">
                    <h2 className="text-title-lg font-bold text-on-surface uppercase tracking-widest m-0">
                      RESULTS FOR &quot;{categories.find(c => c.slug === categorySlug)?.name?.toUpperCase()}&quot;
                    </h2>
+                   <SortSelect />
                 </div>
                 {allListings.length > 0 ? (
                   <>
                     <div className="grid-cards fade-in-up mb-12">
-                      {listings.map((listing) => (
+                      {allListings.map((listing) => (
                         <ListingCard key={listing.id} business={listing} />
                       ))}
                     </div>
@@ -104,9 +120,8 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
               // Redesigned View with Sections (No Filter)
               <div className="flex flex-col gap-12">
 
-                {parentCategories.map(parentCat => {
-                   const childIds = parentCat.children.map(c => c.id);
-                   const parentListings = allListings.filter(l => childIds.includes(l.categoryId) || l.categoryId === parentCat.id).slice(0, 3);
+                {parentCategoriesWithListings.map(parentCat => {
+                   const parentListings = parentCat.listings;
 
                    if (parentListings.length === 0) return null;
 
@@ -121,8 +136,8 @@ export default async function Home(props: { searchParams?: Promise<{ category?: 
                           </Link>
                         </div>
                         <div className="grid-cards">
-                          {parentListings.map((listing) => (
-                            <ListingCard key={listing.id} business={listing} />
+                          {parentListings.map((listing: any) => (
+                            <ListingCard key={listing.id} business={listing as any} />
                           ))}
                         </div>
                      </div>

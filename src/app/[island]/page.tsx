@@ -8,6 +8,7 @@ import { Pagination } from '@/components/ui/Pagination';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import DynamicMap from '@/components/features/DynamicMap';
+import { SortSelect } from '@/components/features/SortSelect';
 
 export async function generateMetadata({ params }: { params: Promise<{ island: string }> }) {
   const { island } = await params;
@@ -42,6 +43,8 @@ export default async function IslandDirectory({
   const subdistricts = subdistrictParam
     ? (Array.isArray(subdistrictParam) ? subdistrictParam : [subdistrictParam])
     : undefined;
+    
+  const sortBy = resolvedSearchParams.sort as string | undefined;
 
   const islands = await getAllIslands();
   
@@ -56,7 +59,7 @@ export default async function IslandDirectory({
   
   const session = await getServerSession(authOptions);
   
-  const { listings: islandBusinesses, totalPages, totalCount } = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id, page, limit, subdistricts);
+  const { listings: islandBusinesses, totalPages, totalCount } = await getBusinessesByIsland(island, categorySlugs, query, session?.user?.id, page, limit, subdistricts, sortBy);
   const categories = await getAllCategories();
   const categoryCounts = await getCategoryCounts(island);
   const subdistrictCounts = await getSubdistrictsWithCounts(island);
@@ -89,11 +92,7 @@ export default async function IslandDirectory({
         <div className="max-w-3xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <p className="font-medium text-title-md text-on-surface">{totalCount} businesses found</p>
-            <select className="input-field w-auto py-2">
-              <option>Recommended</option>
-              <option>Highest Rated</option>
-              <option>Newest</option>
-            </select>
+            <SortSelect />
           </div>
 
           <div className="flex flex-col gap-6">
