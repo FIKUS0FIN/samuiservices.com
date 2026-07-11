@@ -593,8 +593,8 @@ async function processBusiness(listing: any, browser: any) {
   
   // Download/upload Google Maps Photos (up to 3)
   if (googleDetails?.photos && googleDetails.photos.length > 0) {
-    log(`Processing up to 3 Google Maps Photos for "${listing.name}"...`);
-    const photosToDownload = googleDetails.photos.slice(0, 3);
+    log(`Processing up to 5 Google Maps Photos for "${listing.name}"...`);
+    const photosToDownload = googleDetails.photos.slice(0, 5);
     for (let idx = 0; idx < photosToDownload.length; idx++) {
       const photo = photosToDownload[idx];
       const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photo_reference=${photo.photo_reference}&key=${GOOGLE_API_KEY}`;
@@ -613,8 +613,8 @@ async function processBusiness(listing: any, browser: any) {
 
   // Download/upload website images (up to 3)
   if (webCrawlData?.images && webCrawlData.images.size > 0) {
-    log(`Processing up to 3 website images for "${listing.name}"...`);
-    const websiteImages = Array.from(webCrawlData.images).slice(0, 3) as string[];
+    log(`Processing up to 4 website images for "${listing.name}"...`);
+    const websiteImages = Array.from(webCrawlData.images).slice(0, 4) as string[];
     for (let idx = 0; idx < websiteImages.length; idx++) {
       const imgUrl = websiteImages[idx];
       const ext = path.extname(imgUrl.split('?')[0]).toLowerCase() || '.jpg';
