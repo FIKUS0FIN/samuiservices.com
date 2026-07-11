@@ -426,7 +426,7 @@ Extract the following information:
 4. "website": The main website URL.
 5. "mapLink": The Google Maps URL / link for the business location (if found).
 6. "keywords": An array of core SEO keywords/tags (strings) describing the business's services and niche (e.g. ["diving", "diving lessons", "padi certifcate"]).
-7. "description": Write an engaging, SEO-optimized business description based on the text.
+7. "description": Write an engaging, SEO-optimized business description (2-4 paragraphs). Use Markdown formatting (## headings, bold text, bullet points). Include 3-4 bullet points highlighting key services/features. Weave in E-E-A-T signals (Expertise, Experience, Authoritativeness, Trustworthiness) by mentioning things like "local presence", "years of experience", "expert team", "reliability". Add a clear Call-to-Action (CTA) at the end. Mention "Koh Samui" and "Thailand" naturally. Encode newlines properly in the JSON string (\\n).
 8. "products": An array of products or services offered. Each object should have: "name" (string), "description" (string, short), "price" (number or null), "image" (string or null).
 9. "hours": A string representing their opening and closing hours, if found.
 10. "socialLinks": An object containing social media URLs, e.g. {"facebook": "...", "instagram": "..."}.
