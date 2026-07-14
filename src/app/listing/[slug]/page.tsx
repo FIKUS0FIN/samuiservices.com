@@ -43,7 +43,12 @@ const safeToISOString = (dateVal: any): string => {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const business = await getBusinessBySlug(slug);
+  let business = null;
+  try {
+    business = await getBusinessBySlug(slug);
+  } catch (error) {
+    console.error(`Metadata DB Error for slug ${slug}:`, error);
+  }
   if (!business) return { title: 'Not Found' };
   
   const services = safeParse(business.services, []);
@@ -64,6 +69,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       images: business.image ? [{ url: business.image }] : [],
       type: 'website',
     },
+    // BEST PRACTICE: Noindex thin content to preserve crawl budget and domain quality
+    robots: {
+      index: !!business.image || (business.description && business.description.length > 50) || business.reviewCount > 0,
+      follow: true,
+    },
     twitter: {
       card: 'summary_large_image',
     },
@@ -81,7 +91,12 @@ import { MobileActionBar } from '@/components/features/MobileActionBar';
 
 export default async function BusinessDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const business = await getBusinessBySlug(slug);
+  let business = null;
+  try {
+    business = await getBusinessBySlug(slug);
+  } catch (error) {
+    console.error(`Page DB Error for slug ${slug}:`, error);
+  }
   
   if (!business) {
     notFound();

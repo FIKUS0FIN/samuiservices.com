@@ -93,6 +93,11 @@ export function Footer() {
             </h4>
             <ul className="flex flex-col gap-2.5 list-none p-0 m-0">
               <li>
+                <Link href="/guides/top-10-hotels-in-koh-samui" className="text-body-sm text-slate-300 hover:text-white transition-colors duration-200">
+                  Top 10 Hotels in Koh Samui
+                </Link>
+              </li>
+              <li>
                 <Link href="/samui/weather" className="text-body-sm text-slate-300 hover:text-white transition-colors duration-200">
                   Samui Weather & Season Guide
                 </Link>
