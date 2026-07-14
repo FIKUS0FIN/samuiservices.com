@@ -25,7 +25,7 @@ export function Input({
         <label htmlFor={inputId} className="font-label-md text-sm text-on-surface-variant ml-1">
           {label}
           {props.required && (
-            <span className="text-error ml-1" aria-hidden="true">*</span>
+            <span className="text-error ml-1" aria-hidden="true" title="Required">*</span>
           )}
         </label>
       )}
