@@ -71,9 +71,9 @@ async function processCategory(categorySlug: string) {
 
 async function main() {
   const categoriesToProcess = [
-    "car-rental", "scooter-rental", "taxis", "contractors", 
-    "cleaning-services", "pest-control", "real-estate", "home-garden", 
-    "supermarkets", "electronics", "souvenirs", "boutiques"
+    "tattoo-studios", "weddings-events", "pet-services-vets",
+    "legal-visa-services", "education-classes", "travel-luggage",
+    "photography-media", "beauty-health"
   ];
   
   for (const slug of categoriesToProcess) {

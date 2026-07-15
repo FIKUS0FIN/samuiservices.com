@@ -6,7 +6,11 @@ const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL || 'file:./dev.
 const prisma = new PrismaClient({ adapter });
 
 async function run() {
-  const categories = ['pest-control', 'real-estate', 'home-garden'];
+  const categories = [
+    'tattoo-studios', 'weddings-events', 'pet-services-vets', 
+    'legal-visa-services', 'education-classes', 'travel-luggage', 
+    'photography-media', 'beauty-health'
+  ];
   
   for (const slug of categories) {
     console.log(`Fetching category ${slug} from D1...`);
@@ -17,8 +21,8 @@ async function run() {
       const cat = catRows[0];
       await prisma.category.upsert({
         where: { slug: cat.slug },
-        update: { name: cat.name, parentId: cat.parentId, icon: cat.icon, order: cat.order },
-        create: { id: cat.id, name: cat.name, slug: cat.slug, parentId: cat.parentId, icon: cat.icon, order: cat.order }
+        update: { name: cat.name, parentId: null, icon: cat.icon, order: cat.order },
+        create: { id: cat.id, name: cat.name, slug: cat.slug, parentId: null, icon: cat.icon, order: cat.order }
       });
       console.log(`Synced category ${slug}`);
       

@@ -116,6 +116,7 @@ model Listing {
   videoUrls       String?
   externalReviews String?
   subdistrict     String?
+  secondaryCategories String?
   favorites       Favorite[]
   user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   island          Island     @relation(fields: [islandId], references: [id])
